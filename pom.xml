@@ -208,6 +208,8 @@
 		<osgi.dynamicimport.package />
 		<osgi.export.package>*</osgi.export.package>
 		<osgi.import.package>!java,!kotlin,*</osgi.import.package>
+		<sonar.organization>2023-mmqs-vendettatori-la-vendetta-org</sonar.organization>
+ 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencyManagement>
