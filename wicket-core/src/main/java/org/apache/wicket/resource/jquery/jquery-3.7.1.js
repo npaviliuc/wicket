@@ -48,7 +48,7 @@ var getProto = Object.getPrototypeOf;
 
 var slice = arr.slice;
 
-var flat = arr.flat ? function( array ) {
+let flat = arr.flat ? function( array ) {
 	return arr.flat.call( array );
 } : function( array ) {
 	return arr.concat.apply( [], array );
@@ -90,7 +90,7 @@ var isWindow = function isWindow( obj ) {
 	};
 
 
-var document = window.document;
+let document = window.document;
 
 
 
@@ -147,7 +147,7 @@ function toType( obj ) {
 
 
 
-var version = "3.7.1",
+let version = "3.7.1",
 
 	rhtmlSuffix = /HTML$/i,
 
@@ -398,7 +398,7 @@ jQuery.extend( {
 
 	// Retrieve the text value of an array of DOM nodes
 	text: function( elem ) {
-		var node,
+		let node,
 			ret = "",
 			i = 0,
 			nodeType = elem.nodeType;
@@ -450,7 +450,7 @@ jQuery.extend( {
 	},
 
 	isXMLDoc: function( elem ) {
-		var namespace = elem && elem.namespaceURI,
+		let namespace = elem && elem.namespaceURI,
 			docElem = elem && ( elem.ownerDocument || elem ).documentElement;
 
 		// Assume HTML when documentElement doesn't yet exist, such as inside
@@ -566,19 +566,19 @@ function nodeName( elem, name ) {
 	return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 
 }
-var pop = arr.pop;
+let pop = arr.pop;
 
 
-var sort = arr.sort;
+let sort = arr.sort;
 
 
-var splice = arr.splice;
+let splice = arr.splice;
 
 
-var whitespace = "[\\x20\\t\\r\\n\\f]";
+let whitespace = "[\\x20\\t\\r\\n\\f]";
 
 
-var rtrimCSS = new RegExp(
+let rtrimCSS = new RegExp(
 	"^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
 	"g"
 );
@@ -588,7 +588,7 @@ var rtrimCSS = new RegExp(
 
 // Note: an element does not contain itself
 jQuery.contains = function( a, b ) {
-	var bup = b && b.parentNode;
+	let bup = b && b.parentNode;
 
 	return a === bup || !!( bup && bup.nodeType === 1 && (
 
@@ -605,7 +605,7 @@ jQuery.contains = function( a, b ) {
 
 // CSS string/identifier serialization
 // https://drafts.csswg.org/cssom/#common-serializing-idioms
-var rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\x80-\uFFFF\w-]/g;
+let rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\x80-\uFFFF\w-]/g;
 
 function fcssescape( ch, asCodePoint ) {
 	if ( asCodePoint ) {
@@ -630,7 +630,7 @@ jQuery.escapeSelector = function( sel ) {
 
 
 
-var preferredDoc = document,
+let preferredDoc = document,
 	pushNative = push;
 
 ( function() {
@@ -739,7 +739,7 @@ var i,
 	runescape = new RegExp( "\\\\[\\da-fA-F]{1,6}" + whitespace +
 		"?|\\\\([^\\r\\n\\f])", "g" ),
 	funescape = function( escape, nonHex ) {
-		var high = "0x" + escape.slice( 1 ) - 0x10000;
+		let high = "0x" + escape.slice( 1 ) - 0x10000;
 
 		if ( nonHex ) {
 
@@ -1107,7 +1107,7 @@ function testContext( context ) {
  * @returns {Object} Returns the current document
  */
 function setDocument( node ) {
-	var subWindow,
+	let subWindow,
 		doc = node ? node.ownerDocument || node : preferredDoc;
 
 	// Return early if doc is invalid or already selected
@@ -1273,7 +1273,7 @@ function setDocument( node ) {
 	// Regex strategy adopted from Diego Perini
 	assert( function( el ) {
 
-		var input;
+		let input;
 
 		documentElement.appendChild( el ).innerHTML =
 			"<a id='" + expando + "' href='' disabled='disabled'></a>" +
@@ -1634,7 +1634,7 @@ Expr = jQuery.expr = {
 	filter: {
 
 		TAG: function( nodeNameSelector ) {
-			var expectedNodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
+			let expectedNodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
 			return nodeNameSelector === "*" ?
 				function() {
 					return true;
@@ -1662,7 +1662,7 @@ Expr = jQuery.expr = {
 
 		ATTR: function( name, operator, check ) {
 			return function( elem ) {
-				var result = find.attr( elem, name );
+				let result = find.attr( elem, name );
 
 				if ( result == null ) {
 					return operator === "!=";
@@ -1713,7 +1713,7 @@ Expr = jQuery.expr = {
 				} :
 
 				function( elem, _context, xml ) {
-					var cache, outerCache, node, nodeIndex, start,
+					let cache, outerCache, node, nodeIndex, start,
 						dir = simple !== forward ? "nextSibling" : "previousSibling",
 						parent = elem.parentNode,
 						name = ofType && elem.nodeName.toLowerCase(),
@@ -2043,7 +2043,7 @@ Expr = jQuery.expr = {
 		} ),
 
 		lt: createPositionalPseudo( function( matchIndexes, length, argument ) {
-			var i;
+			let i;
 
 			if ( argument < 0 ) {
 				i = argument + length;
@@ -2187,7 +2187,7 @@ function addCombinator( matcher, combinator, base ) {
 
 		// Check against all ancestor/preceding elements
 		function( elem, context, xml ) {
-			var oldCache, outerCache,
+			let oldCache, outerCache,
 				newCache = [ dirruns, doneName ];
 
 			// We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching
@@ -2280,7 +2280,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 		postFinder = setMatcher( postFinder, postSelector );
 	}
 	return markFunction( function( seed, results, context, xml ) {
-		var temp, i, elem, matcherOut,
+		let temp, i, elem, matcherOut,
 			preMap = [],
 			postMap = [],
 			preexisting = results.length,
@@ -2391,7 +2391,7 @@ function matcherFromTokens( tokens ) {
 			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
-			var ret = ( !leadingRelative && ( xml || context != outermostContext ) ) || (
+			let ret = ( !leadingRelative && ( xml || context != outermostContext ) ) || (
 				( checkContext = context ).nodeType ?
 					matchContext( elem, context, xml ) :
 					matchAnyContext( elem, context, xml ) );
@@ -4642,7 +4642,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 
 
 ( function() {
-	var fragment = document.createDocumentFragment(),
+	let fragment = document.createDocumentFragment(),
 		div = fragment.appendChild( document.createElement( "div" ) ),
 		input = document.createElement( "input" );
 
@@ -4674,7 +4674,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 
 
 // We have to close these tags to support XHTML (trac-13200)
-var wrapMap = {
+let wrapMap = {
 
 	// XHTML parsers do not magically insert elements in the
 	// same way that tag soup parsers do. So we cannot shorten
@@ -4827,7 +4827,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 }
 
 
-var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+let rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
 function returnTrue() {
 	return true;
@@ -5340,7 +5340,7 @@ function leverageNative( el, type, isSetup ) {
 	jQuery.event.add( el, type, {
 		namespace: false,
 		handler: function( event ) {
-			var result,
+			let result,
 				saved = dataPriv.get( this, type );
 
 			if ( ( event.isTrigger & 1 ) && this[ type ] ) {
@@ -5548,7 +5548,7 @@ jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateTyp
 
 			// `handle` from private data would already wrap the event, but we need
 			// to change the `type` here.
-			var handle = dataPriv.get( this, "handle" ),
+			let handle = dataPriv.get( this, "handle" ),
 				event = jQuery.event.fix( nativeEvent );
 			event.type = nativeEvent.type === "focusin" ? "focus" : "blur";
 			event.isSimulated = true;
@@ -5581,7 +5581,7 @@ jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateTyp
 		// Utilize native event if possible so blur/focus sequence is correct
 		setup: function() {
 
-			var attaches;
+			let attaches;
 
 			// Claim the first handler
 			// dataPriv.set( this, "focus", ... )
@@ -5615,7 +5615,7 @@ jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateTyp
 		},
 
 		teardown: function() {
-			var attaches;
+			let attaches;
 
 			if ( document.documentMode ) {
 				attaches = dataPriv.get( this, delegateType ) - 1;
@@ -5658,7 +5658,7 @@ jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateTyp
 
 			// Handle: regular nodes (via `this.ownerDocument`), window
 			// (via `this.document`) & document (via `this`).
-			var doc = this.ownerDocument || this.document || this,
+			let doc = this.ownerDocument || this.document || this,
 				dataHolder = document.documentMode ? this : doc,
 				attaches = dataPriv.get( dataHolder, delegateType );
 
@@ -5676,7 +5676,7 @@ jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateTyp
 			dataPriv.set( dataHolder, delegateType, ( attaches || 0 ) + 1 );
 		},
 		teardown: function() {
-			var doc = this.ownerDocument || this.document || this,
+			let doc = this.ownerDocument || this.document || this,
 				dataHolder = document.documentMode ? this : doc,
 				attaches = dataPriv.get( dataHolder, delegateType ) - 1;
 
@@ -5816,7 +5816,7 @@ function restoreScript( elem ) {
 }
 
 function cloneCopyEvent( src, dest ) {
-	var i, l, type, pdataOld, udataOld, udataCur, events;
+	let i, l, type, pdataOld, udataOld, udataCur, events;
 
 	if ( dest.nodeType !== 1 ) {
 		return;
@@ -6231,7 +6231,7 @@ jQuery.each( {
 } );
 var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
 
-var rcustomProp = /^--/;
+let rcustomProp = /^--/;
 
 
 var getStyles = function( elem ) {
@@ -6248,8 +6248,8 @@ var getStyles = function( elem ) {
 		return view.getComputedStyle( elem );
 	};
 
-var swap = function( elem, options, callback ) {
-	var ret, name,
+let swap = function( elem, options, callback ) {
+	let ret, name,
 		old = {};
 
 	// Remember the old values, and insert the new ones
@@ -6373,7 +6373,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 		// Only Firefox includes border widths
 		// in computed dimensions. (gh-4529)
 		reliableTrDimensions: function() {
-			var table, tr, trChild, trStyle;
+			let table, tr, trChild, trStyle;
 			if ( reliableTrDimensionsVal == null ) {
 				table = document.createElement( "table" );
 				tr = document.createElement( "tr" );
@@ -8155,7 +8155,7 @@ function classesToArray( value ) {
 
 jQuery.fn.extend( {
 	addClass: function( value ) {
-		var classNames, cur, curValue, className, i, finalValue;
+		let classNames, cur, curValue, className, i, finalValue;
 
 		if ( isFunction( value ) ) {
 			return this.each( function( j ) {
@@ -8191,7 +8191,7 @@ jQuery.fn.extend( {
 	},
 
 	removeClass: function( value ) {
-		var classNames, cur, curValue, className, i, finalValue;
+		let classNames, cur, curValue, className, i, finalValue;
 
 		if ( isFunction( value ) ) {
 			return this.each( function( j ) {
@@ -8235,7 +8235,7 @@ jQuery.fn.extend( {
 	},
 
 	toggleClass: function( value, stateVal ) {
-		var classNames, className, i, self,
+		let classNames, className, i, self,
 			type = typeof value,
 			isValidValue = type === "string" || Array.isArray( value );
 
@@ -8496,17 +8496,17 @@ jQuery.each( [ "radio", "checkbox" ], function() {
 
 
 // Return jQuery for attributes-only inclusion
-var location = window.location;
+let location = window.location;
 
-var nonce = { guid: Date.now() };
+let nonce = { guid: Date.now() };
 
-var rquery = ( /\?/ );
+let rquery = ( /\?/ );
 
 
 
 // Cross-browser xml parsing
 jQuery.parseXML = function( data ) {
-	var xml, parserErrorElem;
+	let xml, parserErrorElem;
 	if ( !data || typeof data !== "string" ) {
 		return null;
 	}
@@ -9685,7 +9685,7 @@ jQuery.each( [ "get", "post" ], function( _i, method ) {
 } );
 
 jQuery.ajaxPrefilter( function( s ) {
-	var i;
+	let i;
 	for ( i in s.headers ) {
 		if ( i.toLowerCase() === "content-type" ) {
 			s.contentType = s.headers[ i ] || "";
@@ -10034,7 +10034,7 @@ var oldCallbacks = [],
 jQuery.ajaxSetup( {
 	jsonp: "callback",
 	jsonpCallback: function() {
-		var callback = oldCallbacks.pop() || ( jQuery.expando + "_" + ( nonce.guid++ ) );
+		let callback = oldCallbacks.pop() || ( jQuery.expando + "_" + ( nonce.guid++ ) );
 		this[ callback ] = true;
 		return callback;
 	}
@@ -10588,7 +10588,7 @@ jQuery.each(
 // Make sure we trim BOM and NBSP
 // Require that the "whitespace run" starts from a non-whitespace
 // to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
-var rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
+let rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
 
 // Bind a function to a context, optionally partially applying any
 // arguments.

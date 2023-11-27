@@ -33,6 +33,12 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class CipherUtils
 {
+
+	// Private constructor to hide the implicit public one
+	private CipherUtils(){
+		// private constructor to prevent instantiation
+	}
+
 	/**
 	 * Generate a new {@link SecretKey} based on the given algorithm and with the given length.
 	 * 
@@ -41,19 +47,23 @@ public class CipherUtils
 	 * @param keyLength
 	 *              the key length
 	 * @return a new {@link SecretKey}
+	 * 
+	 * @throws KeyGenerationException 
+	 * 				if there is an issue generating the key.
 	 */
-	public static SecretKey generateKey(String algorithm, int keyLength, SecureRandom secureRandom)
+	public static SecretKey generateKey(String algorithm, int keyLength, SecureRandom secureRandom) throws KeyGenerationException
 	{
-		try
 		{
-			KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
-			keyGenerator.init(keyLength, secureRandom);
-			SecretKey key = keyGenerator.generateKey();
-			return key;
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException(e);
+			try
+			{
+				KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
+				keyGenerator.init(keyLength, secureRandom);
+				return keyGenerator.generateKey();
+			}
+			catch (NoSuchAlgorithmException e)
+			{
+				throw new KeyGenerationException("Error generating key", e);
+			}
 		}
 	}
 
@@ -73,21 +83,24 @@ public class CipherUtils
 	 * @param keyLength
 	 *              the key length.
 	 * @return a new {@link SecretKey}
+	 * 
+	 * @throws KeyGenerationException 
+	 * 				if there is an issue generating the key
 	 */
 	public static SecretKey generatePBEKey(String password, String pbeAlgorithm,
-		String keyAlgorithm, byte[] salt, int iterationCount, int keyLength)
+		String keyAlgorithm, byte[] salt, int iterationCount, int keyLength) throws KeyGenerationException
 	{
-		try
 		{
-			SecretKeyFactory factory = SecretKeyFactory.getInstance(pbeAlgorithm);
-			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
-			SecretKey secret = new SecretKeySpec(factory.generateSecret(spec).getEncoded(),
-				keyAlgorithm);
-			return secret;
-		}
-		catch (NoSuchAlgorithmException | InvalidKeySpecException e)
-		{
-			throw new RuntimeException(e);
+			try
+			{
+				SecretKeyFactory factory = SecretKeyFactory.getInstance(pbeAlgorithm);
+				KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
+				return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), keyAlgorithm);
+			}
+			catch (NoSuchAlgorithmException | InvalidKeySpecException e)
+			{
+				throw new KeyGenerationException("Error generating PBE key", e);
+			}
 		}
 	}
 }
