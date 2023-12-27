@@ -450,7 +450,7 @@ jQuery.extend( {
 	},
 
 	isXMLDoc: function( elem ) {
-		let namespace = elem?.namespaceURI;
+		let namespace = elem && elem.namespaceURI;
 			docElem = elem && ( elem.ownerDocument || elem ).documentElement;
 
 		// Assume HTML when documentElement doesn't yet exist, such as inside
@@ -588,7 +588,7 @@ let rtrimCSS = new RegExp(
 
 // Note: an element does not contain itself
 jQuery.contains = function( a, b ) {
-	let bup = b?.parentNode;
+	let bup = b && b.parentNode;
 
 	return a === bup || !!( bup && bup.nodeType === 1 && (
 
