@@ -870,7 +870,7 @@ function find( selector, context, results, seed ) {
 
 			// Take advantage of querySelectorAll
 			if ( !nonnativeSelectorCache[ selector + " " ] &&
-			( !rbuggyQSA || !rbuggyQSA?.test( selector ) )
+			( !rbuggyQSA || !rbuggyQSA?.test( selector ) ) )
 
 				newSelector = selector;
 				newContext = context;
