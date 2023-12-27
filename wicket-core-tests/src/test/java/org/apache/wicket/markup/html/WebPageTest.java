@@ -18,6 +18,7 @@ package org.apache.wicket.markup.html;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -50,7 +51,7 @@ class WebPageTest extends WicketTestCase
 		tester.assertRenderedPage(TargetPage.class);
 		int targetPageId = tester.getLastRenderedPage().getPageId();
 
-		assertTrue(mainPageId != targetPageId);
+		assertNotEquals(mainPageId, targetPageId);
 
 		IManageablePage mainPage = tester.getSession().getPageManager().getPage(mainPageId);
 		IManageablePage targetPage = tester.getSession().getPageManager().getPage(targetPageId);

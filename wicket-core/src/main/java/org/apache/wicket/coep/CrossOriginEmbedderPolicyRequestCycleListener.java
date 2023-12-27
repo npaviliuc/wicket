@@ -69,21 +69,20 @@ public class CrossOriginEmbedderPolicyRequestCycleListener implements IRequestCy
 	public void onRequestHandlerResolved(RequestCycle cycle, IRequestHandler handler)
 	{
 		// WICKET-7028- this is needed for redirect to buffer use case.
-		protect(cycle, handler);
+		protect(cycle);
 	}
 
 	@Override
 	public void onRequestHandlerExecuted(RequestCycle cycle, IRequestHandler handler)
 	{
-		protect(cycle, handler);
+		protect(cycle);
 	}
 
-	protected void protect(RequestCycle cycle, IRequestHandler handler)
+	protected void protect(RequestCycle cycle)
 	{
 		final Object containerRequest = cycle.getRequest().getContainerRequest();
-		if (containerRequest instanceof HttpServletRequest)
+		if (containerRequest instanceof HttpServletRequest request)
 		{
-			HttpServletRequest request = (HttpServletRequest) containerRequest;
 			String path = request.getContextPath();
 			final String coepHeaderName = coepConfig.getCoepHeader();
 
@@ -93,9 +92,8 @@ public class CrossOriginEmbedderPolicyRequestCycleListener implements IRequestCy
 				return;
 			}
 
-			if (cycle.getResponse() instanceof WebResponse)
+			if (cycle.getResponse() instanceof WebResponse webResponse)
 			{
-				WebResponse webResponse = (WebResponse) cycle.getResponse();
 				if (webResponse.isHeaderSupported())
 				{
 					webResponse.setHeader(coepHeaderName, REQUIRE_CORP);

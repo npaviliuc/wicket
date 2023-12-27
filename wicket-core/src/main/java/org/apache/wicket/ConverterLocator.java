@@ -124,13 +124,13 @@ public class ConverterLocator implements IConverterLocator
 			}
 
 			throw new ConversionException("Could not convert value: " + value + " to type: " +
-				theType.getName() + ". Could not find compatible converter.").setSourceValue(value);
+				(theType != null ? theType.getName() : "" ) + ". Could not find compatible converter.").setSourceValue(value);
 		}
 
 		@Override
 		public String convertToString(C value, Locale locale)
 		{
-			if (value == null || (value instanceof String && ((String) value).isEmpty()))
+			if (value == null || (value instanceof String string && string.isEmpty()))
 			{
 				return "";
 			}

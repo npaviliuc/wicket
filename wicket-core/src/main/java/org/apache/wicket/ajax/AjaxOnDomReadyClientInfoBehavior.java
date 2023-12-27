@@ -68,6 +68,10 @@ public class AjaxOnDomReadyClientInfoBehavior extends AbstractDefaultAjaxBehavio
 	 */
 	protected void onClientInfo(AjaxRequestTarget target, WebClientInfo clientInfo)
 	{
+		// This method is intentionally left empty.
+		// The implementation is meant to be completed by subclasses based on specific needs.
+		// Subclasses should override this method to handle the collected client information.
+		// Throwing UnsupportedOperationException here serves as a reminder to provide a meaningful implementation
 	}
 
 	@Override

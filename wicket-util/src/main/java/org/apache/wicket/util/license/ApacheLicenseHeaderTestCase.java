@@ -40,6 +40,8 @@ public abstract class ApacheLicenseHeaderTestCase
 {
 	/** Log. */
 	private static final Logger log = LoggerFactory.getLogger(ApacheLicenseHeaderTestCase.class);
+	private static final String PATH = "src/test/java";
+	private static final String FILE_SEPARATOR = "file.separator";
 
 	private static final String LINE_ENDING = System.getProperty("line.separator");
 	protected List<String> javaIgnore = Generics.newArrayList();
@@ -51,19 +53,17 @@ public abstract class ApacheLicenseHeaderTestCase
 	protected List<String> velocityIgnore = Generics.newArrayList();
 	protected List<String> javaScriptIgnore = Generics.newArrayList();
 	protected boolean addHeaders = false;
-	private ILicenseHeaderHandler[] licenseHeaderHandlers;
 	private File baseDirectory = new File("").getAbsoluteFile();
 	/**
 	 * Construct.
 	 */
-	public ApacheLicenseHeaderTestCase()
+	protected ApacheLicenseHeaderTestCase()
 	{
 
 		// -------------------------------
 		// Configure defaults
 		// -------------------------------
 
-		// addHeaders = true;
 		xmlIgnore.add(".settings");
 		xmlIgnore.add("EclipseCodeFormat.xml");
 		xmlIgnore.add("nb-configuration.xml");
@@ -71,18 +71,18 @@ public abstract class ApacheLicenseHeaderTestCase
 		/*
 		 * License header in test files lower the visibility of the test.
 		 */
-		htmlIgnore.add("src/test/java");
+		htmlIgnore.add(PATH);
 
 		/*
 		 * Low level configuration files for logging. No license needed.
 		 */
-		propertiesIgnore.add("src/test/java");
+		propertiesIgnore.add(PATH);
 
 		/*
 		 * .html in test is very test specific and a license header would confuse and make it
 		 * unclear what the test is about.
 		 */
-		xmlPrologIgnore.add("src/test/java");
+		xmlPrologIgnore.add(PATH);
 
 		/*
 		 * Ignore package.html
@@ -109,6 +109,7 @@ public abstract class ApacheLicenseHeaderTestCase
 	 */
 	protected void licenseHeaders()
 	{
+		ILicenseHeaderHandler[] licenseHeaderHandlers;
 		licenseHeaderHandlers = new ILicenseHeaderHandler[] {
 				new JavaLicenseHeaderHandler(javaIgnore),
 				new JavaScriptLicenseHeaderHandler(javaScriptIgnore),
@@ -124,27 +125,12 @@ public abstract class ApacheLicenseHeaderTestCase
 		for (final ILicenseHeaderHandler licenseHeaderHandler : licenseHeaderHandlers)
 		{
 			visitFiles(licenseHeaderHandler.getSuffixes(), licenseHeaderHandler.getIgnoreFiles(),
-				new FileVisitor()
-				{
-					@Override
-					public void visitFile(final File file)
+				file -> {
+					if (!licenseHeaderHandler.checkLicenseHeader(file) && (!addHeaders || !licenseHeaderHandler.addLicenseHeader(file)))
 					{
-						if (licenseHeaderHandler.checkLicenseHeader(file) == false)
-						{
-							if ((addHeaders == false) ||
-								(licenseHeaderHandler.addLicenseHeader(file) == false))
-							{
-								List<File> files = badFiles.get(licenseHeaderHandler);
-
-								if (files == null)
-								{
-									files = new ArrayList<>();
-									badFiles.put(licenseHeaderHandler, files);
-								}
-
-								files.add(file);
-							}
-						}
+						List<File> files = badFiles.getOrDefault(licenseHeaderHandler, new ArrayList<>());
+						files.add(file);
+						badFiles.put(licenseHeaderHandler, files);
 					}
 				});
 		}
@@ -181,7 +167,9 @@ public abstract class ApacheLicenseHeaderTestCase
 				}
 			}
 
-			System.out.println(failString);
+
+			Logger logger = LoggerFactory.getLogger(getClass().getName());
+			logger.info(failString.toString());
 			throw new AssertionError(failString.toString());
 		}
 	}
@@ -244,7 +232,7 @@ public abstract class ApacheLicenseHeaderTestCase
 
 			if (pathname.isFile())
 			{
-				if (ignoreFile(pathname) == false)
+				if (!ignoreFile(pathname))
 				{
 					for (String suffix : suffixes)
 					{
@@ -268,54 +256,57 @@ public abstract class ApacheLicenseHeaderTestCase
 			return accept;
 		}
 
-		private boolean ignoreFile(final File pathname)
-		{
-			boolean ignore = false;
+		private boolean ignoreFile(final File pathname) {
+			if (ignoreFiles == null) {
+				return false;
+			}
 
-			if (ignoreFiles != null)
-			{
-				String relativePathname = pathname.getAbsolutePath();
-				relativePathname = Strings
-					.replaceAll(relativePathname,
-						baseDirectory.getAbsolutePath() + System.getProperty("file.separator"), "")
-					.toString();
+			String relativePathname = getRelativePathname(pathname);
 
-				for (String ignorePath : ignoreFiles)
-				{
-					// Will convert '/'s to '\\'s on Windows
-					ignorePath = Strings
-						.replaceAll(ignorePath, "/", System.getProperty("file.separator"))
-						.toString();
-					File ignoreFile = new File(baseDirectory, ignorePath);
+			for (String ignorePath : ignoreFiles) {
+				ignorePath = normalizePathSeparator(ignorePath);
+				File ignoreFile = new File(baseDirectory, ignorePath);
+		
+				if (isDirectoryIgnore(pathname, ignoreFile)) {
+					return true;
+				}
 
-					// Directory ignore
-					if (ignoreFile.isDirectory())
-					{
-						if (pathname.getAbsolutePath().startsWith(ignoreFile.getAbsolutePath()))
-						{
-							ignore = true;
-							break;
-						}
-					}
-					// Absolute file
-					else if (ignoreFile.isFile())
-					{
-						if (relativePathname.equals(ignorePath))
-						{
-							ignore = true;
-							break;
-						}
-					}
-					else if (pathname.getName().equals(ignorePath))
-					{
-						ignore = true;
-						break;
-					}
+				if (isFileIgnore(relativePathname, ignorePath)) {
+					return true;
+				}
+
+				if (isFileNameIgnore(pathname, ignorePath)) {
+					return true;
 				}
 			}
 
-			return ignore;
+			return false;
 		}
+
+		private String getRelativePathname(File pathname) {
+			String absolutePathname = pathname.getAbsolutePath();
+			return Strings.replaceAll(absolutePathname,
+					baseDirectory.getAbsolutePath() + System.getProperty(FILE_SEPARATOR), "")
+					.toString();
+		}
+
+		private String normalizePathSeparator(String path) {
+			return Strings.replaceAll(path, "/", System.getProperty(FILE_SEPARATOR))
+					.toString();
+		}
+
+		private boolean isDirectoryIgnore(File pathname, File ignoreFile) {
+			return ignoreFile.isDirectory() && pathname.getAbsolutePath().startsWith(ignoreFile.getAbsolutePath());
+		}
+
+		private boolean isFileIgnore(String relativePathname, String ignorePath) {
+			return new File(baseDirectory, relativePathname).isFile() && relativePathname.equals(ignorePath);
+		}
+
+		private boolean isFileNameIgnore(File pathname, String ignorePath) {
+			return pathname.getName().equals(ignorePath);
+		}
+
 	}
 
 	private class DirectoryFileFilter implements FileFilter
@@ -332,9 +323,9 @@ public abstract class ApacheLicenseHeaderTestCase
 				String relativePathname = pathname.getAbsolutePath();
 				relativePathname = Strings
 					.replaceAll(relativePathname,
-						baseDirectory.getAbsolutePath() + System.getProperty("file.separator"), "")
+						baseDirectory.getAbsolutePath() + System.getProperty(FILE_SEPARATOR), "")
 					.toString();
-				if ("target".equals(relativePathname) == false)
+				if (!"target".equals(relativePathname))
 				{
 					boolean found = false;
 					for (String ignore : ignoreDirectory)
@@ -345,7 +336,7 @@ public abstract class ApacheLicenseHeaderTestCase
 							break;
 						}
 					}
-					if (found == false)
+					if (!found)
 					{
 						accept = true;
 					}

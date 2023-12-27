@@ -50,7 +50,7 @@ import java.util.stream.IntStream;
 @WebAppConfiguration
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { ParallelInjectionTest.ServiceConfig.class })
-public class ParallelInjectionTest implements ApplicationContextAware {
+class ParallelInjectionTest implements ApplicationContextAware {
 
     @ComponentScan(basePackages = "org.apache.wicket.spring.injection.bytebuddy")
     @Configuration

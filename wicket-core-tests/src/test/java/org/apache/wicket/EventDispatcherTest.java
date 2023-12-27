@@ -51,7 +51,7 @@ class EventDispatcherTest extends WicketTestCase
 		page.add(testComponent);
 		page.send(page, Broadcast.DEPTH, null);
 		assertTrue(testComponent.callbackInvoked);
-		assertEquals(testComponent.getBehaviors(TestBehavior.class).get(0).invocationTimes, 2);
+		assertEquals(2, testComponent.getBehaviors(TestBehavior.class).get(0).invocationTimes);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

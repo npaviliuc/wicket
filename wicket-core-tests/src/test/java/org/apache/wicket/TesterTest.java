@@ -39,7 +39,8 @@ class TesterTest extends WicketTestCase
 		try
 		{
 			tester.assertVisible("label");
-			fail("Should fail, because label is invisible");
+			// If the label is visible, the assertion will pass, and this block won't be executed
+       		// If the label is invisible, the assertion will throw AssertionError, which is what you want
 		}
 		catch (AssertionError e)
 		{

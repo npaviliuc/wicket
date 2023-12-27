@@ -17,6 +17,7 @@
 package org.apache.wicket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -196,11 +197,11 @@ class ComponentInitializationTest extends WicketTestCase
 		t1.add(t3);
 		t3.add(t4);
 
-		assertTrue(page == listener1.getComponents().get(0));
-		assertTrue(t1 == listener1.getComponents().get(1));
-		assertTrue(t2 == listener1.getComponents().get(2));
-		assertTrue(t3 == listener1.getComponents().get(3));
-		assertTrue(t4 == listener1.getComponents().get(4));
+		assertSame(page, listener1.getComponents().get(0));
+		assertSame(t1, listener1.getComponents().get(1));
+		assertSame(t2, listener1.getComponents().get(2));
+		assertSame(t3, listener1.getComponents().get(3));
+		assertSame(t4, listener1.getComponents().get(4));
 	}
 
 

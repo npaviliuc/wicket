@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @since 6.17.0
  */
-public class SendPayloadWithContextTest
+class SendPayloadWithContextTest
 {
 	final AtomicBoolean context = new AtomicBoolean(false);
 
@@ -72,7 +72,7 @@ public class SendPayloadWithContextTest
 	}
 
 	@Test
-	public void sendPayloadWithContext()
+	void sendPayloadWithContext()
 	{
 		SendPayloadWithContextTestPage page = new SendPayloadWithContextTestPage();
 		tester.startPage(page);

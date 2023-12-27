@@ -58,6 +58,7 @@ import com.github.openjson.JSONObject;
 public abstract class FileUploadToResourceField extends FileUploadField
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadToResourceField.class);
+    private static final String WICKET_TIMER = "Wicket.Timer.";
 
     /**
      * Info regarding an upload.
@@ -120,25 +121,18 @@ public abstract class FileUploadToResourceField extends FileUploadField
         {
             if (file == null)
             {
-               return null;
+               return new byte[0];
             }
 
             byte[] fileData = new byte[(int) getSize()];
-            InputStream fis = null;
 
-            try
-            {
-                fis = new FileInputStream(file);
+            try(InputStream fis = new FileInputStream(file)){
                 IOUtils.readFully(fis, fileData);
             }
             catch (IOException e)
             {
                 LOGGER.debug("IOException at get", e);
                 fileData = null;
-            }
-            finally
-            {
-                IOUtils.closeQuietly(fis);
             }
 
             return fileData;
@@ -165,10 +159,10 @@ public abstract class FileUploadToResourceField extends FileUploadField
 
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(FileUploadToResourceField.class, "FileUploadToResourceField.js");
 
-    public static String UPLOAD_CANCELED = "upload.canceled";
+    public static final String UPLOAD_CANCELED = "upload.canceled";
 
 
-    private static abstract class FileModel implements IModel<List<UploadInfo>>
+    private abstract static class FileModel implements IModel<List<UploadInfo>>
     {
 
         @Override
@@ -222,7 +216,7 @@ public abstract class FileUploadToResourceField extends FileUploadField
      */
     private Bytes maxSize = null;
 
-    public FileUploadToResourceField(String id)
+    protected FileUploadToResourceField(String id)
     {
         super(id);
         setOutputMarkupId(true);
@@ -367,13 +361,12 @@ public abstract class FileUploadToResourceField extends FileUploadField
         jsonObject.put("resourceUrl", urlFor(getFileUploadResourceReference(), new PageParameters()).toString());
         jsonObject.put("ajaxCallBackUrl", ajaxBehavior.getCallbackUrl());
         jsonObject.put("maxSize", getMaxSize().bytes());
-        Bytes fileMaxSize = getFileMaxSize();
-        if (fileMaxSize != null)
+        if (this.fileMaxSize != null)
         {
-            jsonObject.put("fileMaxSize", fileMaxSize.bytes());
+            jsonObject.put("fileMaxSize", this.fileMaxSize.bytes());
         }
         jsonObject.put("fileCountMax", getFileCountMax());
-        response.render(OnDomReadyHeaderItem.forScript("Wicket.Timer."
+        response.render(OnDomReadyHeaderItem.forScript(WICKET_TIMER
                 + getMarkupId() + " = new Wicket.FileUploadToResourceField("
                 + jsonObject + ","
                 + getClientBeforeSendCallBack() + ","
@@ -463,7 +456,7 @@ public abstract class FileUploadToResourceField extends FileUploadField
      */
     public String getTriggerUploadScript()
     {
-        return "Wicket.Timer." + getMarkupId() + ".upload();";
+        return WICKET_TIMER + getMarkupId() + ".upload();";
     }
 
     /**
@@ -481,7 +474,7 @@ public abstract class FileUploadToResourceField extends FileUploadField
      */
     public String getTriggerCancelUploadScript()
     {
-        return "Wicket.Timer." + getMarkupId() + ".cancel();";
+        return WICKET_TIMER + getMarkupId() + ".cancel();";
     }
     /**
      * Cancels the upload via an AJAX request.

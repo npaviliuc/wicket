@@ -184,8 +184,7 @@ public class ServletWebRequest extends WebRequest
 
 		if (LOG.isDebugEnabled())
 		{
-			LOG.debug("Calculating context relative path from: context path '{}', filterPrefix '{}', uri '{}'",
-					new Object[] {contextPath, filterPrefix, uri});
+			LOG.debug("Calculating context relative path");
 		}
 
 		final int start = contextPath.length() + filterPrefix.length() + 1;

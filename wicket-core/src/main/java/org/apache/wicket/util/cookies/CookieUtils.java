@@ -241,13 +241,11 @@ public class CookieUtils
 			{
 				if (cookie != null)
 				{
-					log.debug("Found Cookie with name=" + name + " and request URI=" +
-							webRequest.getUrl().toString());
+					log.debug("Found Cookie with name=" + name);
 				}
 				else
 				{
-					log.debug("Unable to find Cookie with name=" + name + " and request URI=" +
-							webRequest.getUrl().toString());
+					log.debug("Unable to find Cookie with name=" + name);
 				}
 			}
 

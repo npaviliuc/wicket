@@ -67,44 +67,39 @@ final class Behaviors
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <M extends Behavior> List<M> getBehaviors(Component component, Class<M> type)
-	{
+	public static <M extends Behavior> List<M> getBehaviors(Component component, Class<M> type) {
 		int len = component.data_length();
-		if (len == 0)
-		{
-			return Collections.emptyList();
-		}
-		int start = component.data_start();
-		if (len < start)
-		{
+		if (len == 0 || len < component.data_start()) {
 			return Collections.emptyList();
 		}
 
-		List<M> subset = null;
-		for (int i = start; i < len; i++)
-		{
-			Object obj = component.data_get(i);
-			if (obj instanceof Behavior)
-			{
-				if (type == null || type.isAssignableFrom(obj.getClass()))
-				{
-					if (subset == null)
-					{
-						subset = new ArrayList<>(len);
-					}
-					subset.add((M)obj);
-				}
-			}
-		}
-		if (subset == null || subset.isEmpty())
-		{
+		List<M> subset = findBehaviorsOfType(component, type);
+
+		if (subset == null || subset.isEmpty()) {
 			return Collections.emptyList();
-		}
-		else
-		{
+		} else {
 			return Collections.unmodifiableList(subset);
 		}
 	}
+
+	private static <M extends Behavior> List<M> findBehaviorsOfType(Component component, Class<M> type) {
+		List<M> subset = null;
+		int start = component.data_start();
+		int len = component.data_length();
+
+		for (int i = start; i < len; i++) {
+			Object obj = component.data_get(i);
+			if (obj instanceof Behavior && (type == null || type.isAssignableFrom(obj.getClass()))) {
+				if (subset == null) {
+					subset = new ArrayList<>(len);
+				}
+				subset.add((M) obj);
+			}
+		}
+
+		return subset;
+	}
+
 
 
 	public static void remove(Component component, Behavior behavior)
@@ -147,20 +142,20 @@ final class Behaviors
 		{
 			return;
 		}
-		for (int i = start; i < len; i++)
+		int i = start;
+		while (i < len)
 		{
 			Object obj = component.data_get(i);
-			if (obj instanceof Behavior)
+			if (obj instanceof Behavior behavior)
 			{
-				final Behavior behavior = (Behavior)obj;
-
 				behavior.detach(component);
 
 				final int currentLength = component.data_length();
 				if (len != currentLength)
 				{
 					// if the length has changed then reset 'i' and 'len'
-					for (int j = start; j < currentLength; j++)
+					int j = start;
+					while (j < currentLength)
 					{
 						// find the new index of the current behavior by identity
 						if (behavior == component.data_get(j))
@@ -169,6 +164,7 @@ final class Behaviors
 							len = currentLength;
 							break;
 						}
+						j++;
 					}
 				}
 
@@ -179,45 +175,46 @@ final class Behaviors
 					len--;
 				}
 			}
+			i++;
 		}
 	}
 
-	private static boolean internalRemove(Component component, Behavior behavior)
-	{
+	private static boolean internalRemove(Component component, Behavior behavior) {
 		final int len = component.data_length();
-		for (int i = component.data_start(); i < len; i++)
-		{
-			Object o = component.data_get(i);
-			if (o != null && o.equals(behavior))
-			{
-				component.data_remove(i);
-				behavior.unbind(component);
-
-				// remove behavior from behavior-ids
-				ArrayList<Behavior> ids = getBehaviorsIdList(component, false);
-				if (ids != null)
-				{
-					int idx = ids.indexOf(behavior);
-					if (idx == ids.size() - 1)
-					{
-						ids.remove(idx);
-					}
-					else if (idx >= 0)
-					{
-						ids.set(idx, null);
-					}
-					ids.trimToSize();
-
-					if (ids.isEmpty())
-					{
-						removeBehaviorsIdList(component);
-					}
-
-				}
+		for (int i = component.data_start(); i < len; i++) {
+			if (removeBehaviorAtIndex(component, behavior, i)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private static boolean removeBehaviorAtIndex(Component component, Behavior behavior, int index) {
+		Object o = component.data_get(index);
+		if (o != null && o.equals(behavior)) {
+			component.data_remove(index);
+			behavior.unbind(component);
+			removeBehaviorFromIds(component, behavior);
+			return true;
+		}
+		return false;
+	}
+
+	private static void removeBehaviorFromIds(Component component, Behavior behavior) {
+		ArrayList<Behavior> ids = getBehaviorsIdList(component, false);
+		if (ids != null) {
+			int idx = ids.indexOf(behavior);
+			if (idx == ids.size() - 1) {
+				ids.remove(idx);
+			} else if (idx >= 0) {
+				ids.set(idx, null);
+			}
+			ids.trimToSize();
+
+			if (ids.isEmpty()) {
+				removeBehaviorsIdList(component);
+			}
+		}
 	}
 
 	private static void removeBehaviorsIdList(Component component)
@@ -239,9 +236,9 @@ final class Behaviors
 		for (int i = component.data_start(); i < len; i++)
 		{
 			Object obj = component.data_get(i);
-			if (obj instanceof BehaviorIdList)
+			if (obj instanceof BehaviorIdList behavioridlist)
 			{
-				return (BehaviorIdList)obj;
+				return behavioridlist;
 			}
 		}
 		if (createIfNotFound)
@@ -275,10 +272,8 @@ final class Behaviors
 		for (int i = start; i < len; i++)
 		{
 			Object obj = component.data_get(i);
-			if (obj instanceof Behavior)
+			if (obj instanceof Behavior behavior)
 			{
-				final Behavior behavior = (Behavior)obj;
-
 				behavior.onRemove(component);
 			}
 		}

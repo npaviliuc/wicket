@@ -62,7 +62,7 @@ public class WicketEndpoint extends Endpoint
 	{
 		applicationName = getApplicationName(session);
 
-		WebApplication app = (WebApplication)WebApplication.get(applicationName);
+		WebApplication app = (WebApplication) Application.get(applicationName);
 		if (RUNNING_APPLICATIONS.add(applicationName))
 		{
 			app.getApplicationListeners().add(new ApplicationListener());

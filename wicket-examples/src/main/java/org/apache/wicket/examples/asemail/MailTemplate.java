@@ -18,6 +18,7 @@ package org.apache.wicket.examples.asemail;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.IOException;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -137,11 +138,17 @@ public class MailTemplate extends WicketExamplePage
 				String href = getRequestCycle().getUrlRenderer().renderFullUrl(
 						Url.parse(relativeUrl.toString()));
 				variables.put("downloadLink", href);
-
-				PackageTextTemplate template = new PackageTextTemplate(MailTemplate.class, "mail-template.tmpl");
-				CharSequence templateHtml = template.asString(variables);
-				updateResult(result, templateHtml, target);
-				target.add(feedback);
+				try{
+					try(PackageTextTemplate template = new PackageTextTemplate(MailTemplate.class, "mail-template.tmpl")) {
+						CharSequence templateHtml = template.asString(variables);
+						updateResult(result, templateHtml, target);
+						target.add(feedback);
+					}
+				}
+				catch (IOException e)
+				{
+					return;
+				}
 			}
 
 			@Override

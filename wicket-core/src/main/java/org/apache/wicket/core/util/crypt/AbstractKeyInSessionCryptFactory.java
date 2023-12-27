@@ -66,8 +66,7 @@ public abstract class AbstractKeyInSessionCryptFactory<T extends IClusterable>
 		}
 
 		// build the crypt based on session key
-		ICrypt crypt = createCrypt(key);
-		return crypt;
+		return createCrypt(key);
 	}
 
 	/**

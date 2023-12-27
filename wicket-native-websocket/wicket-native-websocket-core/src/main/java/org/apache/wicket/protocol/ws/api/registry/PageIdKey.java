@@ -16,9 +16,6 @@
  */
 package org.apache.wicket.protocol.ws.api.registry;
 
-import org.apache.wicket.Session;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.page.IManageablePage;
 import org.apache.wicket.util.lang.Args;
 
 /**

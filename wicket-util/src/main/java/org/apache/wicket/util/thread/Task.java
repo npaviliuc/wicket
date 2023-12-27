@@ -86,102 +86,84 @@ public final class Task
 	 * @throws IllegalStateException
 	 *             thrown if task is already running
 	 */
-	public synchronized final void run(final Duration frequency, final ICode code)
-	{
-		if (!isStarted)
-		{
-			final Runnable runnable = new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					// Sleep until start time
-					Duration untilStart = Duration.between(startTime, Instant.now());
+	public synchronized final void run(final Duration frequency, final ICode code) {
+		validateAndStartThread(code, frequency);
+	}
 
-					final Logger log = getLog();
-
-					if (!untilStart.isNegative())
-					{
-						try
-						{
-							Thread.sleep(untilStart.toMillis());
-						}
-						catch (InterruptedException e)
-						{
-							log.error("An error occurred during sleeping phase.", e);
-						}
-					}
-
-					try
-					{
-						while (!stop)
-						{
-							// Get the start of the current period
-							final Instant startOfPeriod = Instant.now();
-
-							if (log.isTraceEnabled())
-							{
-								log.trace("Run the job: '{}'", code);
-							}
-
-							try
-							{
-								// Run the user's code
-								code.run(getLog());
-							}
-							catch (Exception e)
-							{
-								log.error(
-									"Unhandled exception thrown by user code in task " + name, e);
-							}
-
-							if (log.isTraceEnabled())
-							{
-								log.trace("Finished with job: '{}'", code);
-							}
-
-							// Sleep until the period is over (or not at all if it's
-							// already passed)
-							Instant nextExecution = startOfPeriod.plus(frequency);
-							
-							Duration timeToNextExecution = Duration.between(Instant.now(), nextExecution);
-
-							if (!timeToNextExecution.isNegative())
-							{
-								try {
-									Thread.sleep(timeToNextExecution.toMillis());
-								}
-								catch (InterruptedException e) {
-									Thread.currentThread().interrupt();
-								}
-							}
-						}
-						log.trace("Task '{}' stopped", name);
-					}
-					catch (Exception x)
-					{
-						log.error("Task '{}' terminated", name, x);
-					}
-					finally
-					{
-						isStarted = false;
-					}
-				}
-			};
-
-			// Start the thread
-			thread = new Thread(runnable, name + " Task");
-			thread.setDaemon(isDaemon);
-			thread.start();
-
-			// We're started all right!
-			isStarted = true;
-		}
-		else
-		{
+	private void validateAndStartThread(final ICode code, final Duration frequency) {
+		if (!isStarted) {
+			startThread(code, frequency);
+		} else {
 			throw new IllegalStateException("Attempt to start task that has already been started");
 		}
 	}
+
+	private void startThread(final ICode code, final Duration frequency)  {
+		final Runnable runnable = createRunnable(code, frequency);
+
+		// Start the thread
+		thread = new Thread(runnable, name + " Task");
+		thread.setDaemon(isDaemon);
+		thread.start();
+
+		// We're started all right!
+		isStarted = true;
+	}
+
+	private Runnable createRunnable(final ICode code, final Duration frequency) {
+		return () -> {
+			try {
+				executeCodePeriodically(code, frequency);
+			} catch (Exception x) {
+				handleException(x);
+			} finally {
+				isStarted = false;
+			}
+		};
+	}
+
+	private void executeCodePeriodically(final ICode code, final Duration frequency) {
+		while (!stop) {
+			executeCodeAndSleep(code, getLog(), frequency);
+		}
+		getLog().trace("Task '{}' stopped", name);
+	}
+
+	private void executeCodeAndSleep(final ICode code, final Logger log, final Duration frequency) {
+		final Instant startOfPeriod = Instant.now();
+
+		log.trace("Run the job: '{}'", code);
+
+		try {
+			code.run(log);
+		} catch (Exception e) {
+			log.error("Unhandled exception thrown by user code in task " + name, e);
+		}
+
+		log.trace("Finished with job: '{}'", code);
+
+		sleepUntilNextExecution(startOfPeriod, frequency);
+	}
+
+	private void sleepUntilNextExecution(final Instant startOfPeriod, final Duration frequency) {
+		Instant nextExecution = startOfPeriod.plus(frequency);
+		Duration timeToNextExecution = Duration.between(Instant.now(), nextExecution);
+
+		if (!timeToNextExecution.isNegative()) {
+			try {
+				Thread.sleep(timeToNextExecution.toMillis());
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	private void handleException(final Exception x) {
+		getLog().error("Task '{}' terminated", name, x);
+	}
+
+
+
 
 	/**
 	 * Sets daemon or not. For obvious reasons, this value can only be set before the task starts

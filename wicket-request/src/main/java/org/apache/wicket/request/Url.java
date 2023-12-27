@@ -745,82 +745,85 @@ public class Url implements Serializable
 	 * @return sringized version of this url
 	 * 
 	 */
-	public String toString(StringMode mode, Charset charset)
-	{
-		// this method is rarely called with StringMode == FULL.
-
+	public String toString(StringMode mode, Charset charset) {
 		final CharSequence path = getPathInternal(charset);
 		final String queryString = getQueryString(charset);
-		String _fragment = getFragment();
+		String fragment = getFragment();
 
 		// short circuit all the processing in the most common cases
-		if (StringMode.FULL != mode && Strings.isEmpty(_fragment))
-		{
-			if (queryString == null)
-			{
-				return path.toString();
-			}
-			else
-			{
-				return path + "?" + queryString;
-			}
+		if (shouldUseShortCircuit(mode, fragment, queryString)) {
+			return buildShortCircuitResult(path, queryString);
 		}
 
 		// fall through into the traditional code path
+		StringBuilder result = buildResult(mode, path, queryString, fragment);
+		return result.toString();
+	}
 
+	private boolean shouldUseShortCircuit(StringMode mode, String fragment, String queryString) {
+		return StringMode.FULL != mode && Strings.isEmpty(fragment) &&
+				(queryString == null || queryString.isEmpty());
+	}
+
+	private String buildShortCircuitResult(CharSequence path, String queryString) {
+		return (queryString == null) ? path.toString() : path + "?" + queryString;
+	}
+
+	private StringBuilder buildResult(StringMode mode, CharSequence path, String queryString, String fragment) {
 		StringBuilder result = new StringBuilder(64);
 
-		if (StringMode.FULL == mode)
-		{
-			if (Strings.isEmpty(host))
-			{
-				throw new IllegalStateException("Cannot render this url in " +
-					StringMode.FULL.name() + " mode because it does not have a host set.");
-			}
-
-			if (Strings.isEmpty(protocol) == false)
-			{
-				result.append(protocol);
-				result.append("://");
-			}
-			else if (Strings.isEmpty(protocol) && Strings.isEmpty(host) == false)
-			{
-				result.append("//");
-			}
-			result.append(host);
-
-			if (port != null && port.equals(getDefaultPortForProtocol(protocol)) == false)
-			{
-				result.append(':');
-				result.append(port);
-			}
-
-			if (segments.contains(".."))
-			{
-				throw new IllegalStateException("Cannot render this url in " +
-					StringMode.FULL.name() + " mode because it has a `..` segment: " + toString());
-			}
-
-			if (!path.isEmpty() && !(path.charAt(0) == '/'))
-			{
-				result.append('/');
-			}
+		if (StringMode.FULL == mode) {
+			buildFullModeResult(result, path);
 		}
 
 		result.append(path);
 
-		if (queryString != null)
-		{
+		if (queryString != null) {
 			result.append('?').append(queryString);
 		}
 
-		if (Strings.isEmpty(_fragment) == false)
-		{
-			result.append('#').append(_fragment);
+		appendFragment(result, fragment);
+
+		return result;
+	}
+
+	private void buildFullModeResult(StringBuilder result, CharSequence path) {
+		if (Strings.isEmpty(host)) {
+			throw new IllegalStateException("Cannot render this url in " +
+					StringMode.FULL.name() + " mode because it does not have a host set.");
 		}
 
-		return result.toString();
+		if (!Strings.isEmpty(protocol)) {
+			result.append(protocol).append("://");
+		} else if (Strings.isEmpty(protocol) && !Strings.isEmpty(host)) {
+			result.append("//");
+		}
+		result.append(host);
+
+		appendPort(result);
+
+		if (segments.contains("..")) {
+			throw new IllegalStateException("Cannot render this url in " +
+					StringMode.FULL.name() + " mode because it has a `..` segment: " + toString());
+		}
+
+		if (!path.isEmpty() && (path.charAt(0) != '/')) {
+			result.append('/');
+		}
 	}
+
+	private void appendPort(StringBuilder result) {
+		if (port != null && !port.equals(getDefaultPortForProtocol(protocol))) {
+			result.append(':').append(port);
+		}
+	}
+
+	private void appendFragment(StringBuilder result, String fragment) {
+		if (!Strings.isEmpty(fragment)) {
+			result.append('#').append(fragment);
+		}
+	}
+
 
 	/**
 	 * Stringizes this url using the specific {@link StringMode} and url's charset
@@ -1038,14 +1041,14 @@ public class Url implements Serializable
 		 */
 		public String toString(final Charset charset)
 		{
-			String value = getValue();
-			if (Strings.isEmpty(value))
+			String valueString = getValue();
+			if (Strings.isEmpty(valueString))
 			{
 				return encodeParameter(getName(), charset);
 			}
 			else
 			{
-				return encodeParameter(getName(), charset) + "=" + encodeParameter(value, charset);
+				return encodeParameter(getName(), charset) + "=" + encodeParameter(valueString, charset);
 			}
 		}
 	}
@@ -1237,12 +1240,12 @@ public class Url implements Serializable
 	{
 		Args.notNull(charset, "charset");
 
-		List<String> segments = getSegments();
+		List<String> extractedSegments = getSegments();
 		// these two common cases can be handled with no additional overhead, so do that.
-		if (segments.isEmpty())
+		if (extractedSegments.isEmpty())
 			return "";
-		if (segments.size() == 1)
-			return encodeSegment(segments.get(0), charset);
+		if (extractedSegments.size() == 1)
+			return encodeSegment(extractedSegments.get(0), charset);
 
 		int length = 0;
 		for (String segment : getSegments())

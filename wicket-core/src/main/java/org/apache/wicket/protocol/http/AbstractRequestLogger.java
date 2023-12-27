@@ -404,7 +404,7 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 				return 0;
 			long start = startTimeOfOldestRequest.getTime();
 			long end = System.currentTimeMillis();
-			double diff = end - start;
+			double diff = (double)end - start;
 			return Math.round(windowSize / (diff / 60000.0));
 		}
 	}

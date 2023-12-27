@@ -225,7 +225,6 @@ class HeaderSectionTest extends WicketTestCase
 			tester.startPage(DoubleHeadTagPage.class);
 		});
 
-		assertEquals(markupException.getMessage(),
-			"Tag <head> is not allowed at this position (do you have multiple <head> tags in your markup?).");
+		assertEquals("Tag <head> is not allowed at this position (do you have multiple <head> tags in your markup?).", markupException.getMessage());
 	}
 }

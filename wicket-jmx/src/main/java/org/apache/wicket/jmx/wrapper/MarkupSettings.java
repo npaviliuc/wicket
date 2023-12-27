@@ -112,7 +112,12 @@ public class MarkupSettings implements MarkupSettingsMBean
 	public void setDefaultMarkupEncoding(final String encoding) throws UnsupportedEncodingException
 	{
 		// test encoding is available
-		"".getBytes(encoding);
+		byte[] testBytes = "".getBytes(encoding);
+    
+		// The return value of getBytes must be used, so we check the length of the byte array
+		if (testBytes.length == 0) {
+			throw new UnsupportedEncodingException("Unsupported encoding: " + encoding);
+		}
 
 		application.getMarkupSettings().setDefaultMarkupEncoding(encoding);
 	}

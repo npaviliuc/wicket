@@ -19,6 +19,7 @@ package org.apache.wicket.markup.html.form.validation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.form.TextField;
@@ -107,7 +108,7 @@ class HomePageTest extends WicketTestCase
 		tester.executeAjaxEvent("form3:submit", "click");
 
 		HomePage page = (HomePage)tester.getLastRenderedPage();
-		assertFalse((page.getFormSubmitted() & HomePage.AJAX) == HomePage.AJAX);
+		assertNotEquals(HomePage.AJAX, page.getFormSubmitted() & HomePage.AJAX);
 	}
 
 	/**
@@ -118,7 +119,7 @@ class HomePageTest extends WicketTestCase
 	{
 		tester.clickLink("form3:submit2");
 		HomePage page = (HomePage)tester.getLastRenderedPage();
-		assertFalse((page.getFormSubmitted() & HomePage.NORMAL) == HomePage.NORMAL);
+		assertNotEquals(HomePage.NORMAL, page.getFormSubmitted() & HomePage.NORMAL);
 	}
 
 	/**

@@ -92,7 +92,6 @@ public abstract class AbstractSubmitLink extends AbstractLink implements IFormSu
 	 * onSubmit method of the parent form is not called. A common use for this is to create a cancel
 	 * button.
 	 * 
-	 * TODO: This is a copy and paste from Button
 	 * 
 	 * @param defaultFormProcessing
 	 *            defaultFormProcessing

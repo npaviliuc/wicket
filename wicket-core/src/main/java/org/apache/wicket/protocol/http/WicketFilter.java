@@ -32,7 +32,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.ThreadContext;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.protocol.http.servlet.ResponseIOException;
@@ -248,7 +247,7 @@ public class WicketFilter implements Filter
 				}
 				catch (ResponseIOException e)
 				{
-					throw e.getCause();
+					log.error("ResponseIOException - Cause: " + e.getCause().getMessage());
 				}
 			}
 		}
@@ -285,13 +284,10 @@ public class WicketFilter implements Filter
 			requestCycle.detach();
 		}
 
-		if (!reqProcessed)
+		if (!reqProcessed && chain != null)
 		{
-			if (chain != null)
-			{
-				// invoke next filter from within Wicket context
-				chain.doFilter(httpServletRequest, httpServletResponse);
-			}
+			// invoke next filter from within Wicket context
+			chain.doFilter(httpServletRequest, httpServletResponse);
 		}
 		return reqProcessed;
 	}

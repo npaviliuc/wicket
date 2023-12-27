@@ -29,7 +29,7 @@ import com.google.inject.spi.Message;
 
 /**
  */
-public class JakartaInjectGuiceInjectorTest extends AbstractInjectorTest
+class JakartaInjectGuiceInjectorTest extends AbstractInjectorTest
 {
 	@Override
 	protected JakartaInjectTestComponent newTestComponent(String id)

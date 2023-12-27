@@ -24,15 +24,15 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 
 /**
- * Extension of {@link PageProvider} that is also capable of providing a Component belonging to the
+ * Extension of {@link PageProvider} that is also capable of providing a
+ * Component belonging to the
  * page.
  *
  * @see PageProvider
  *
  * @author Matej Knopp
  */
-public class PageAndComponentProvider extends PageProvider implements IPageAndComponentProvider
-{
+public class PageAndComponentProvider extends PageProvider implements IPageAndComponentProvider {
 	private IRequestableComponent component;
 
 	private String componentPath;
@@ -43,8 +43,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param page
 	 * @param componentPath
 	 */
-	public PageAndComponentProvider(IRequestablePage page, String componentPath)
-	{
+	public PageAndComponentProvider(IRequestablePage page, String componentPath) {
 		super(page);
 		setComponentPath(componentPath);
 	}
@@ -55,8 +54,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param page
 	 * @param component
 	 */
-	public PageAndComponentProvider(IRequestablePage page, IRequestableComponent component)
-	{
+	public PageAndComponentProvider(IRequestablePage page, IRequestableComponent component) {
 		super(page);
 
 		Args.notNull(component, "component");
@@ -72,8 +70,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param componentPath
 	 */
 	public PageAndComponentProvider(Class<? extends IRequestablePage> pageClass,
-		PageParameters pageParameters, String componentPath)
-	{
+			PageParameters pageParameters, String componentPath) {
 		super(pageClass, pageParameters);
 		setComponentPath(componentPath);
 	}
@@ -85,8 +82,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param componentPath
 	 */
 	public PageAndComponentProvider(Class<? extends IRequestablePage> pageClass,
-		String componentPath)
-	{
+			String componentPath) {
 		super(pageClass);
 		setComponentPath(componentPath);
 	}
@@ -100,8 +96,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param componentPath
 	 */
 	public PageAndComponentProvider(int pageId, Class<? extends IRequestablePage> pageClass,
-		Integer renderCount, String componentPath)
-	{
+			Integer renderCount, String componentPath) {
 		super(pageId, pageClass, renderCount);
 		setComponentPath(componentPath);
 	}
@@ -116,8 +111,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param componentPath
 	 */
 	public PageAndComponentProvider(Integer pageId, Class<? extends IRequestablePage> pageClass,
-		PageParameters pageParameters, Integer renderCount, String componentPath)
-	{
+			PageParameters pageParameters, Integer renderCount, String componentPath) {
 		super(pageId, pageClass, pageParameters, renderCount);
 		setComponentPath(componentPath);
 	}
@@ -129,63 +123,59 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @param renderCount
 	 * @param componentPath
 	 */
-	public PageAndComponentProvider(int pageId, Integer renderCount, String componentPath)
-	{
+	public PageAndComponentProvider(int pageId, Integer renderCount, String componentPath) {
 		super(pageId, renderCount);
 		setComponentPath(componentPath);
 	}
 
 	public PageAndComponentProvider(IRequestablePage page, IRequestableComponent component,
-		PageParameters parameters)
-	{
+			PageParameters parameters) {
 		super(page);
 
 		Args.notNull(component, "component");
 
 		this.component = component;
-		if (parameters != null)
-		{
+		if (parameters != null) {
 			setPageParameters(parameters);
 		}
 	}
 
 	@Override
-	public IRequestableComponent getComponent()
-	{
-		if (component == null)
-		{
+	public IRequestableComponent getComponent() {
+		if (component == null) {
 			IRequestablePage page = getPageInstance();
 			component = page != null ? page.get(componentPath) : null;
-			if (component == null)
-			{
+			if (component == null) {
 
 				/*
-				 * on stateless pages it is possible that the component may not yet exist because it
-				 * couldve been created in one of the lifecycle callbacks of this page. Lets invoke
+				 * on stateless pages it is possible that the component may not yet exist
+				 * because it
+				 * couldve been created in one of the lifecycle callbacks of this page. Lets
+				 * invoke
 				 * the callbacks to give the page a chance to create the missing component.
 				 */
 
 				// make sure this page instance was just created so the page can be stateless
-				if (page.isPageStateless())
-				{
-					Page p = (Page)page;
-					p.internalInitialize();
-					
-					// preparation of feedbacks is delayed into the render phase
-					try (FeedbackDelay delay = new FeedbackDelay(p.getRequestCycle())) {
-						p.beforeRender();
-						p.markRendering(false);
-						
-						// note: no invocation of delay.onBeforeRender() 
+				if (page != null && page.isPageStateless()) {
+					{
+						Page p = (Page) page;
+						p.internalInitialize();
+
+						// preparation of feedbacks is delayed into the render phase
+						try (FeedbackDelay delay = new FeedbackDelay(p.getRequestCycle())) {
+							p.beforeRender();
+							p.markRendering(false);
+
+							// note: no invocation of delay.onBeforeRender()
+						}
 					}
 					component = page.get(componentPath);
 				}
 			}
 		}
-		if (component == null)
-		{
+		if (component == null) {
 			throw new ComponentNotFoundException("Could not find component '" + componentPath +
-				"' on page '" + getPageClass());
+					"' on page '" + getPageClass());
 		}
 		return component;
 	}
@@ -194,14 +184,10 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 * @see org.apache.wicket.core.request.handler.IPageAndComponentProvider#getComponentPath()
 	 */
 	@Override
-	public String getComponentPath()
-	{
-		if (componentPath != null)
-		{
+	public String getComponentPath() {
+		if (componentPath != null) {
 			return componentPath;
-		}
-		else
-		{
+		} else {
 			return component.getPageRelativePath();
 		}
 	}
@@ -210,8 +196,7 @@ public class PageAndComponentProvider extends PageProvider implements IPageAndCo
 	 *
 	 * @param componentPath
 	 */
-	private void setComponentPath(String componentPath)
-	{
+	private void setComponentPath(String componentPath) {
 		Args.notNull(componentPath, "componentPath");
 
 		this.componentPath = componentPath;

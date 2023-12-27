@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 import java.util.Base64;
 
 
@@ -79,7 +78,7 @@ public abstract class AbstractJceCrypt implements ICrypt
 	 *            byte array to decrypt
 	 * @return the decrypted text
 	 */
-	abstract protected byte[] decrypt(final byte[] encrypted);
+	protected abstract byte[] decrypt(final byte[] encrypted);
 
 
 	/**
@@ -89,5 +88,5 @@ public abstract class AbstractJceCrypt implements ICrypt
 	 *            text to encrypt
 	 * @return the string encrypted
 	 */
-	abstract protected byte[] encrypt(final byte[] plainBytes);
+	protected abstract byte[] encrypt(final byte[] plainBytes);
 }

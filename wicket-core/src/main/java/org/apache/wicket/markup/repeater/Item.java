@@ -99,7 +99,7 @@ public class Item<T> extends ListItem<T>
 		@Override
 		public int compare(Item<?> lhs, Item<?> rhs)
 		{
-			long diff = lhs.getIndex() - rhs.getIndex();
+			long diff = (long)lhs.getIndex() - rhs.getIndex();
 			return diff == 0 ? 0 : diff > 0 ? 1 : -1;
 		}
 	}

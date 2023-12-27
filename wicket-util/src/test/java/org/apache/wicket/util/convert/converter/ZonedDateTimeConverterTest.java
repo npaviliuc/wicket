@@ -37,7 +37,7 @@ public class ZonedDateTimeConverterTest
 
 	@Test
 	@EnabledOnJre({JRE.JAVA_17, JRE.JAVA_18, JRE.JAVA_19})
-	public void convertToString_upto_jdk19() {
+	void convertToString_upto_jdk19() {
 		ZonedDateTimeConverter converter = new ZonedDateTimeConverter();
 		String date = converter.convertToString(ZonedDateTime.of(2016, 7, 11, 1, 2, 3, 0, zoneUCT), Locale.ENGLISH);
 		assertEquals("Jul 11, 2016, 1:02:03 AM Coordinated Universal Time", date);
@@ -45,7 +45,7 @@ public class ZonedDateTimeConverterTest
 
 	@Test
 	@EnabledOnJre({JRE.JAVA_20, JRE.JAVA_21}) // See https://bugs.openjdk.org/browse/JDK-8304925
-	public void convertToString_jdk20_and_newer() {
+	void convertToString_jdk20_and_newer() {
 		ZonedDateTimeConverter converter = new ZonedDateTimeConverter();
 		String date = converter.convertToString(ZonedDateTime.of(2016, 7, 11, 1, 2, 3, 0, zoneUCT), Locale.ENGLISH);
 		assertEquals("Jul 11, 2016, 1:02:03 AM Coordinated Universal Time", date);
@@ -53,7 +53,7 @@ public class ZonedDateTimeConverterTest
 
 	@Test
 	@EnabledOnJre({JRE.JAVA_17, JRE.JAVA_18, JRE.JAVA_19})
-	public void convertToObject_upto_jdk19() {
+	void convertToObject_upto_jdk19() {
 		ZonedDateTimeConverter converter = new ZonedDateTimeConverter();
 		ZonedDateTime date = converter.convertToObject("Jul 11, 2016, 1:02:03 AM Coordinated Universal Time", Locale.ENGLISH);
 		assertEquals(ZonedDateTime.of(2016, 7, 11, 1, 2, 3, 0, zoneUTC), date);
@@ -61,7 +61,7 @@ public class ZonedDateTimeConverterTest
 
 	@Test
 	@EnabledOnJre({JRE.JAVA_20, JRE.JAVA_21}) // See https://bugs.openjdk.org/browse/JDK-8304925
-	public void convertToObject_jdk20_and_newer() {
+	void convertToObject_jdk20_and_newer() {
 		ZonedDateTimeConverter converter = new ZonedDateTimeConverter();
 		ZonedDateTime date = converter.convertToObject("Jul 11, 2016, 1:02:03 AM Coordinated Universal Time", Locale.ENGLISH);
 		assertEquals(ZonedDateTime.of(2016, 7, 11, 1, 2, 3, 0, zoneUTC), date);

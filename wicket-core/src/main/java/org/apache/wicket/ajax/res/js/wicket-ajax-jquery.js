@@ -855,9 +855,7 @@
 				// header contributions first
 				for (var i = 0; i < root.childNodes.length; ++i) {
 					var childNode = root.childNodes[i];
-					if (childNode.tagName === "header-contribution") {
-						this.processHeaderContribution(context, childNode);
-					} else if (childNode.tagName === "priority-evaluate") {
+					if (childNode.tagName === "header-contribution" || childNode.tagName === "priority-evaluate") {
 						this.processHeaderContribution(context, childNode);
 					}
 				}

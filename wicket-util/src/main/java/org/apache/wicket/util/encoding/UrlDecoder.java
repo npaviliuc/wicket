@@ -109,7 +109,8 @@ public class UrlDecoder
 		final int length = source.length();
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
 		boolean changed = false;
-		for (int i = 0; i < length; i++)
+		int i = 0;
+		while(i < length)
 		{
 			final int ch = source.charAt(i);
 			if (ch == '%')
@@ -151,6 +152,7 @@ public class UrlDecoder
 			{
 				bos.write(ch);
 			}
+			i++;
 		}
 		final String result = changed ? new String(bos.toByteArray(), charset) : source;
 		// no trying to filter out bad escapes beforehand, just kill all null bytes here at the end,

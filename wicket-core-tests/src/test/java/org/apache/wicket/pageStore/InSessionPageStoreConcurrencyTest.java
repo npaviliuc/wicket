@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class InSessionPageStoreConcurrencyTest
+class InSessionPageStoreConcurrencyTest
 {
 	public static class PageStoringWicketTester extends WicketTester
 	{
@@ -57,7 +57,7 @@ public class InSessionPageStoreConcurrencyTest
 	}
 
 	@Test
-	public void testConcurrentModifications() throws Exception
+	void testConcurrentModifications() throws Exception
 	{
 		final WebApplication application = new MockApplication();
 

@@ -143,11 +143,8 @@ public class WebSocketSettings
 	 * A {@link org.apache.wicket.protocol.ws.api.IWebSocketSessionConfigurer} that allows to configure
 	 * {@link org.apache.wicket.protocol.ws.api.IWebSocketSession}s.
 	 */
-	private IWebSocketSessionConfigurer socketSessionConfigurer = new IWebSocketSessionConfigurer() {
-		@Override
-		public void configureSession(IWebSocketSession webSocketSession) {
-			// does nothing by default
-		}
+	private IWebSocketSessionConfigurer socketSessionConfigurer = WebSocketSession -> {
+		// does nothing by default
 	};
 
 	/**

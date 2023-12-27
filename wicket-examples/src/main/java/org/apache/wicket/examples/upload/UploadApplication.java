@@ -22,7 +22,6 @@ import org.apache.wicket.markup.html.form.upload.resource.FileUploadResourceRefe
 import org.apache.wicket.markup.html.form.upload.resource.FolderUploadsFileManager;
 import org.apache.wicket.markup.html.form.upload.resource.IUploadsFileManager;
 import org.apache.wicket.util.file.Folder;
-import org.apache.wicket.util.lang.Bytes;
 
 
 /**

@@ -168,7 +168,7 @@ public class ComponentInfo
 	public String toString()
 	{
 		String path = encodeComponentPath(componentPath);
-		StringBuilder result = new StringBuilder(path.length() + 12);
+		StringBuilder result = new StringBuilder((path != null ? path.length() : 0) + 12);
 
 		if (renderCount != null)
 		{

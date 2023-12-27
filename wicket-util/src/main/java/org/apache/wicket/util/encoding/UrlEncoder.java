@@ -197,59 +197,62 @@ public class UrlEncoder
 	 *            encoding to use
 	 * @return encoded string
 	 */
-	public String encode(final String unsafeInput, final Charset charset)
-	{
-		if (unsafeInput == null || unsafeInput.isEmpty())
-		{
+	public String encode(final String unsafeInput, final Charset charset) {
+		if (unsafeInput == null || unsafeInput.isEmpty()) {
 			return unsafeInput;
 		}
 
 		Args.notNull(charset, "charset");
 
 		final byte[] bytes = unsafeInput.getBytes(charset);
-		boolean original = true;
-		for (final byte b : bytes)
-		{
-			if (!type.isAllowed(b) || b == ' ' || b == '\0')
-			{
-				original = false;
-				break;
-			}
-		}
-		if (original)
-		{
+
+		if (isOriginal(bytes)) {
 			return unsafeInput;
 		}
 
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream(bytes.length);
-		for (final byte b : bytes)
-		{
-			if (type.isAllowed(b))
-			{
-				if (b == ' ')
-				{
-					bos.write('+');
-				}
-				else
-				{
-					bos.write(b);
-				}
-			}
-			else
-			{
-				if (b == '\0')
-				{
-					bos.writeBytes("NULL".getBytes(charset));
-				}
-				else
-				{
-					bos.write('%');
-					bos.write(Character.toUpperCase(Character.forDigit((b >> 4) & 0xF, 16)));
-					bos.write(Character.toUpperCase(Character.forDigit(b & 0xF, 16)));
-				}
+		return encodeBytes(bytes, charset);
+	}
+
+	private boolean isOriginal(final byte[] bytes) {
+		for (final byte b : bytes) {
+			if (!type.isAllowed(b) || b == ' ' || b == '\0') {
+				return false;
 			}
 		}
+		return true;
+	}
+
+	private String encodeBytes(final byte[] bytes, final Charset charset) {
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(bytes.length);
+
+		for (final byte b : bytes) {
+			if (type.isAllowed(b)) {
+				handleAllowedByte(bos, b);
+			} else {
+				handleNotAllowedByte(bos, b, charset);
+			}
+		}
+
 		return bos.toString(charset);
 	}
+
+	private void handleAllowedByte(final ByteArrayOutputStream bos, final byte b) {
+		if (b == ' ') {
+			bos.write('+');
+		} else {
+			bos.write(b);
+		}
+	}
+
+	private void handleNotAllowedByte(final ByteArrayOutputStream bos, final byte b, final Charset charset) {
+		if (b == '\0') {
+			bos.writeBytes("NULL".getBytes(charset));
+		} else {
+			bos.write('%');
+			bos.write(Character.toUpperCase(Character.forDigit((b >> 4) & 0xF, 16)));
+			bos.write(Character.toUpperCase(Character.forDigit(b & 0xF, 16)));
+		}
+	}
+
 
 }

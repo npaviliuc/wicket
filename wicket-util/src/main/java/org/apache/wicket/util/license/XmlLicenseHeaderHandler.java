@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
 import org.apache.wicket.util.diff.Diff;
 import org.apache.wicket.util.diff.Revision;
 import org.apache.wicket.util.string.Strings;
-//import org.opentest4j.AssertionFailedError;
 
 class XmlLicenseHeaderHandler extends AbstractLicenseHeaderHandler
 {
@@ -112,7 +111,7 @@ class XmlLicenseHeaderHandler extends AbstractLicenseHeaderHandler
 				content = mat.group(2);
 			}
 
-			if (Strings.isEmpty(xml) == false)
+			if (!Strings.isEmpty(xml))
 			{
 				newContent.append(xml).append(LINE_ENDING);
 			}

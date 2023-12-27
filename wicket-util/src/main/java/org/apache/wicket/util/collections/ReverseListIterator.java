@@ -27,7 +27,8 @@ import java.util.ListIterator;
  */
 public class ReverseListIterator<E> implements Iterator<E>, Iterable<E>
 {
-	private final ListIterator<E> delegateIterator;
+	private final List<E> list;
+	private ListIterator<E> delegateIterator;
 
 	/**
 	 * Construct.
@@ -36,6 +37,12 @@ public class ReverseListIterator<E> implements Iterator<E>, Iterable<E>
 	 *            the list which will be iterated in reverse order
 	 */
 	public ReverseListIterator(final List<E> list)
+	{
+		this.list = list;
+		resetIterator();
+	}
+
+	private void resetIterator()
 	{
 		int start = list.size();
 		this.delegateIterator = list.listIterator(start);
@@ -62,6 +69,7 @@ public class ReverseListIterator<E> implements Iterator<E>, Iterable<E>
 	@Override
 	public Iterator<E> iterator()
 	{
+		resetIterator();
 		return this;
 	}
 

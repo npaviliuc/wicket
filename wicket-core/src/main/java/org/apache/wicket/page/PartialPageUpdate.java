@@ -113,7 +113,7 @@ public abstract class PartialPageUpdate
 	 * A flag that indicates that javascripts cannot be added anymore.
 	 * See https://issues.apache.org/jira/browse/WICKET-6902
 	 */
-	protected transient boolean javascriptsFrozen;
+	protected boolean javascriptsFrozen;
 
 	/**
 	 * Buffer of response body. 

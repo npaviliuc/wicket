@@ -71,7 +71,7 @@ public final class Strings
 	 */
 	// the field is not 'final' because we need to modify it in a unit test
 	// see https://github.com/openjdk/jdk/pull/5027#issuecomment-968177213
-	private static String SESSION_ID_PARAM = ';' + SESSION_ID_PARAM_NAME + '=';
+	private static String session_id_param = ';' + SESSION_ID_PARAM_NAME + '=';
 
 	/**
 	 * Private constructor prevents construction.
@@ -289,101 +289,87 @@ public final class Strings
 	 * @return The escaped string
 	 */
 	public static CharSequence escapeMarkup(final CharSequence s, final boolean escapeSpaces,
-		final boolean convertToHtmlUnicodeEscapes)
-	{
-		if (s == null)
-		{
+                                        final boolean convertToHtmlUnicodeEscapes) {
+		if (s == null) {
 			return null;
 		}
 
 		final int len = s.length();
-		if (len == 0)
-		{
+		if (len == 0) {
 			return s;
 		}
 
-		final AppendingStringBuffer buffer = new AppendingStringBuffer((int)(len * 1.1));
+		final AppendingStringBuffer buffer = new AppendingStringBuffer((int) (len * 1.1));
 
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < len; i++) {
 			final char c = s.charAt(i);
-
-			if (Character.getType(c) == Character.UNASSIGNED)
-			{
-				continue;
-			}
-			switch (c)
-			{
-				case '\t' :
-					if (escapeSpaces)
-					{
-						// Assumption is four space tabs (sorry, but that's
-						// just how it is!)
-						buffer.append("&nbsp;&nbsp;&nbsp;&nbsp;");
-					}
-					else
-					{
-						buffer.append(c);
-					}
-					break;
-
-				case ' ' :
-					if (escapeSpaces)
-					{
-						buffer.append("&nbsp;");
-					}
-					else
-					{
-						buffer.append(c);
-					}
-					break;
-
-				case '<' :
-					buffer.append("&lt;");
-					break;
-
-				case '>' :
-					buffer.append("&gt;");
-					break;
-
-				case '&' :
-
-					buffer.append("&amp;");
-					break;
-
-				case '"' :
-					buffer.append("&quot;");
-					break;
-
-				case '\'' :
-					buffer.append("&#039;");
-					break;
-
-				default :
-
-					int ci = 0xffff & c;
-
-					if (
-					// if this is non-printable and not whitespace (TAB, LF, CR)
-					((ci < 32) && (ci != 9) && (ci != 10) && (ci != 13)) ||
-					// or non-ASCII (XXX: why 160+ ?!) and need to UNICODE escape it
-						(convertToHtmlUnicodeEscapes && (ci > 159)))
-					{
-						buffer.append("&#");
-						buffer.append(Integer.toString(ci));
-						buffer.append(';');
-					}
-					else
-					{
-						// ASCII or whitespace
-						buffer.append(c);
-					}
-					break;
-			}
+			handleCharacter(buffer, c, escapeSpaces, convertToHtmlUnicodeEscapes);
 		}
 
 		return buffer;
 	}
+
+	private static void handleCharacter(AppendingStringBuffer buffer, char c, boolean escapeSpaces,
+										boolean convertToHtmlUnicodeEscapes) {
+		if (Character.getType(c) == Character.UNASSIGNED) {
+			return;
+		}
+
+		switch (c) {
+			case '\t':
+				handleTab(buffer, escapeSpaces);
+				break;
+			case ' ':
+				handleSpace(buffer, escapeSpaces);
+				break;
+			case '<':
+				buffer.append("&lt;");
+				break;
+			case '>':
+				buffer.append("&gt;");
+				break;
+			case '&':
+				buffer.append("&amp;");
+				break;
+			case '"':
+				buffer.append("&quot;");
+				break;
+			case '\'':
+				buffer.append("&#039;");
+				break;
+			default:
+				handleDefault(buffer, c, convertToHtmlUnicodeEscapes);
+				break;
+		}
+	}
+
+	private static void handleTab(AppendingStringBuffer buffer, boolean escapeSpaces) {
+		if (escapeSpaces) {
+			buffer.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+		} else {
+			buffer.append('\t');
+		}
+	}
+
+	private static void handleSpace(AppendingStringBuffer buffer, boolean escapeSpaces) {
+		if (escapeSpaces) {
+			buffer.append("&nbsp;");
+		} else {
+			buffer.append(' ');
+		}
+	}
+
+	private static void handleDefault(AppendingStringBuffer buffer, char c, boolean convertToHtmlUnicodeEscapes) {
+		int ci = 0xffff & c;
+
+		if ((ci < 32) && (ci != 9) && (ci != 10) && (ci != 13) ||
+				(convertToHtmlUnicodeEscapes && (ci > 159))) {
+			buffer.append("&#").append(Integer.toString(ci)).append(';');
+		} else {
+			buffer.append(c);
+		}
+	}
+
 
 	/**
 	 * Unescapes the escaped entities in the <code>markup</code> passed.
@@ -659,56 +645,72 @@ public final class Strings
 	 * @param fragments
 	 * @return combined fragments
 	 */
-	public static String join(final String separator, final String... fragments)
-	{
-		if ((fragments == null) || (fragments.length < 1))
-		{
-			// no elements
+	public static String join(final String separator, final String... fragments) {
+		if (fragments == null || fragments.length < 1) {
 			return "";
-		}
-		else if (fragments.length < 2)
-		{
-			// single element
+		} else if (fragments.length < 2) {
 			return fragments[0];
-		}
-		else
-		{
-			// two or more elements
+		} else {
 			AppendingStringBuffer buff = new AppendingStringBuffer(128);
-			if (fragments[0] != null)
-			{
-				buff.append(fragments[0]);
-			}
-			boolean separatorNotEmpty = !Strings.isEmpty(separator);
-			for (int i = 1; i < fragments.length; i++)
-			{
+			appendFirstElement(buff, fragments);
+			boolean separatorNotEmpty = isSeparatorNotEmpty(separator);
+
+			for (int i = 1; i < fragments.length; i++) {
 				String fragment = fragments[i];
 				String previousFragment = fragments[i - 1];
-				if (previousFragment != null || fragment != null)
-				{
-					boolean lhsClosed = previousFragment.endsWith(separator);
-					boolean rhsClosed = fragment.startsWith(separator);
-					if (separatorNotEmpty && lhsClosed && rhsClosed)
-					{
-						buff.append(fragment.substring(1));
-					}
-					else if (!lhsClosed && !rhsClosed)
-					{
-						if (!Strings.isEmpty(fragment))
-						{
-							buff.append(separator);
-						}
-						buff.append(fragment);
-					}
-					else
-					{
-						buff.append(fragment);
-					}
+				if (shouldAppendSeparator(previousFragment, fragment)) {
+					appendWithSeparator(buff, separatorNotEmpty, fragment, previousFragment, separator);
+				} else {
+					buff.append(fragment);
 				}
 			}
+
 			return buff.toString();
 		}
 	}
+
+	private static void appendFirstElement(AppendingStringBuffer buff, String[] fragments) {
+		if (fragments[0] != null) {
+			buff.append(fragments[0]);
+		}
+	}
+
+	private static boolean isSeparatorNotEmpty(String separator) {
+		return !Strings.isEmpty(separator);
+	}
+
+	private static boolean shouldAppendSeparator(String previousFragment, String fragment) {
+		return (previousFragment != null || fragment != null);
+	}
+
+	private static void appendWithSeparator(AppendingStringBuffer buff, boolean separatorNotEmpty, String fragment, String previousFragment, 
+											String separator) {
+		boolean lhsClosed = endsWithSeparator(previousFragment,separator);
+		boolean rhsClosed = startsWithSeparator(fragment, separator);
+		if (separatorNotEmpty && lhsClosed && rhsClosed) {
+			buff.append(fragment.substring(1));
+		} else if (!lhsClosed && !rhsClosed) {
+			appendSeparatorAndFragment(buff, separatorNotEmpty, fragment, separator);
+		} else {
+			buff.append(fragment);
+		}
+	}
+
+	private static boolean endsWithSeparator(String fragment, String separator) {
+		return fragment != null && fragment.endsWith(separator);
+	}
+
+	private static boolean startsWithSeparator(String fragment, String separator) {
+		return fragment != null && fragment.startsWith(separator);
+	}
+
+	private static void appendSeparatorAndFragment(AppendingStringBuffer buff, boolean separatorNotEmpty, String fragment, String separator) {
+		if (!Strings.isEmpty(fragment)) {
+			buff.append(separator);
+		}
+		buff.append(fragment);
+	}
+
 
 	/**
 	 * Gets the last path component of a path using a given separator. If the separator cannot be
@@ -921,7 +923,7 @@ public final class Strings
 		}
 
 		// http://.../abc;jsessionid=...?param=...
-		int ixSemiColon = url.indexOf(SESSION_ID_PARAM);
+		int ixSemiColon = url.indexOf(session_id_param);
 		if (ixSemiColon == -1)
 		{
 			return url;
@@ -993,85 +995,103 @@ public final class Strings
 	 *            The unicode string
 	 * @return The escaped unicode string, like '\u4F60\u597D'.
 	 */
-	public static String toEscapedUnicode(final String unicodeString)
-	{
-		if (unicodeString == null || unicodeString.isEmpty())
-		{
+	public static String toEscapedUnicode(final String unicodeString) {
+		if (unicodeString == null || unicodeString.isEmpty()) {
 			return unicodeString;
 		}
+
 		int len = unicodeString.length();
 		int bufLen = len * 2;
 		StringBuilder outBuffer = new StringBuilder(bufLen);
-		for (int x = 0; x < len; x++)
-		{
+
+		for (int x = 0; x < len; x++) {
 			char aChar = unicodeString.charAt(x);
-			if (Character.getType(aChar) == Character.UNASSIGNED)
-			{
+			if (Character.getType(aChar) == Character.UNASSIGNED) {
 				continue;
 			}
-			// Handle common case first, selecting largest block that
-			// avoids the specials below
-			if ((aChar > 61) && (aChar < 127))
-			{
-				if (aChar == '\\')
-				{
-					outBuffer.append('\\');
-					outBuffer.append('\\');
-					continue;
-				}
-				outBuffer.append(aChar);
-				continue;
-			}
-			switch (aChar)
-			{
-				case ' ' :
-					if (x == 0)
-					{
-						outBuffer.append('\\');
-					}
-					outBuffer.append(' ');
-					break;
-				case '\t' :
-					outBuffer.append('\\');
-					outBuffer.append('t');
-					break;
-				case '\n' :
-					outBuffer.append('\\');
-					outBuffer.append('n');
-					break;
-				case '\r' :
-					outBuffer.append('\\');
-					outBuffer.append('r');
-					break;
-				case '\f' :
-					outBuffer.append('\\');
-					outBuffer.append('f');
-					break;
-				case '=' : // Fall through
-				case ':' : // Fall through
-				case '#' : // Fall through
-				case '!' :
-					outBuffer.append('\\');
-					outBuffer.append(aChar);
-					break;
-				default :
-					if ((aChar < 0x0020) || (aChar > 0x007e))
-					{
-						outBuffer.append('\\');
-						outBuffer.append('u');
-						outBuffer.append(toHex((aChar >> 12) & 0xF));
-						outBuffer.append(toHex((aChar >> 8) & 0xF));
-						outBuffer.append(toHex((aChar >> 4) & 0xF));
-						outBuffer.append(toHex(aChar & 0xF));
-					}
-					else
-					{
-						outBuffer.append(aChar);
-					}
+
+			if (isCommonChar(aChar)) {
+				handleCommonChar(outBuffer, aChar);
+			} else {
+				handleSpecialChar(outBuffer, aChar);
 			}
 		}
+
 		return outBuffer.toString();
 	}
+
+	private static boolean isCommonChar(char aChar) {
+		return (aChar > 61) && (aChar < 127);
+	}
+
+	private static void handleCommonChar(StringBuilder outBuffer, char aChar) {
+		if (aChar == '\\') {
+			outBuffer.append('\\');
+			outBuffer.append('\\');
+		} else {
+			outBuffer.append(aChar);
+		}
+	}
+
+	private static void handleSpecialChar(StringBuilder outBuffer, char aChar) {
+		switch (aChar) {
+			case ' ':
+				if (outBuffer.length() == 0) {
+					outBuffer.append('\\');
+				}
+				outBuffer.append(' ');
+				break;
+			case '\t':
+			case '\n':
+			case '\r':
+			case '\f':
+				outBuffer.append('\\');
+				outBuffer.append(getEscapeChar(aChar));
+				break;
+			case '=':
+			case ':':
+			case '#':
+			case '!':
+				outBuffer.append('\\');
+				outBuffer.append(aChar);
+				break;
+			default:
+				if ((aChar < 0x0020) || (aChar > 0x007e)) {
+					appendUnicodeEscape(outBuffer, aChar);
+				} else {
+					outBuffer.append(aChar);
+				}
+		}
+	}
+
+	private static char getEscapeChar(char aChar) {
+		switch (aChar) {
+			case '\t':
+				return 't';
+			case '\n':
+				return 'n';
+			case '\r':
+				return 'r';
+			case '\f':
+				return 'f';
+			default:
+				return aChar;
+		}
+	}
+
+	private static void appendUnicodeEscape(StringBuilder outBuffer, char aChar) {
+		outBuffer.append('\\');
+		outBuffer.append('u');
+		outBuffer.append(toHexForUni((aChar >> 12) & 0xF));
+		outBuffer.append(toHexForUni((aChar >> 8) & 0xF));
+		outBuffer.append(toHexForUni((aChar >> 4) & 0xF));
+		outBuffer.append(toHexForUni(aChar & 0xF));
+	}
+
+	private static char toHexForUni(int nibble) {
+		return (char) (nibble < 10 ? '0' + nibble : 'a' + nibble - 10);
+	}
+
 
 	/**
 	 * Converts a String to multiline HTML markup by replacing newlines with line break entities

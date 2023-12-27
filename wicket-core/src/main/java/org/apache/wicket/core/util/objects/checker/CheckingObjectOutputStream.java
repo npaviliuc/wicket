@@ -404,13 +404,16 @@ public class CheckingObjectOutputStream extends ObjectOutputStream
 			if (!(ccl.isPrimitive()))
 			{
 				Object[] objs = (Object[])obj;
-				for (int i = 0; i < objs.length; i++)
+				if (objs != null) 
 				{
-					if (!isKnownToBeSerializable(objs[i])) {
-						CharSequence arrayPos = new StringBuilder(4).append('[').append(i).append(']');
-						simpleName = arrayPos;
-						fieldDescription += arrayPos;
-						check(objs[i]);
+					for (int i = 0; i < objs.length; i++)
+					{
+						if (!isKnownToBeSerializable(objs[i])) {
+							CharSequence arrayPos = new StringBuilder(4).append('[').append(i).append(']');
+							simpleName = arrayPos;
+							fieldDescription += arrayPos;
+							check(objs[i]);
+						}
 					}
 				}
 			}
@@ -503,9 +506,8 @@ public class CheckingObjectOutputStream extends ObjectOutputStream
 						return streamObj;
 					}
 				}
-				try
+				try(InterceptingObjectOutputStream ioos = new InterceptingObjectOutputStream())
 				{
-					InterceptingObjectOutputStream ioos = new InterceptingObjectOutputStream();
 					ioos.writeObject(obj);
 				}
 				catch (Exception e)

@@ -467,8 +467,7 @@ public class SourcesPage extends WebPage
 			}
 			else if (!pageParam.startsWith("org.apache.wicket.examples"))
 			{
-				log.error("user is trying to access class: {} which is not in the scope of org.apache.wicket.examples",
-						pageParam);
+				log.error("user is trying to access a class which is not in the scope of org.apache.wicket.examples");
 				throw new UnauthorizedInstantiationException(getClass());
 			}
 			page = WicketObjects.resolveClass(pageParam);

@@ -52,7 +52,7 @@ class SharedBehaviorTest extends WicketTestCase
 		TestPage page = new TestPage();
 		executeTest(page, "SharedBehaviorTest_renderHead_expected.html");
 
-		assertEquals(page.sharedBehavior.renderHeadCount, 2);
+		assertEquals(2, page.sharedBehavior.renderHeadCount);
 	}
 
 	/**

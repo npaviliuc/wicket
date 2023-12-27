@@ -15,137 +15,148 @@
  * limitations under the License.
  */
 
-;(function (undefined) {
-	'use strict';
+;(function () {
+    'use strict';
 
-	if (typeof(Wicket) === "undefined") {
-		window.Wicket = {};
-	}
+    if (typeof Wicket === 'undefined') {
+        window.Wicket = {};
+    }
 
-	Wicket.WUPB = Wicket.Class.create();
-	Wicket.WUPB.prototype = {
+    window.Wicket.WUPB = Wicket.Class.create();
+    window.Wicket.WUPB.prototype = {
+        initialize: function (formid, statusid, barid, url, fileid, initialStatus, onProgressUpdated) {
+            this.statusid = statusid;
+            this.barid = barid;
+            this.url = url;
+            this.fileid = fileid;
+            this.initialStatus = initialStatus;
+            this.onProgressUpdated = onProgressUpdated;
 
-		initialize : function(formid, statusid, barid, url, fileid, initialStatus, onProgressUpdated) {
-			this.statusid = statusid;
-			this.barid = barid;
-			this.url = url;
-			this.fileid = fileid;
-			this.initialStatus = initialStatus;
-			this.onProgressUpdated = onProgressUpdated;
+            if (formid) {
+                this.setupFormSubmitListener(formid);
+            }
+        },
 
-			if (formid) {
-				var formElement = Wicket.$(formid);
-				this.originalCallback = formElement.onsubmit;
-				formElement.onsubmit = Wicket.bind(this.submitCallback, this);
-			}
-		},
+        setupFormSubmitListener: function (formid) {
+            var formElement = Wicket.$(formid);
+            this.originalCallback = formElement.onsubmit;
+            formElement.onsubmit = Wicket.bind(this.submitCallback, this);
+        },
 
-		submitCallback : function() {
-			if (this.originalCallback && !this.originalCallback()) {
-				return false;
-			} else {
-				this.start();
-				return true;
-			}
-		},
+        submitCallback: function () {
+            if (this.originalCallback && !this.originalCallback()) {
+                return false;
+            }
+            this.start();
+            return true;
+        },
 
-		start : function(){
-			var displayprogress = true;
-			if (this.fileid) {
-				var fileupload = Wicket.$(this.fileid);
-				displayprogress = fileupload && fileupload.value;
-			}
-			if (displayprogress) {
-				this.setPercent(0);
-				this.setStatus(this.initialStatus);
-				var $statusId = Wicket.$(this.statusid);
-				if ($statusId != null) {
-					Wicket.DOM.show($statusId);
-				}
-				var $barid = Wicket.$(this.barid);
-				if ($barid != null) {
-					Wicket.DOM.show($barid);
-				}
-				this.scheduleUpdate();
-			}
-		},
+        start: function () {
+            var displayprogress = this.checkDisplayProgress();
+            if (displayprogress) {
+                this.initializeProgress();
+                this.showStatusAndBar();
+                this.scheduleUpdate();
+            }
+        },
 
-		setStatus : function(status) {
-			var label = document.createElement("label");
-			label.innerHTML = status;
-			var $statusId = Wicket.$(this.statusid);
-			if ($statusId != null) {
-				var oldLabel = $statusId.firstChild;
-				if (oldLabel != null){
-					$statusId.removeChild(oldLabel);
-				}
-				$statusId.appendChild(label);
-			}
-		},
+        checkDisplayProgress: function () {
+            if (this.fileid) {
+                var fileupload = Wicket.$(this.fileid);
+                return fileupload && fileupload.value;
+            }
+            return true;
+        },
 
-		setPercent : function(progressPercent) {
-			var barId = Wicket.$(this.barid);
-			if (barId != null && barId.firstChild != null && barId.firstChild.firstChild != null) {
-				barId.firstChild.firstChild.style.width = progressPercent + '%';
-			}
-			if (this.onProgressUpdated) {
-				this.onProgressUpdated(progressPercent);
-			}
-		},
+        initializeProgress: function () {
+            this.setPercent(0);
+            this.setStatus(this.initialStatus);
+        },
 
-		scheduleUpdate : function(){
-			window.setTimeout(Wicket.bind(this.load, this), 1000);
-		},
+        showStatusAndBar: function () {
+            Wicket.DOM.show(Wicket.$(this.statusid));
+            Wicket.DOM.show(Wicket.$(this.barid));
+        },
 
-		_createIFrame : function (iframeName) {
-			var $iframe = jQuery('<iframe name="'+iframeName+'" id="'+iframeName+
-				'" src="about:blank" hidden=""></iframe>');
-			return $iframe[0];
-		},
+        setStatus: function (status) {
+            var label = document.createElement('label');
+            label.innerHTML = status;
+            var $statusId = Wicket.$(this.statusid);
+            if ($statusId) {
+                var oldLabel = $statusId.firstChild;
+                if (oldLabel) {
+                    $statusId.removeChild(oldLabel);
+                }
+                $statusId.appendChild(label);
+            }
+        },
 
-		load : function() {
-			var URL = this.url;
+        setPercent: function (progressPercent) {
+            var barId = Wicket.$(this.barid);
+            if (barId && barId.firstChild && barId.firstChild.firstChild) {
+                barId.firstChild.firstChild.style.width = progressPercent + '%';
+            }
+            if (this.onProgressUpdated) {
+                this.onProgressUpdated(progressPercent);
+            }
+        },
 
-	        this.iframe = this._createIFrame(""+Math.random());
+        scheduleUpdate: function () {
+            window.setTimeout(Wicket.bind(this.load, this), 1000);
+        },
 
-	        document.body.appendChild(this.iframe);
+        _createIFrame: function (iframeName) {
+            var $iframe = jQuery('<iframe name="' + iframeName + '" id="' + iframeName +
+                '" src="about:blank" hidden=""></iframe>');
+            return $iframe[0];
+        },
 
-			Wicket.Event.add(this.iframe, "load", Wicket.bind(this.update, this));
-			this.iframe.src = URL;
-		},
+        load: function () {
+            var URL = this.url;
+            this.iframe = this._createIFrame("" + Math.random());
+            document.body.appendChild(this.iframe);
+            Wicket.Event.add(this.iframe, "load", Wicket.bind(this.update, this));
+            this.iframe.src = URL;
+        },
 
-		update : function() {
-			var responseAsText;
-			if(this.iframe.contentDocument){
-				responseAsText = this.iframe.contentDocument.body.innerHTML;
-			}else{
-				// for IE 5.5, 6 and 7:
-				responseAsText = this.iframe.contentWindow.document.body.innerHTML;
-			}
+        update: function () {
+            var responseAsText = this.getResponseText();
+            var update = responseAsText.split('|');
+            var progressPercent = update[1];
+            var status = update[2];
+            this.updateProgressAndStatus(progressPercent, status);
+            this.handleCompletion(progressPercent);
+        },
 
-			var update = responseAsText.split('|');
+        getResponseText: function () {
+            if (this.iframe.contentDocument) {
+                return this.iframe.contentDocument.body.innerHTML;
+            }
+            return this.iframe.contentWindow.document.body.innerHTML;
+        },
 
-			var progressPercent = update[1];
-			var status = update[2];
+        updateProgressAndStatus: function (progressPercent, status) {
+            this.setPercent(progressPercent);
+            this.setStatus(status);
+            this.cleanupIframe();
+        },
 
-			this.setPercent(progressPercent);
-			this.setStatus( status );
+        cleanupIframe: function () {
+            this.iframe.parentNode.removeChild(this.iframe);
+            this.iframe = null;
+        },
 
-			this.iframe.parentNode.removeChild(this.iframe);
-			this.iframe = null;
+        handleCompletion: function (progressPercent) {
+            if (progressPercent === '100') {
+                this.hideStatusAndBar();
+            } else {
+                this.scheduleUpdate();
+            }
+        },
 
-			if (progressPercent === '100') {
-				var $statusId = Wicket.$(this.statusid);
-				if ($statusId != null) {
-					Wicket.DOM.hide($statusId);
-				}
-				var $barid = Wicket.$(this.barid);
-				if ($barid != null) {
-					Wicket.DOM.hide($barid);
-				}
-			} else {
-				this.scheduleUpdate();
-			}
-		}
-	};
+        hideStatusAndBar: function () {
+            Wicket.DOM.hide(Wicket.$(this.statusid));
+            Wicket.DOM.hide(Wicket.$(this.barid));
+        }
+    };
 })();

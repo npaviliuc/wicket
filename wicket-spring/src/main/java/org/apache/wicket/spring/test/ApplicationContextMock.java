@@ -303,10 +303,27 @@ public class ApplicationContextMock extends AbstractApplicationContext implement
 
 	@Override
 	protected void refreshBeanFactory() throws BeansException, IllegalStateException {
+		// This method is intentionally left empty as it represents a placeholder or a hook
+		// for subclasses to provide their own implementation for refreshing the bean factory.
+		// Subclasses that extend this class are expected to override this method with
+		// their specific logic for refreshing the bean factory configuration.
+		
+		// Throwing UnsupportedOperationException ensures that if a subclass forgets to
+		// implement this method, or if it is called on an instance of this class directly,
+		// an exception will be thrown, signaling that the method needs to be overridden.
+
+		throw new UnsupportedOperationException("Method refreshBeanFactory() is not implemented");
 	}
 
 	@Override
 	protected void closeBeanFactory() {
+		// This method is currently empty as it represents a placeholder in the class hierarchy.
+		// The actual implementation to close the bean factory should be provided by subclasses
+		// that extend this class. By throwing an UnsupportedOperationException, we make it clear
+		// that this method must be implemented by the subclasses, and it should not be invoked
+		// directly on the base class.
+
+		throw new UnsupportedOperationException("closeBeanFactory() must be implemented by subclasses.");
 	}
 
 	@Override
@@ -318,12 +335,6 @@ public class ApplicationContextMock extends AbstractApplicationContext implement
 	public Resource getResource(final String location)
 	{
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException
-	{
-		return beanFactory;
 	}
 
 	@Override

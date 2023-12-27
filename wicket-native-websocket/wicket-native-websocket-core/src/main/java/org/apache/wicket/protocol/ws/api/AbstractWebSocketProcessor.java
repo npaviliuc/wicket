@@ -263,7 +263,7 @@ public abstract class AbstractWebSocketProcessor implements IWebSocketProcessor
 				if (session == null)
 				{
 					connectionRegistry.removeConnection(application, sessionId, connection.getKey());
-					LOG.debug("No Session could be found for session id '{}' and key '{}'!", sessionId, connection.getKey());
+					LOG.debug("No Session could be found!");
 					return;
 				}
 
@@ -309,7 +309,7 @@ public abstract class AbstractWebSocketProcessor implements IWebSocketProcessor
 		}
 		else
 		{
-			LOG.debug("Either there is no connection({}) or it is closed.", connection);
+			LOG.debug("Either there is no connection() or it is closed.");
 		}
 	}
 

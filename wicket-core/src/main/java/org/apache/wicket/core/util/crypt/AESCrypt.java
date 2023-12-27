@@ -44,7 +44,13 @@ public class AESCrypt extends AbstractJceCrypt
 	private final String algorithm;
 	private final ISecureRandomSupplier randomSupplier;
 
-	
+	// Custom exception for AESCrypt
+    public static class AESCryptException extends RuntimeException {
+        public AESCryptException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
 	/**
 	 * Constructor
 	 * 
@@ -100,7 +106,7 @@ public class AESCrypt extends AbstractJceCrypt
 		catch (IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException 
 			| InvalidKeyException | InvalidAlgorithmParameterException e)
 		{
-			throw new RuntimeException(e);
+			throw new AESCryptException("Error during decryption", e);
 		}
 	}
 
@@ -125,7 +131,7 @@ public class AESCrypt extends AbstractJceCrypt
 		catch (IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException 
 			| InvalidKeyException | InvalidAlgorithmParameterException e)
 		{
-			throw new RuntimeException(e);
+			throw new AESCryptException("Error during encryption", e);
 		}
 
 	}

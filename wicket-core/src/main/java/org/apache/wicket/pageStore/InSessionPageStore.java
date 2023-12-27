@@ -124,7 +124,7 @@ public class InSessionPageStore implements IPageStore
 	{
 		SessionData data = getSessionData(context, true);
 
-		data.add(page);
+		if(data != null) data.add(page);
 	}
 
 	@Override
@@ -149,9 +149,8 @@ public class InSessionPageStore implements IPageStore
 
 	private SessionData getSessionData(IPageContext context, boolean create)
 	{
-		SessionData data = context.getSessionData(getKey(), create ? () -> {
-			return dataCreator.get();
-		} : null);
+		// Issue already resolved. Revisioned only.
+		SessionData data = context.getSessionData(getKey(), create ? dataCreator::get : null);
 
 		if (data != null && serializer != null)
 		{

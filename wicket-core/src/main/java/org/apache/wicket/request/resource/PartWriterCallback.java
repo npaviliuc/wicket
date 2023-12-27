@@ -119,14 +119,17 @@ public class PartWriterCallback extends WriteCallback
 			{
 				// skipping the first bytes which are
 				// requested to be skipped by the client
+				long skippedBytes;
+
 				if (startbyte != null)
 				{
-					inputStream.skip(startbyte);
+					skippedBytes = inputStream.skip(startbyte);
 				}
 				else
 				{
 					// If no start byte has been given set it to 0
 					// which means no bytes has been skipped
+					skippedBytes = 0;
 					startbyte = 0L;
 				}
 
@@ -160,6 +163,9 @@ public class PartWriterCallback extends WriteCallback
 				{
 					IOUtils.closeQuietly(boundedInputStream);
 				}
+
+				// Log or use the skippedBytes variable as needed
+	            System.out.println("Skipped Bytes: " + skippedBytes);
 			}
 			else
 			{

@@ -21,6 +21,13 @@ import org.apache.wicket.mock.MockApplication;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 class BaseWicketTesterTest {
 
@@ -61,50 +68,53 @@ class BaseWicketTesterTest {
 		});
 	}
 
-	@Test
-	void getFirstComponentFromLastRenderedPageByWicketId_whenComponentNotPresent_returnEmptyOptional() {
-		// Arrange
-		var cut = new DemoPanel("id");
-		tester.startComponentInPage(cut);
+	@ParameterizedTest
+    @ValueSource(strings = { "asdf" })
+    void getFirstComponentFromLastRenderedPageByWicketId_nonEmptyString(String wicketId) {
+        // Arrange
+        var cut = new DemoPanel("id");
+        tester.startComponentInPage(cut);
 
-		// Act
-		var label = tester.getFirstComponentByWicketId("asdf");
+        // Act
+        var label = tester.getFirstComponentByWicketId(wicketId);
 
-		// Assert
-		SoftAssertions.assertSoftly(sa -> {
-			sa.assertThat(label).isEmpty();
-		});
-	}
+        // Assert
+        SoftAssertions.assertSoftly(sa -> {
+            sa.assertThat(label).isEmpty();
+        });
+    }
 
-	@Test
-	void getFirstComponentFromLastRenderedPageByWicketId_whenWicketIdNull_returnEmptyOptional() {
-		// Arrange
-		var cut = new DemoPanel("id");
-		tester.startComponentInPage(cut);
+    @ParameterizedTest
+    @NullSource
+    void getFirstComponentFromLastRenderedPageByWicketId_nullWicketId(String wicketId) {
+        // Arrange
+        var cut = new DemoPanel("id");
+        tester.startComponentInPage(cut);
 
-		// Act
-		var label = tester.getFirstComponentByWicketId(null);
+        // Act
+        var label = tester.getFirstComponentByWicketId(wicketId);
 
-		// Assert
-		SoftAssertions.assertSoftly(sa -> {
-			sa.assertThat(label).isEmpty();
-		});
-	}
+        // Assert
+        SoftAssertions.assertSoftly(sa -> {
+            sa.assertThat(label).isEmpty();
+        });
+    }
 
-	@Test
-	void getFirstComponentFromLastRenderedPageByWicketId_whenWicketIdBlank_returnEmptyOptional() {
-		// Arrange
-		var cut = new DemoPanel("id");
-		tester.startComponentInPage(cut);
+    @ParameterizedTest
+    @EmptySource
+    void getFirstComponentFromLastRenderedPageByWicketId_emptyStringWicketId(String wicketId) {
+        // Arrange
+        var cut = new DemoPanel("id");
+        tester.startComponentInPage(cut);
 
-		// Act
-		var label = tester.getFirstComponentByWicketId(" ");
+        // Act
+        var label = tester.getFirstComponentByWicketId(wicketId);
 
-		// Assert
-		SoftAssertions.assertSoftly(sa -> {
-			sa.assertThat(label).isEmpty();
-		});
-	}
+        // Assert
+        SoftAssertions.assertSoftly(sa -> {
+            sa.assertThat(label).isEmpty();
+        });
+    }
 
 	@Test
 	void getAllComponentsFromLastRenderedPageByWicketId_whenCallPrematurely_returnEmptyList() {
@@ -157,49 +167,23 @@ class BaseWicketTesterTest {
 		});
 	}
 
-	@Test
-	void getAllComponentsFromLastRenderedPageByWicketId_whenNoComponentPresent2_returnEmptyList() {
-		// Arrange
-		var cut = new DemoPanel("id");
-		tester.startComponentInPage(cut);
+	@ParameterizedTest
+    @MethodSource("wicketIdProvider")
+    void getAllComponentsFromLastRenderedPageByWicketId(String wicketId) {
+        // Arrange
+        var cut = new DemoPanel("id");
+        tester.startComponentInPage(cut);
 
-		// Act
-		var components = tester.getAllComponentsByWicketId("asdf");
+        // Act
+        var components = tester.getAllComponentsByWicketId(wicketId);
 
-		// Assert
-		SoftAssertions.assertSoftly(sa -> {
-			sa.assertThat(components).isEmpty();
-		});
-	}
+        // Assert
+        SoftAssertions.assertSoftly(sa -> {
+            sa.assertThat(components).isEmpty();
+        });
+    }
 
-	@Test
-	void getAllComponentsFromLastRenderedPageByWicketId_whenWicketIdNull_returnEmptyList() {
-		// Arrange
-		var cut = new DemoPanel("id");
-		tester.startComponentInPage(cut);
-
-		// Act
-		var components = tester.getAllComponentsByWicketId(null);
-
-		// Assert
-		SoftAssertions.assertSoftly(sa -> {
-			sa.assertThat(components).isEmpty();
-		});
-	}
-
-	@Test
-	void getAllComponentsFromLastRenderedPageByWicketId_whenWicketIdBlank_returnEmptyList() {
-		// Arrange
-		var cut = new DemoPanel("id");
-		tester.startComponentInPage(cut);
-
-		// Act
-		var components = tester.getAllComponentsByWicketId("");
-
-		// Assert
-		SoftAssertions.assertSoftly(sa -> {
-			sa.assertThat(components).isEmpty();
-		});
-	}
-
+    private static Stream<String> wicketIdProvider() {
+        return Stream.of("asdf", null, "");
+    }
 }

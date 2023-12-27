@@ -25,6 +25,9 @@ import org.apache.wicket.util.string.Strings;
  */
 public class Args
 {
+
+	private static final String ARGUMENT = "Argument '";
+
 	/**
 	 * Checks argument is not null
 	 * 
@@ -38,7 +41,7 @@ public class Args
 	{
 		if (argument == null)
 		{
-			throw new IllegalArgumentException("Argument '" + name + "' may not be null.");
+			throw new IllegalArgumentException(ARGUMENT + name + "' may not be null.");
 		}
 		return argument;
 	}
@@ -61,7 +64,7 @@ public class Args
 	{
 		if (Strings.isEmpty(argument))
 		{
-			throw new IllegalArgumentException("Argument '" + name + "' may not be null or empty.");
+			throw new IllegalArgumentException(ARGUMENT + name + "' may not be null or empty.");
 		}
 		return argument;
 	}
@@ -83,7 +86,7 @@ public class Args
 	{
 		if (Strings.isEmpty(argument))
 		{
-			throw new IllegalArgumentException("Argument '" + name + "' may not be null or empty.");
+			throw new IllegalArgumentException(ARGUMENT + name + "' may not be null or empty.");
 		}
 		return argument;
 	}

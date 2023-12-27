@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.Collections;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
@@ -233,7 +234,7 @@ public class ComponentRenderer
 		@Override
 		public byte[] serialize(Object object)
 		{
-			return null;
+			return new byte[0];
 		}
 
 		@Override
@@ -258,7 +259,7 @@ public class ComponentRenderer
 		@Override
 		public List<String> getAttributeNames(Request request)
 		{
-			return null;
+			return Collections.emptyList();
 		}
 
 		@Override
@@ -316,7 +317,7 @@ public class ComponentRenderer
 		@Override
 		public Set<UnboundListener> getUnboundListener()
 		{
-			return null;
+			return Collections.emptySet();
 		}
 
 		@Override
@@ -334,7 +335,7 @@ public class ComponentRenderer
 
 		public Set<BindListener> getBindListeners()
 		{
-			return null;
+			return Collections.emptySet();
 		}
 	}
 

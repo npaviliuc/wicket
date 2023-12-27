@@ -122,9 +122,8 @@ public abstract class AbstractJavaScriptReferenceHeaderItem extends JavaScriptHe
 
 	final AttributeMap createAttributeMap(final String url) {
 		final AttributeMap attributes = new AttributeMap();
-		final JavaScriptReferenceType type = getType();
-		if (type != null) {
-			attributes.putAttribute(JavaScriptUtils.ATTR_TYPE, type.getType());
+		if (this.type != null) {
+			attributes.putAttribute(JavaScriptUtils.ATTR_TYPE, this.type.getType());
 		}
 		attributes.putAttribute(JavaScriptUtils.ATTR_ID, getId());
 		attributes.putAttribute(JavaScriptUtils.ATTR_SCRIPT_DEFER, defer);

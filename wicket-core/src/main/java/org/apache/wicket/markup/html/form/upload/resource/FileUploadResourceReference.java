@@ -17,6 +17,7 @@
 package org.apache.wicket.markup.html.form.upload.resource;
 
 import java.util.List;
+import java.util.Objects;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.resource.IResource;
@@ -25,16 +26,25 @@ import org.apache.wicket.util.lang.Args;
 import com.github.openjson.JSONArray;
 import com.github.openjson.JSONException;
 import com.github.openjson.JSONObject;
+import java.io.Serializable;
 
 /**
  * A resource reference that provides default implementation of AbstractFileUploadResource.
  * The implementation generates JSON response with data from the upload (this data is
  * re-routed to the page for things like getting the client file name and file size).
  */
-public class FileUploadResourceReference extends ResourceReference
-{
 
-	private final IUploadsFileManager uploadFileManager;
+class FileUploadException extends RuntimeException {
+    public FileUploadException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+public class FileUploadResourceReference extends ResourceReference implements Serializable
+{
+	private static final long serialVersionUID = 123456789L;
+
+	private final transient IUploadsFileManager uploadFileManager;
 
 	private static FileUploadResourceReference instance;
 
@@ -98,7 +108,7 @@ public class FileUploadResourceReference extends ResourceReference
 					}
 					catch (JSONException e)
 					{
-						throw new RuntimeException(e);
+						throw new FileUploadException("Error generating JSON response for file upload", e);
 					}
 				}
 				return json.toString();
@@ -118,4 +128,29 @@ public class FileUploadResourceReference extends ResourceReference
 		fileJson.put("contentType", fileItem.getContentType());
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+    	if (this == obj) 
+		{
+    	    return true;
+    	}
+    	if (obj == null || getClass() != obj.getClass()) 
+		{
+    	    return false;
+    	}
+
+	    FileUploadResourceReference other = (FileUploadResourceReference) obj;
+    
+ 		// Add additional checks based on your class's equality requirements
+  		// For example, compare uploadFileManager, and other relevant fields
+    
+    	return Objects.equals(uploadFileManager, other.uploadFileManager);
+	}
+
+	@Override
+	public int hashCode() 
+	{
+		// Customize the hash code calculation based on the fields used in equals
+    	return Objects.hash(uploadFileManager);
+	}
 }

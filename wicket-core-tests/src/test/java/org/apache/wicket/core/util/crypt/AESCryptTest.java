@@ -26,10 +26,10 @@ import java.security.GeneralSecurityException;
 
 import javax.crypto.SecretKey;
 
-public class AESCryptTest
+class AESCryptTest
 {
 	@Test
-	public void encrypDecrypt() throws GeneralSecurityException
+	void encrypDecrypt() throws GeneralSecurityException
 	{
 		DefaultSecureRandomSupplier randomSupplier = new DefaultSecureRandomSupplier();
 		

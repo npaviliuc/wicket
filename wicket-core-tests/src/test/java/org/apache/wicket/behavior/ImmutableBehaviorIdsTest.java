@@ -161,9 +161,8 @@ class ImmutableBehaviorIdsTest extends WicketTestCase
 		TestTemporaryBehavior tempBehavior = new TestTemporaryBehavior();
 		page.getContainer().add(tempBehavior);
 
-		assertThrows(IllegalArgumentException.class, () -> {
-			page.getContainer().getBehaviorId(tempBehavior);
-		});
+		WebMarkupContainer mark = page.getContainer();
+		assertThrows(IllegalArgumentException.class, () -> mark.getBehaviorId(tempBehavior));
 	}
 
 	private static class LinkBehavior extends Behavior implements IRequestListener

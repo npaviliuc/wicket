@@ -110,7 +110,7 @@ public class UrlEncoderTest
 	}
 
 	@Test
-	public void encodePath()
+	void encodePath()
 	{
 		assertEquals("", UrlEncoder.PATH_INSTANCE.encode("", CHARSET));
 		assertEquals("foobar", UrlEncoder.PATH_INSTANCE.encode("foobar", CHARSET));
@@ -118,7 +118,7 @@ public class UrlEncoderTest
 	}
 
 	@Test
-	public void encodeQuery()
+	void encodeQuery()
 	{
 		assertEquals("", UrlEncoder.QUERY_INSTANCE.encode("", CHARSET));
 		assertEquals("foobar", UrlEncoder.QUERY_INSTANCE.encode("foobar", CHARSET));

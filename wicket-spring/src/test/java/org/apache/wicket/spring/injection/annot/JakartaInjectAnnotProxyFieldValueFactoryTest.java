@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests for Spring injection with {@literal @jakarta.inject.Inject} annotation
  */
-public class JakartaInjectAnnotProxyFieldValueFactoryTest extends AnnotProxyFieldValueFactoryTest
+class JakartaInjectAnnotProxyFieldValueFactoryTest extends AnnotProxyFieldValueFactoryTest
 {
 	/**
 	 * Construct.

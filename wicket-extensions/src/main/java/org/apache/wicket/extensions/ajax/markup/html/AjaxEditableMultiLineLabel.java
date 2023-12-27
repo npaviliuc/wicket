@@ -98,7 +98,7 @@ public class AjaxEditableMultiLineLabel<T> extends AjaxEditableLabel<T>
 				final ComponentTag openTag)
 			{
 				Object modelObject = getDefaultModelObject();
-				if ((modelObject == null) || (modelObject instanceof String && ((String) modelObject).isEmpty()))
+				if ((modelObject == null) || (modelObject instanceof String string && string.isEmpty()))
 				{
 					replaceComponentTagBody(markupStream, openTag, defaultNullLabel());
 				}

@@ -290,9 +290,8 @@ public class JavaSerializer implements ISerializer
 			}
 			catch (ClassNotFoundException cnfEx)
 			{
-				// ignore this exception.
-				log.debug(
-					"Proxy Class not found by the ObjectOutputStream itself, trying the IClassResolver");
+				// Log the exception with contextual information
+				log.error("Proxy Class not found by the ObjectOutputStream itself, trying the IClassResolver", cnfEx);
 
 				ClassLoader latestLoader = latestUserDefinedLoader();
 				ClassLoader nonPublicLoader = null;

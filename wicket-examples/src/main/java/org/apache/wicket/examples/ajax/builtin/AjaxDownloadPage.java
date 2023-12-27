@@ -31,9 +31,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.ContentDisposition;
-import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.ResourceStreamResource;
@@ -51,6 +49,8 @@ public class AjaxDownloadPage extends BasePage
 	private final WebMarkupContainer downloadingContainer;
 
 	private IModel<String> text;
+
+	private static final String ALERT = "alert('Download failed');";
 
 	/**
 	 * Constructor
@@ -112,7 +112,7 @@ public class AjaxDownloadPage extends BasePage
 				downloadingContainer.setVisible(false);
 				target.add(downloadingContainer);
 
-				target.appendJavaScript("alert('Download failed');");
+				target.appendJavaScript(ALERT);
 			}
 		};
 		add(download);
@@ -158,7 +158,7 @@ public class AjaxDownloadPage extends BasePage
 				downloadingContainer.setVisible(false);
 				target.add(downloadingContainer);
 
-				target.appendJavaScript("alert('Download failed');");
+				target.appendJavaScript(ALERT);
 			}
 		};
 		download.setLocation(Location.IFrame);
@@ -213,7 +213,7 @@ public class AjaxDownloadPage extends BasePage
 				downloadingContainer.setVisible(false);
 				target.add(downloadingContainer);
 
-				target.appendJavaScript("alert('Download failed');");
+				target.appendJavaScript(ALERT);
 			}
 		};
 		add(download);
@@ -259,14 +259,7 @@ public class AjaxDownloadPage extends BasePage
 				downloadingContainer.setVisible(false);
 				target.add(downloadingContainer);
 
-				target.appendJavaScript("alert('Download failed');");
-			}
-
-			@Override
-			protected void onDownloadCompleted(AjaxRequestTarget target)
-			{
-				downloadingContainer.setVisible(false);
-				target.add(downloadingContainer);
+				target.appendJavaScript(ALERT);
 			}
 		};
 		download.setLocation(AjaxDownloadBehavior.Location.NewWindow);
@@ -313,15 +306,9 @@ public class AjaxDownloadPage extends BasePage
 				downloadingContainer.setVisible(false);
 				target.add(downloadingContainer);
 
-				target.appendJavaScript("alert('Download failed');");
+				target.appendJavaScript(ALERT);
 			}
 
-			@Override
-			protected void onDownloadCompleted(AjaxRequestTarget target)
-			{
-				downloadingContainer.setVisible(false);
-				target.add(downloadingContainer);
-			}
 		};
 		download.setLocation(AjaxDownloadBehavior.Location.SameWindow);
 		add(download);
@@ -364,14 +351,7 @@ public class AjaxDownloadPage extends BasePage
 				downloadingContainer.setVisible(false);
 				target.add(downloadingContainer);
 
-				target.appendJavaScript("alert('Download failed');");
-			}
-
-			@Override
-			protected void onDownloadCompleted(AjaxRequestTarget target)
-			{
-				downloadingContainer.setVisible(false);
-				target.add(downloadingContainer);
+				target.appendJavaScript(ALERT);
 			}
 		};
 		add(download);
@@ -422,6 +402,10 @@ public class AjaxDownloadPage extends BasePage
 			}
 			catch (InterruptedException e)
 			{
+				// Re-interrrupt the thread
+				Thread.currentThread().interrupt(); 
+				//OR Rethrow the InterruptedException
+				throw new RuntimeException("Thread interrupted", e);
 			}
 
 			return new StringResourceStream("downloaded via ajax with resource reference");
@@ -459,6 +443,10 @@ public class AjaxDownloadPage extends BasePage
 			}
 			catch (InterruptedException e)
 			{
+				// Re-interrrupt the thread
+				Thread.currentThread().interrupt(); 
+				//OR Rethrow the InterruptedException
+				throw new RuntimeException("Thread interrupted", e);
 			}
 
 			count++;
@@ -480,7 +468,7 @@ public class AjaxDownloadPage extends BasePage
 
 		static final String FILE_CONTENTS = "fileContents";
 
-		public static DynamicTextFileResource instance = new DynamicTextFileResource();
+		public static final DynamicTextFileResource instance = new DynamicTextFileResource();
 
 		public DynamicTextFileResource() {
 			super(AjaxDownloadPage.class, "DynamicTextFileResource");
@@ -497,25 +485,27 @@ public class AjaxDownloadPage extends BasePage
 			return new ExampleResource() {
 				@Override
 				protected String getContent(Attributes attributes) {
-					String licence = "/*\n" +
-							" * Licensed to the Apache Software Foundation (ASF) under one or more\n" +
-							" * contributor license agreements.  See the NOTICE file distributed with\n" +
-							" * this work for additional information regarding copyright ownership.\n" +
-							" * The ASF licenses this file to You under the Apache License, Version 2.0\n" +
-							" * (the \"License\"); you may not use this file except in compliance with\n" +
-							" * the License.  You may obtain a copy of the License at\n" +
-							" *\n" +
-							" *      http://www.apache.org/licenses/LICENSE-2.0\n" +
-							" *\n" +
-							" * Unless required by applicable law or agreed to in writing, software\n" +
-							" * distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
-							" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
-							" * See the License for the specific language governing permissions and\n" +
-							" * limitations under the License.\n" +
-							" */ \n\n\n";
-					return licence + attributes.getParameters().get(FILE_CONTENTS).toString("");
-				}
-			};
+					return """
+						/*
+                     	* Licensed to the Apache Software Foundation (ASF) under one or more
+                    	* contributor license agreements.  See the NOTICE file distributed with
+                    	* this work for additional information regarding copyright ownership.
+                    	* The ASF licenses this file to You under the Apache License, Version 2.0
+                    	* (the "License"); you may not use this file except in compliance with
+                    	* the License.  You may obtain a copy of the License at
+                    	*
+                    	*      http://www.apache.org/licenses/LICENSE-2.0
+                    	*
+                    	* Unless required by applicable law or agreed to in writing, software
+                    	* distributed under the License is distributed on an "AS IS" BASIS,
+                    	* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                    	* See the License for the specific language governing permissions and
+                    	* limitations under the License.
+                    	*/
+                                
+                        """ + attributes.getParameters().get(FILE_CONTENTS).toString("");
+        		}
+    		};
 		}
 	}
 }

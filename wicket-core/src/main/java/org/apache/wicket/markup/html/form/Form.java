@@ -2224,9 +2224,9 @@ public class Form<T> extends WebMarkupContainer
 	static IRequestParameters getRequestParameters(Component component) {
 		String method = Form.METHOD_POST;
 		final Request request = component.getRequest();
-		if (request.getContainerRequest() instanceof HttpServletRequest)
+		if (request.getContainerRequest() instanceof HttpServletRequest httpservletrequest)
 		{
-			method = ((HttpServletRequest)request.getContainerRequest()).getMethod();
+			method = httpservletrequest.getMethod();
 		}
 		else
 		{

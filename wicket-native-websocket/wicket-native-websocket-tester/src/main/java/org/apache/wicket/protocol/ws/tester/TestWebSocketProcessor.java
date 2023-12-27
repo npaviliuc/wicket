@@ -45,7 +45,7 @@ abstract class TestWebSocketProcessor extends AbstractWebSocketProcessor
 	 * @param application
 	 *            the current Wicket Application
 	 */
-	public TestWebSocketProcessor(final HttpServletRequest request, final WebApplication application)
+	protected TestWebSocketProcessor(final HttpServletRequest request, final WebApplication application)
 	{
 		super(request, application);
 	}
@@ -56,7 +56,7 @@ abstract class TestWebSocketProcessor extends AbstractWebSocketProcessor
 	 * @param page
 	 *      the page that may have registered {@link org.apache.wicket.protocol.ws.api.WebSocketBehavior}
 	 */
-	public TestWebSocketProcessor(final WicketTester wicketTester, final Page page)
+	protected TestWebSocketProcessor(final WicketTester wicketTester, final Page page)
 	{
 		super(createRequest(wicketTester, page), (WebApplication) page.getApplication());
 	}
@@ -67,7 +67,7 @@ abstract class TestWebSocketProcessor extends AbstractWebSocketProcessor
 	 * @param resourceName
 	 *      the name of the shared resource that will handle the web socket messages
 	 */
-	public TestWebSocketProcessor(final WicketTester wicketTester, final String resourceName, Page page)
+	protected TestWebSocketProcessor(final WicketTester wicketTester, final String resourceName, Page page)
 	{
 		super(createRequest(wicketTester, resourceName, page),  wicketTester.getApplication());
 	}
@@ -78,7 +78,7 @@ abstract class TestWebSocketProcessor extends AbstractWebSocketProcessor
 	 * @param resourceName
 	 *      the name of the shared resource that will handle the web socket messages
 	 */
-	public TestWebSocketProcessor(final WicketTester wicketTester, final String resourceName)
+	protected TestWebSocketProcessor(final WicketTester wicketTester, final String resourceName)
 	{
 		super(createRequest(wicketTester, resourceName, null),  wicketTester.getApplication());
 	}

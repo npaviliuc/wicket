@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for https://issues.apache.org/jira/browse/WICKET-5860
  */
-public class WebSocketTesterProcessorTest
+class WebSocketTesterProcessorTest
 {
 	final static AtomicBoolean messageReceived = new AtomicBoolean(false);
 
@@ -88,7 +88,7 @@ public class WebSocketTesterProcessorTest
 	}
 
 	@Test
-	public void onConnectNoOrigin()
+	void onConnectNoOrigin()
 	{
 		// Given header 'Origin' is missing
 		configureRequest(new String[] { "http://www.example.com" }, new String[] {});
@@ -102,7 +102,7 @@ public class WebSocketTesterProcessorTest
 	}
 
 	@Test
-	public void onConnectMultipleOrigins()
+	void onConnectMultipleOrigins()
 	{
 		// Given the request contains multiple header 'Origin's
 		configureRequest(new String[] { "http://www.example.com" }, new String[] { "http://www.example.com", "http://ww2.example.com" });
@@ -116,7 +116,7 @@ public class WebSocketTesterProcessorTest
 	}
 
 	@Test
-	public void onConnectMatchingOrigin()
+	void onConnectMatchingOrigin()
 	{
 		// Given header 'Origin' matches the host origin
 		configureRequest(new String[] { "http://www.example.com" }, new String[] { "http://www.example.com" });
@@ -130,7 +130,7 @@ public class WebSocketTesterProcessorTest
 	}
 
 	@Test
-	public void onConnectMismatchingOrigin()
+	void onConnectMismatchingOrigin()
 	{
 		// Given header 'Origin' does not match the host origin
 		configureRequest(new String[] { "http://www.example.com" }, new String[] { "http://ww2.example.com" });

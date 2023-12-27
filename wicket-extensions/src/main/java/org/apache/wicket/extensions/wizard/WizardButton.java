@@ -85,6 +85,20 @@ public abstract class WizardButton extends Button
 	@Override
 	public final void onSubmit()
 	{
-		onClick();
+		try 
+		{
+			onClick();
+    	} 
+		catch (ClassCastException e) 
+		{
+			// Handle the ClassCastException, log, and take appropriate actions
+        	e.printStackTrace();
+        	// You can add more specific error handling here
+    	} 
+		catch (Exception e) 
+		{
+        	// Handle other exceptions if needed
+        	e.printStackTrace();
+    	}
 	}
 }

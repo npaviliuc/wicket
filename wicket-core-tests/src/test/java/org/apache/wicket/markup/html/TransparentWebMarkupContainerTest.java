@@ -49,7 +49,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Pedro Santos
  */
-public class TransparentWebMarkupContainerTest extends WicketTestCase
+class TransparentWebMarkupContainerTest extends WicketTestCase
 {
 	/**
 	 * WICKET-3512

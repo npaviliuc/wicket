@@ -1,20 +1,30 @@
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns:wicket="http://wicket.apache.org">
+
+<head>
+	<title>Data Table with toolbar filter Page</title>
+</head>
 <wicket:extend>
 
 
-This table has a toolbar filter. We can specify a valid range for contact's born date.<br/>
-	<br/>
-   
-    <form wicket:id="filterForm">
-    	<fieldset class="inline-block">
-    		<legend>Born date</legend>
-	    	<span class="float-right">from: <input wicket:id="dateFrom"/></span> <br/>
-	    	<span class="float-right">to: <input wicket:id="dateTo"/></span>
-    	</fieldset>
-    	<div>
-    	   <table class="dataview" wicket:id="tableWithFilterForm">[table]</table>
-    	</div>
-    </form>
-    
+	This table has a toolbar filter. We can specify a valid range for contact's born date.<br />
+	<br />
+
+	<form wicket:id="filterForm">
+		<fieldset class="inline-block">
+			<legend>Born date</legend>
+			<span class="float-right">from: <input wicket:id="dateFrom" /></span> <br />
+			<span class="float-right">to: <input wicket:id="dateTo" /></span>
+		</fieldset>
+		<div>
+			<table class="dataview" wicket:id="tableWithFilterForm">
+				<th></th>
+				<caption>Table with toolbar filter</caption>
+				[table]
+			</table>
+		</div>
+	</form>
+
 </wicket:extend>
+
 </html>

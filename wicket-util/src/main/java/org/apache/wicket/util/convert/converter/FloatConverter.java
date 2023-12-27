@@ -34,8 +34,8 @@ public class FloatConverter extends AbstractDecimalConverter<Float>
 
 	// Float.MIN is the smallest nonzero positive number, not the largest
 	// negative number
-	private static final BigDecimal MIN_VALUE = new BigDecimal(-Float.MAX_VALUE);
-	private static final BigDecimal MAX_VALUE = new BigDecimal(Float.MAX_VALUE);
+	private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(-Float.MAX_VALUE);
+	private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(Float.MAX_VALUE);
 
 	/**
 	 * The singleton instance for a float converter

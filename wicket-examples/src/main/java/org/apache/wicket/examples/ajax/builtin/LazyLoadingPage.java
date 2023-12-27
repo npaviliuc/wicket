@@ -138,7 +138,7 @@ public class LazyLoadingPage extends BasePage
 				{
 					try
 					{
-						Thread.sleep(seconds * 1000);
+						Thread.sleep((long)seconds * 1000);
 					}
 					catch (InterruptedException e)
 					{

@@ -16,19 +16,15 @@
  */
 package org.apache.wicket.examples.websocket.progress;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.examples.websocket.JSR356Application;
 import org.apache.wicket.examples.websocket.JSR356Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.protocol.ws.api.WebSocketBehavior;
 import org.apache.wicket.protocol.ws.api.event.WebSocketPushPayload;
-import org.apache.wicket.protocol.ws.api.message.ConnectedMessage;
 
 public class ProgressBarTogglePanel extends Panel
 {
@@ -95,9 +91,8 @@ public class ProgressBarTogglePanel extends Panel
         if (event.getPayload() instanceof WebSocketPushPayload)
         {
             WebSocketPushPayload wsEvent = (WebSocketPushPayload) event.getPayload();
-            if (wsEvent.getMessage() instanceof ProgressUpdater.ProgressUpdate)
+            if (wsEvent.getMessage() instanceof ProgressUpdater.ProgressUpdate progressUpdate)
             {
-                ProgressUpdater.ProgressUpdate progressUpdate = (ProgressUpdater.ProgressUpdate)wsEvent.getMessage();
                 progress = progressUpdate.getProgress();
                 wsEvent.getHandler().add(this);
             }

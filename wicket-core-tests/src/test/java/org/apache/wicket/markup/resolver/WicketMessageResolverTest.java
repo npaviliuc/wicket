@@ -73,9 +73,10 @@ class WicketMessageResolverTest extends WicketTestCase
 	@Test
 	void test_4() throws Exception
 	{
+		tester.getApplication().getResourceSettings().setThrowExceptionOnMissingResource(true);
+		
 		try
 		{
-			tester.getApplication().getResourceSettings().setThrowExceptionOnMissingResource(true);
 			tester.startPage(SimplePage_4.class);
 			fail("Expected a WicketRuntimeException to happen");
 		}

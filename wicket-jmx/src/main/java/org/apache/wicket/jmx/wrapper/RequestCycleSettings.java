@@ -107,7 +107,12 @@ public class RequestCycleSettings implements RequestCycleSettingsMBean
 		throws UnsupportedEncodingException
 	{
 		// test encoding is available
-		"".getBytes(responseRequestEncoding);
+		byte[] testBytes = "".getBytes(responseRequestEncoding);
+    
+		// The return value of getBytes must be used, so we check the length of the byte array
+		if (testBytes.length == 0) {
+			throw new UnsupportedEncodingException("Unsupported encoding: " + responseRequestEncoding);
+		}
 
 		application.getRequestCycleSettings().setResponseRequestEncoding(responseRequestEncoding);
 	}

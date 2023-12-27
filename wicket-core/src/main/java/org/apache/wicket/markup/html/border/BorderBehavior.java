@@ -35,17 +35,23 @@ import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.WicketTag;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * This is a behavior implementation that can be used if you have markup that should be around a
- * component. It works just like {@link Border} so you have to have a &lt;wicket:border&gt;HTML
- * before &lt;wicket:body/&gt; HTML after &lt;/wicket:border&gt; in the html of your subclass. But different than
- * Border you can not add components to the Border markup, only to the BorderBody.
+ * This is a behavior implementation that can be used if you have markup that
+ * should be around a
+ * component. It works just like {@link Border} so you have to have a
+ * &lt;wicket:border&gt;HTML
+ * before &lt;wicket:body/&gt; HTML after &lt;/wicket:border&gt; in the html of
+ * your subclass. But different than
+ * Border you can not add components to the Border markup, only to the
+ * BorderBody.
  * 
  * @author jcompagner
  */
-public class BorderBehavior extends Behavior
-{
+public class BorderBehavior extends Behavior {
+	private static final Logger log = LoggerFactory.getLogger(BorderBehavior.class);
 	private static final long serialVersionUID = 1L;
 
 	// markup stream associated with this border. bonus of keeping a reference
@@ -54,90 +60,74 @@ public class BorderBehavior extends Behavior
 	private transient MarkupStream markupStream;
 
 	@Override
-	public void beforeRender(final Component component)
-	{
+	public void beforeRender(final Component component) {
 		final MarkupStream stream = getMarkupStream(component);
 		final Response response = component.getResponse();
-		stream.setCurrentIndex(0);
+		if (stream != null) {
+			stream.setCurrentIndex(0);
+		}
 
 		boolean insideBorderMarkup = false;
-		while (stream.isCurrentIndexInsideTheStream())
-		{
+		while (stream.isCurrentIndexInsideTheStream()) {
 			MarkupElement elem = stream.get();
 			stream.next();
-			if (elem instanceof WicketTag)
-			{
-				WicketTag wTag = (WicketTag)elem;
-				if (!insideBorderMarkup)
-				{
-					if (wTag.isBorderTag() && wTag.isOpen())
-					{
+			if (elem instanceof WicketTag) {
+				WicketTag wTag = (WicketTag) elem;
+				if (!insideBorderMarkup) {
+					if (wTag.isBorderTag() && wTag.isOpen()) {
 						insideBorderMarkup = true;
 						continue;
-					}
-					else
-					{
+					} else {
 						throw new WicketRuntimeException(
-							"Unexpected tag encountered in markup of component border " +
-								getClass().getName() + ". Tag: " + wTag.toString() +
-								", expected tag: <wicket:border>");
+								"Unexpected tag encountered in markup of component border " +
+										getClass().getName() + ". Tag: " + wTag.toString() +
+										", expected tag: <wicket:border>");
 					}
-				}
-				else
-				{
-					if (wTag.isBodyTag())
-					{
+				} else {
+					if (wTag.isBodyTag()) {
 						break;
-					}
-					else
-					{
+					} else {
 						throw new WicketRuntimeException(
-							"Unexpected tag encountered in markup of component border " +
-								getClass().getName() + ". Tag: " + wTag.toString() +
-								", expected tag: <wicket:body> or </wicket:body>");
+								"Unexpected tag encountered in markup of component border " +
+										getClass().getName() + ". Tag: " + wTag.toString() +
+										", expected tag: <wicket:body> or </wicket:body>");
 					}
 				}
 			}
-			if (insideBorderMarkup)
-			{
+			if (insideBorderMarkup) {
 				response.write(elem.toCharSequence());
 			}
 		}
 
-		if (!stream.isCurrentIndexInsideTheStream())
-		{
+		if (!stream.isCurrentIndexInsideTheStream()) {
 			throw new WicketRuntimeException("Markup for component border " + getClass().getName() +
-				" ended prematurely, was expecting </wicket:border>");
+					" ended prematurely, was expecting </wicket:border>");
 		}
 	}
 
 	@Override
-	public void afterRender(final Component component)
-	{
+	public void afterRender(final Component component) {
 		final MarkupStream stream = getMarkupStream(component);
 		final Response response = component.getResponse();
+		if (stream != null) {
 
-		while (stream.isCurrentIndexInsideTheStream())
-		{
+		while (stream.isCurrentIndexInsideTheStream()) {
 			MarkupElement elem = stream.get();
 			stream.next();
-			if (elem instanceof WicketTag)
-			{
-				WicketTag wTag = (WicketTag)elem;
-				if (wTag.isBorderTag() && wTag.isClose())
-				{
+			if (elem instanceof WicketTag) {
+				WicketTag wTag = (WicketTag) elem;
+				if (wTag.isBorderTag() && wTag.isClose()) {
 					break;
-				}
-				else
-				{
+				} else {
 					throw new WicketRuntimeException(
-						"Unexpected tag encountered in markup of component border " +
-							getClass().getName() + ". Tag: " + wTag.toString() +
-							", expected tag: </wicket:border>");
+							"Unexpected tag encountered in markup of component border " +
+									getClass().getName() + ". Tag: " + wTag.toString() +
+									", expected tag: </wicket:border>");
 				}
-			}
+			} 
 			response.write(elem.toCharSequence());
 		}
+		} 
 	}
 
 	/**
@@ -145,10 +135,8 @@ public class BorderBehavior extends Behavior
 	 * @param component
 	 * @return markup stream
 	 */
-	private MarkupStream getMarkupStream(final Component component)
-	{
-		if (markupStream == null)
-		{
+	private MarkupStream getMarkupStream(final Component component) {
+		if (markupStream == null) {
 			markupStream = findMarkupStream(component);
 		}
 		return markupStream;
@@ -159,11 +147,9 @@ public class BorderBehavior extends Behavior
 	 * @param owner
 	 * @return markup stream
 	 */
-	private MarkupStream findMarkupStream(final Component owner)
-	{
+	private MarkupStream findMarkupStream(final Component owner) {
 		final MarkupType markupType = getMarkupType(owner);
-		if (markupType == null)
-		{
+		if (markupType == null) {
 			return null;
 		}
 
@@ -173,8 +159,8 @@ public class BorderBehavior extends Behavior
 
 		// Get locator to search for the resource
 		final IResourceStreamLocator locator = Application.get()
-			.getResourceSettings()
-			.getResourceStreamLocator();
+				.getResourceSettings()
+				.getResourceStreamLocator();
 
 		final String style = owner.getStyle();
 		final String variation = owner.getVariation();
@@ -183,17 +169,15 @@ public class BorderBehavior extends Behavior
 		MarkupResourceStream markupResourceStream = null;
 		Class<?> containerClass = getClass();
 
-		while (!(containerClass.equals(BorderBehavior.class)))
-		{
+		while (!(containerClass.equals(BorderBehavior.class))) {
 			String path = containerClass.getName().replace('.', '/');
 			IResourceStream resourceStream = locator.locate(containerClass, path, style, variation,
-				locale, markupType.getExtension(), false);
+					locale, markupType.getExtension(), false);
 
 			// Did we find it already?
-			if (resourceStream != null)
-			{
+			if (resourceStream != null) {
 				ContainerInfo ci = new ContainerInfo(containerClass, locale, style, variation,
-					markupType);
+						markupType);
 				markupResourceStream = new MarkupResourceStream(resourceStream, ci, containerClass);
 				break;
 			}
@@ -203,36 +187,28 @@ public class BorderBehavior extends Behavior
 			containerClass = containerClass.getSuperclass();
 		}
 
-		if (markupResourceStream == null)
-		{
+		if (markupResourceStream == null) {
 			throw new WicketRuntimeException("Could not find markup for component border `" +
-				getClass().getName() + "`");
+					getClass().getName() + "`");
 		}
 
-		try
-		{
+		try {
 			IMarkupFragment markup = MarkupFactory.get()
-				.newMarkupParser(markupResourceStream)
-				.parse();
+					.newMarkupParser(markupResourceStream)
+					.parse();
 
 			return new MarkupStream(markup);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw new WicketRuntimeException(
-				"Could not parse markup from markup resource stream: " +
-					markupResourceStream.toString(), e);
-		}
-		finally
-		{
-			try
-			{
+					"Could not parse markup from markup resource stream: " +
+							markupResourceStream.toString(),
+					e);
+		} finally {
+			try {
 				markupResourceStream.close();
-			}
-			catch (IOException e)
-			{
-				throw new WicketRuntimeException("Cannot close markup resource stream: " +
-					markupResourceStream, e);
+			} catch (IOException e) {
+				log.error("Cannot close markup resource stream: " + markupResourceStream + ". IOException: "
+						+ e.getMessage());
 			}
 		}
 	}
@@ -242,15 +218,11 @@ public class BorderBehavior extends Behavior
 	 * @param component
 	 * @return markup type
 	 */
-	private MarkupType getMarkupType(final Component component)
-	{
+	private MarkupType getMarkupType(final Component component) {
 		final MarkupType markupType;
-		if (component instanceof MarkupContainer)
-		{
-			markupType = ((MarkupContainer)component).getMarkupType();
-		}
-		else
-		{
+		if (component instanceof MarkupContainer) {
+			markupType = ((MarkupContainer) component).getMarkupType();
+		} else {
 			markupType = component.getParent().getMarkupType();
 		}
 		return markupType;

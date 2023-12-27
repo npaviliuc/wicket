@@ -58,7 +58,7 @@ public abstract class AbstractMarkupParser
 
 	private static final Pattern PRE_BLOCK = Pattern.compile("<pre>.*?</pre>", Pattern.DOTALL | Pattern.MULTILINE);
 	private static final Pattern SPACE_OR_TAB_PATTERN = Pattern.compile("[ \\t]+");
-	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("( ?[\\r\\n] ?)+");
+	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("(?: ?[\\r\\n] ?)+");
 
 	/** The XML parser to use */
 	private final IXmlPullParser xmlParser;

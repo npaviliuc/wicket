@@ -52,7 +52,7 @@ public class ListenerLogData extends PageLogData
 		this.behaviorIndex = behaviorIndex;
 
 		componentClass = optional(() -> pageAndComponentProvider.getComponent().getClass());
-		componentPath = optional(() -> pageAndComponentProvider.getComponentPath());
+		componentPath = optional(pageAndComponentProvider::getComponentPath);
 
 		if (behaviorIndex != null)
 		{

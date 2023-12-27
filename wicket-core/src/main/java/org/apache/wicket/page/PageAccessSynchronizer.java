@@ -258,6 +258,8 @@ public class PageAccessSynchronizer implements Serializable
 			}
 			catch (InterruptedException e)
 			{
+				Thread.currentThread().interrupt();
+				//OR
 				throw new RuntimeException(e);
 			}
 		}

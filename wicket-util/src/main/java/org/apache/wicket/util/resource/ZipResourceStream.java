@@ -119,58 +119,55 @@ public class ZipResourceStream extends AbstractResourceStream
 	 *            If true, all subdirs will be zipped as well
 	 * @throws IOException
 	 */
+	private static final int BUFFER_SIZE = 2048;
+
 	private static void zipDir(final File dir, final ZipOutputStream out, final String path,
-		final boolean recursive) throws IOException
-	{
+								final boolean recursive) throws IOException {
 		Args.notNull(dir, "dir");
 		Args.isTrue(dir.isDirectory(), "Not a directory: '{}'", dir);
 
 		String[] files = dir.list();
 
-		int BUFFER = 2048;
-		BufferedInputStream origin;
-		byte data[] = new byte[BUFFER];
-
-		if (files != null)
-		{
-			for (String file : files)
-			{
+		if (files != null) {
+			for (String file : files) {
 				log.debug("Adding: '{}'", file);
 
-				File f = new File(dir, file);
-				if (f.isDirectory())
-				{
-					if (recursive)
-					{
-						zipDir(f, out, path + f.getName() + "/", recursive);
-					}
-				} else
-				{
-					out.putNextEntry(new ZipEntry(path + f.getName()));
-
-					FileInputStream fi = new FileInputStream(f);
-					origin = new BufferedInputStream(fi, BUFFER);
-
-					try
-					{
-						int count;
-						while ((count = origin.read(data, 0, BUFFER)) != -1)
-						{
-							out.write(data, 0, count);
-						}
-					} finally
-					{
-						origin.close();
-					}
+				File currentFile = new File(dir, file);
+				if (currentFile.isDirectory()) {
+					handleDirectory(currentFile, out, path, recursive);
+				} else {
+					handleFile(currentFile, out, path);
 				}
 			}
 		}
 
-		if (path.isEmpty())
-		{
+		if (path.isEmpty()) {
 			out.close();
 		}
 	}
+
+	private static void handleDirectory(final File directory, final ZipOutputStream out,
+										final String path, final boolean recursive) throws IOException {
+		if (recursive) {
+			zipDir(directory, out, path + directory.getName() + "/", recursive);
+		}
+	}
+
+	private static void handleFile(final File file, final ZipOutputStream out, final String path)
+			throws IOException {
+		out.putNextEntry(new ZipEntry(path + file.getName()));
+
+		try (FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream origin = new BufferedInputStream(fis, BUFFER_SIZE)) {
+
+			byte[] data = new byte[BUFFER_SIZE];
+			int count;
+			while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
+				out.write(data, 0, count);
+			}
+		}
+	}
+
 
 	/**
 	 * @see org.apache.wicket.util.resource.IResourceStream#close()

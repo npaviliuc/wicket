@@ -299,7 +299,7 @@ public class ConcatBundleResource extends AbstractResource implements IStaticCac
 			@Override
 			public Bytes length()
 			{
-				return Bytes.bytes(getBytes().length);
+				return Bytes.bytes((getBytes() != null ? getBytes().length : 0 ));
 			}
 
 			@Override
