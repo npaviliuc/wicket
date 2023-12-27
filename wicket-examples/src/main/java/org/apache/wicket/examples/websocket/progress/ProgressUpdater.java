@@ -137,12 +137,10 @@ public class ProgressUpdater
 				catch (InterruptedException x)
 				{
 					Thread.currentThread().interrupt();
-					break;
 				}
 				catch (Exception e)
 				{
 					LOGGER.error("unexpected exception", e);
-					break;
 				}
 			}
 			running = false;

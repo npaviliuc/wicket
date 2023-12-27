@@ -117,9 +117,8 @@ public class InstrumentationObjectSizeOfStrategy implements IObjectSizeOfStrateg
 		{
 			return 0;
 		}
-		try
+		try(SizeRecodingOutputStream recorder = new SizeRecodingOutputStream())
 		{
-			SizeRecodingOutputStream recorder = new SizeRecodingOutputStream();
 			recorder.writeObject(obj);
 			return recorder.getTotalSize();
 		}

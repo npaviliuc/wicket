@@ -190,6 +190,9 @@ public class WebSocketTester
 	 */
 	protected void onOutMessage(String message)
 	{
+		// This method is intentionally left empty.
+        // Subclasses should override it to define their own behavior.
+        // Custom handling of outgoing text messages can be implemented here.
 	}
 
 	/**
@@ -204,5 +207,8 @@ public class WebSocketTester
 	 */
 	protected void onOutMessage(byte[] message, int offset, int length)
 	{
+		// This method is intentionally left empty.
+        // Subclasses should override it to define their own behavior.
+        // Custom handling of outgoing text messages can be implemented here.
 	}
 }

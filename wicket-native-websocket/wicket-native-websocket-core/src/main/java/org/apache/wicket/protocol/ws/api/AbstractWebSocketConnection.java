@@ -21,8 +21,6 @@ import org.apache.wicket.protocol.ws.api.message.IWebSocketPushMessage;
 import org.apache.wicket.protocol.ws.api.registry.IKey;
 import org.apache.wicket.util.lang.Args;
 
-import java.util.concurrent.Future;
-
 /**
  * Abstract class handling the Web Socket broadcast messages.
  */

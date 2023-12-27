@@ -741,7 +741,7 @@ class UrlRendererTest
 	 * always render it as full, i.e. with scheme, host and port (if available)
 	 */
 	@Test
-	public void whenRenderingFullUrl_thenRenderItFull()
+	void whenRenderingFullUrl_thenRenderItFull()
 	{
 		UrlRenderer renderer = new UrlRenderer(new MockWebRequest(Url.parse("http://localhost/a/b")));
 
@@ -756,7 +756,7 @@ class UrlRendererTest
 	 * always render it as full, i.e. with scheme, host and port (if available)
 	 */
 	@Test
-	public void whenRenderingFullUrlWithDifferentScheme_thenRenderItFull()
+	void whenRenderingFullUrlWithDifferentScheme_thenRenderItFull()
 	{
 		UrlRenderer renderer = new UrlRenderer(new MockWebRequest(Url.parse("http://localhost/a/b")));
 
@@ -771,7 +771,7 @@ class UrlRendererTest
 	 * always render it as full, i.e. with scheme, host and port (if available)
 	 */
 	@Test
-	public void whenRenderingFullUrlWithDifferentHost_thenRenderItFull()
+	void whenRenderingFullUrlWithDifferentHost_thenRenderItFull()
 	{
 		UrlRenderer renderer = new UrlRenderer(new MockWebRequest(Url.parse("http://localhost/a/b")));
 
@@ -786,7 +786,7 @@ class UrlRendererTest
 	 * always render it as full, i.e. with scheme, host and port (if available)
 	 */
 	@Test
-	public void whenRenderingFullUrlWithDifferentPort_thenRenderItFull()
+	void whenRenderingFullUrlWithDifferentPort_thenRenderItFull()
 	{
 		UrlRenderer renderer = new UrlRenderer(new MockWebRequest(Url.parse("http://localhost/a/b")));
 

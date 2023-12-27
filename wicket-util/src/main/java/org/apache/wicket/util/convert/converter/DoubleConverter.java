@@ -34,8 +34,8 @@ public class DoubleConverter extends AbstractDecimalConverter<Double>
 
 	// Double.MIN is the smallest nonzero positive number, not the largest
 	// negative number
-	private static final BigDecimal MIN_VALUE = new BigDecimal(-Double.MAX_VALUE);
-	private static final BigDecimal MAX_VALUE = new BigDecimal(Double.MAX_VALUE);
+	private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(-Double.MAX_VALUE);
+	private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(Double.MAX_VALUE);
 
 	/**
 	 * The singleton instance for a double converter

@@ -355,7 +355,7 @@ class XmlPullParserTest
 	}
 
 	@Test
-    public void skipScriptTag() throws Exception
+    void skipScriptTag() throws Exception
 	{
 	    final XmlPullParser parser = new XmlPullParser();
 	    //ensure that script tag content is skiped if we have 'module' as type value

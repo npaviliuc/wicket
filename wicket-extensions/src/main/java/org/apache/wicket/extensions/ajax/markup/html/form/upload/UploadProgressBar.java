@@ -187,9 +187,9 @@ public class UploadProgressBar extends Panel
 	protected void onInitialize()
 	{
 		super.onInitialize();
-		Form<?> form = getCallbackForm();
-		if (form != null) {
-			form.setOutputMarkupId(true);
+		Form<?> formCallback = getCallbackForm();
+		if (formCallback != null) {
+			formCallback.setOutputMarkupId(true);
 		}
 
 		barDiv = newBarComponent("bar");
@@ -260,17 +260,19 @@ public class UploadProgressBar extends Panel
 		final String status = new StringResourceModel(RESOURCE_STARTING, this, null).getString();
 
 		CharSequence url = form != null ? urlFor(ref, UploadStatusResource.newParameter(getPage().getId())) :
-				urlFor(ref, UploadStatusResource.newParameter(uploadField.getMarkupId()));
+				(uploadField != null ? urlFor(ref, UploadStatusResource.newParameter(uploadField.getMarkupId())):urlFor(ref, UploadStatusResource.newParameter("null")));
+				
 
 		StringBuilder builder = new StringBuilder(128);
-		Formatter formatter = new Formatter(builder);
+		try(Formatter formatter = new Formatter(builder)) {
+			Form<?> formCallback = getCallbackForm();
 
-		Form<?> form = getCallbackForm();
+			formatter.format("%s = new Wicket.WUPB(%s, '%s', '%s', '%s', %s, '%s', %s);",
+				getVarName(), (formCallback != null) ? String.format("'%s'", formCallback.getMarkupId()) : "null",
+				statusDiv.getMarkupId(), barDiv.getMarkupId(), url, uploadFieldId, status, getOnProgressUpdatedCallBack());
 
-		formatter.format(getVarName() + " = new Wicket.WUPB(%s, '%s', '%s', '%s', %s, '%s', %s);",
-				form != null ? "'" + form.getMarkupId() + "'" : "null", statusDiv.getMarkupId(), barDiv.getMarkupId(), url, uploadFieldId,
-			status, getOnProgressUpdatedCallBack());
-		response.render(OnDomReadyHeaderItem.forScript(builder.toString()));
+			response.render(OnDomReadyHeaderItem.forScript(builder.toString()));
+		}
 	}
 
 	/**

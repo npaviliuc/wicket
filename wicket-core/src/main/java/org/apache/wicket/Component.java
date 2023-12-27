@@ -2624,60 +2624,56 @@ public abstract class Component
 	 * @param container
 	 *            The HtmlHeaderContainer
 	 */
-	public void internalRenderHead(final HtmlHeaderContainer container)
-	{
-		if (isVisibleInHierarchy() && isRenderAllowed())
-		{
-			if (log.isDebugEnabled())
-			{
-				log.debug("internalRenderHead: {}", toString(false));
-			}
+	public void internalRenderHead(final HtmlHeaderContainer container) {
+		if (isVisibleInHierarchy() && isRenderAllowed()) {
+			logDebug("internalRenderHead: {}", toString(false));
 
 			IHeaderResponse response = container.getHeaderResponse();
 
-			// Allow component to contribute
 			boolean wasRendered = response.wasRendered(this);
-			if (wasRendered == false)
-			{
-				StringResponse markupHeaderResponse = new StringResponse();
-				Response oldResponse = getResponse();
-				RequestCycle.get().setResponse(markupHeaderResponse);
-				try
-				{
-					// Make sure the markup source strategy contributes to the header first
-					// to be backward compatible. WICKET-3761
-					getMarkupSourcingStrategy().renderHead(this, container);
-					CharSequence headerContribution = markupHeaderResponse.getBuffer();
-					if (Strings.isEmpty(headerContribution) == false)
-					{
-						response.render(StringHeaderItem.forString(headerContribution));
-					}
-				}
-				finally
-				{
-					RequestCycle.get().setResponse(oldResponse);
-				}
-				// Then let the component itself to contribute to the header
+			if (!wasRendered) {
+				renderMarkupHeader(container, response);
 				renderHead(response);
 			}
 
-			// Then ask all behaviors
-			for (Behavior behavior : getBehaviors())
-			{
-				if (isBehaviorAccepted(behavior))
-				{
-					List<IClusterable> pair = List.of(this, behavior);
-					if (!response.wasRendered(pair))
-					{
-						behavior.renderHead(this, response);
-						response.markRendered(pair);
-					}
-				}
-			}
-			
-			if (wasRendered == false)
-			{
+			renderBehaviors(response);
+
+			if (!wasRendered) {
 				response.markRendered(this);
+			}
+		}
+	}
+
+	private void logDebug(String message, Object... args) {
+		if (log.isDebugEnabled()) {
+			log.debug(message, args);
+		}
+	}
+
+	private void renderMarkupHeader(HtmlHeaderContainer container, IHeaderResponse response) {
+		StringResponse markupHeaderResponse = new StringResponse();
+		Response oldResponse = getResponse();
+		RequestCycle.get().setResponse(markupHeaderResponse);
+
+		try {
+			getMarkupSourcingStrategy().renderHead(this, container);
+			CharSequence headerContribution = markupHeaderResponse.getBuffer();
+			if (!Strings.isEmpty(headerContribution)) {
+				response.render(StringHeaderItem.forString(headerContribution));
+			}
+		} finally {
+			RequestCycle.get().setResponse(oldResponse);
+		}
+	}
+
+	private void renderBehaviors(IHeaderResponse response) {
+		for (Behavior behavior : getBehaviors()) {
+			if (isBehaviorAccepted(behavior)) {
+				List<IClusterable> pair = List.of(this, behavior);
+				if (!response.wasRendered(pair)) {
+					behavior.renderHead(this, response);
+					response.markRendered(pair);
+				}
 			}
 		}
 	}

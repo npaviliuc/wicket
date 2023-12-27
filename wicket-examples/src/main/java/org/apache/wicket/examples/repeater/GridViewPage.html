@@ -1,19 +1,26 @@
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns:wicket="http://wicket.apache.org">
+
+<head>
+	<title>Grid View Page</title>
+</head>
+
 <body>
-<wicket:extend>
+	<wicket:extend>
 
-This page demonstrates the GridView component
-<br/><br/>
+		This page demonstrates the GridView component
+		<br /><br />
 
-<span wicket:id="navigator">[dataview navigator]</span>
+		<span wicket:id="navigator">[dataview navigator]</span>
 
-<div class="gridpage">
-	<table cellspacing="0" cellpadding="2" border="1">
-		<tr wicket:id="rows">
-			<td wicket:id="cols"><span wicket:id="firstName">[firstname]</span></td>
-		</tr>
-	</table>
-</div>
-</wicket:extend>
+		<div class="gridpage">
+			<table cellspacing="0" cellpadding="2" border="1">
+				<tr wicket:id="rows">
+					<td wicket:id="cols"><span wicket:id="firstName">[firstname]</span></td>
+				</tr>
+			</table>
+		</div>
+	</wicket:extend>
 </body>
+
 </html>

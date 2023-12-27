@@ -54,7 +54,7 @@ public class JavaScriptStripper
 	private final static int TEMPLATE_LITERAL = 8;
 
 	/** Function "return" keyword, useful to identify if we are inside a regexp */
-	private final static String RETURN_KEYWORD = "return";
+	private static final String RETURN_KEYWORD = "return";
 
 	private int getPrevCount(String s, int fromIndex, char c)
 	{

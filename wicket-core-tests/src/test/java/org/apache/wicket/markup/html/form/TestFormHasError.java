@@ -18,45 +18,33 @@ package org.apache.wicket.markup.html.form;
 
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 /**
  */
 class TestFormHasError extends WicketTestCase
 {
 
-	/**
-	 * testFormHasError()
-	 */
-	@Test
-    void testFormHasError()
-	{
-		tester.startPage(FormHasErrorPage.class);
-		tester.assertRenderedPage(FormHasErrorPage.class);
-		tester.clickLink("form:submitForm");
-		tester.dumpPage();
-	}
+	// Existing tests are now helper methods for the parameterized test
+    private void executeTest(String linkId) {
+        tester.startPage(FormHasErrorPage.class);
+        tester.assertRenderedPage(FormHasErrorPage.class);
+        tester.clickLink(linkId);
+        tester.dumpPage();
+    }
 
-	/**
-	 * testFormComponentHasError()
-	 */
-	@Test
-    void testFormComponentHasError()
-	{
-		tester.startPage(FormHasErrorPage.class);
-		tester.assertRenderedPage(FormHasErrorPage.class);
-		tester.clickLink("form:submitFormComponent");
-		tester.dumpPage();
-	}
+    // Parameterized test method
+    @ParameterizedTest
+    @MethodSource("linkIdsProvider")
+    void testFormHasError(String linkId) {
+        executeTest(linkId);
+    }
 
-	/**
-	 * testComponentHasError()
-	 */
-	@Test
-    void testComponentHasError()
-	{
-		tester.startPage(FormHasErrorPage.class);
-		tester.assertRenderedPage(FormHasErrorPage.class);
-		tester.clickLink("form:submitComponent");
-		tester.dumpPage();
-	}
+    // Provide linkIds for parameterized test
+    private static Stream<String> linkIdsProvider() {
+        return Stream.of("form:submitForm", "form:submitFormComponent", "form:submitComponent");
+    }
 }

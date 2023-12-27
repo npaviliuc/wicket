@@ -20,85 +20,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * @since 1.5.5
- */
-@SuppressWarnings("javadoc")
-public class PackagesTest
-{
-	@Test
-	public void absolutePath0() throws Exception
-	{
-		String packageName = "org.apache.wicket.util.tester";
-		String relativePath = "/org/apache/wicket/util/tester/BlockedResourceLinkPage.html";
+public class PackagesTest {
 
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("org/apache/wicket/util/tester/BlockedResourceLinkPage.html", absolutePath);
-	}
+    @Test
+    public void absolutePath() throws Exception {
+        assertAbsolutePath("org.apache.wicket.util.tester", "/org/apache/wicket/util/tester/BlockedResourceLinkPage.html", "org/apache/wicket/util/tester/BlockedResourceLinkPage.html");
+        assertAbsolutePath("org.apache.wicket.util.tester", "BlockedResourceLinkPage.html", "org/apache/wicket/util/tester/BlockedResourceLinkPage.html");
+        assertAbsolutePath("org.apache.wicket.util", "tester/BlockedResourceLinkPage.html", "org/apache/wicket/util/tester/BlockedResourceLinkPage.html");
+        assertAbsolutePath("org.apache.wicket.util", "wicket/BlockedResourceLinkPage.html", "org/apache/wicket/util/wicket/BlockedResourceLinkPage.html");
+        assertAbsolutePath("org.apache.wicket.util", "../../BlockedResourceLinkPage.html", "org/apache/BlockedResourceLinkPage.html");
+        assertAbsolutePath("com.foo.bar", "baz/foo/qux", "com/foo/bar/baz/foo/qux");
+        assertAbsolutePath("com.foo.bar", "./baz", "com/foo/bar/baz");
+    }
 
-	@Test
-	public void absolutePath1() throws Exception
-	{
-		String packageName = "org.apache.wicket.util.tester";
-		String relativePath = "BlockedResourceLinkPage.html";
-
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("org/apache/wicket/util/tester/BlockedResourceLinkPage.html", absolutePath);
-	}
-
-	@Test
-	public void absolutePath2() throws Exception
-	{
-		String packageName = "org.apache.wicket.util";
-		String relativePath = "tester/BlockedResourceLinkPage.html";
-
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("org/apache/wicket/util/tester/BlockedResourceLinkPage.html", absolutePath);
-	}
-
-	@Test
-	public void absolutePath3() throws Exception
-	{
-		String packageName = "org.apache.wicket.util";
-		String relativePath = "wicket/BlockedResourceLinkPage.html";
-
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("org/apache/wicket/util/wicket/BlockedResourceLinkPage.html", absolutePath);
-	}
-
-	@Test
-	public void absolutePath4() throws Exception
-	{
-		String packageName = "org.apache.wicket.util";
-		String relativePath = "../../BlockedResourceLinkPage.html";
-
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("org/apache/BlockedResourceLinkPage.html", absolutePath);
-	}
-	
-	/**
-	 * WICKET-5054
-	 */
-	@Test
-	public void absolutePath5() throws Exception
-	{
-		String packageName = "com.foo.bar";
-		String relativePath = "baz/foo/qux";
-
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("com/foo/bar/baz/foo/qux", absolutePath);
-	}
-	
-	/**
-	 * WICKET-6792
-	 */
-	@Test
-	public void absolutePath6() throws Exception
-	{
-		String packageName = "com.foo.bar";
-		String relativePath = "./baz";
-
-		String absolutePath = Packages.absolutePath(packageName, relativePath);
-		assertEquals("com/foo/bar/baz", absolutePath);
-	}
+    private void assertAbsolutePath(String packageName, String relativePath, String expectedAbsolutePath) throws Exception {
+        String absolutePath = Packages.absolutePath(packageName, relativePath);
+        assertEquals(expectedAbsolutePath, absolutePath);
+    }
 }

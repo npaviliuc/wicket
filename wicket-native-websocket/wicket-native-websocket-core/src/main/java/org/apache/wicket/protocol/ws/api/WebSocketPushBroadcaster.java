@@ -39,6 +39,10 @@ public class WebSocketPushBroadcaster
 {
 	private final IWebSocketConnectionRegistry registry;
 
+	private static final String MESSAGE = "message";
+	
+	private static final String APPLICATION = "application";
+
 	public WebSocketPushBroadcaster(IWebSocketConnectionRegistry registry)
 	{
 		Args.notNull(registry, "registry");
@@ -66,7 +70,7 @@ public class WebSocketPushBroadcaster
 	public void broadcast(ConnectedMessage connection, IWebSocketPushMessage message)
 	{
 		Args.notNull(connection, "connection");
-		Args.notNull(message, "message");
+		Args.notNull(message, MESSAGE);
 
 		Application application = connection.getApplication();
 		String sessionId = connection.getSessionId();
@@ -98,8 +102,8 @@ public class WebSocketPushBroadcaster
 	 */
 	public void broadcastAll(Application application, IWebSocketPushMessage message)
 	{
-		Args.notNull(application, "application");
-		Args.notNull(message, "message");
+		Args.notNull(application, APPLICATION);
+		Args.notNull(message, MESSAGE);
 
 		Collection<IWebSocketConnection> wsConnections = registry.getConnections(application);
 		if (wsConnections == null)
@@ -131,8 +135,8 @@ public class WebSocketPushBroadcaster
 	 */
 	public void broadcastAllInSession(Application application, String sessionId, IWebSocketPushMessage message)
 	{
-		Args.notNull(application, "application");
-		Args.notNull(message, "message");
+		Args.notNull(application, APPLICATION);
+		Args.notNull(message, MESSAGE);
 		Args.notNull(sessionId, "sessionId");
 
 		Collection<IWebSocketConnection> wsConnections = registry.getConnections(application, sessionId);
@@ -165,8 +169,8 @@ public class WebSocketPushBroadcaster
 	 */
 	public void broadcastAllMatchingFilter(Application application, IWebSocketConnectionRegistry.IConnectionsFilter connectionsFilter, IWebSocketPushMessage message)
 	{
-		Args.notNull(application, "application");
-		Args.notNull(message, "message");
+		Args.notNull(application, APPLICATION);
+		Args.notNull(message, MESSAGE);
 		Args.notNull(connectionsFilter, "connectionsFilter");
 
 		Collection<IWebSocketConnection> wsConnections = registry.getConnections(application, connectionsFilter);

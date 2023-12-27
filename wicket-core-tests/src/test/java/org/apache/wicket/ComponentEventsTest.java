@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author igor
  */
-public class ComponentEventsTest
+class ComponentEventsTest
 {
 
 	private WicketTester tester;

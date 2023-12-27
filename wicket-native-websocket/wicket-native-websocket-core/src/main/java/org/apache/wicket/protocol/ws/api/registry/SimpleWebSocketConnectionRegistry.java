@@ -36,6 +36,9 @@ import org.apache.wicket.util.lang.Generics;
  */
 public class SimpleWebSocketConnectionRegistry implements IWebSocketConnectionRegistry
 {
+
+	private static final String APPLICATION = "application";
+
 	private static final MetaDataKey<ConcurrentMap<String, ConcurrentMap<IKey, IWebSocketConnection>>> KEY =
 			new MetaDataKey<>()
 	{
@@ -44,7 +47,7 @@ public class SimpleWebSocketConnectionRegistry implements IWebSocketConnectionRe
 	@Override
 	public IWebSocketConnection getConnection(Application application, String sessionId, IKey key)
 	{
-		Args.notNull(application, "application");
+		Args.notNull(application, APPLICATION);
 		Args.notNull(sessionId, "sessionId");
 		Args.notNull(key, "key");
 
@@ -64,7 +67,7 @@ public class SimpleWebSocketConnectionRegistry implements IWebSocketConnectionRe
 	@Override
 	public Collection<IWebSocketConnection> getConnections(Application application, String sessionId)
 	{
-		Args.notNull(application, "application");
+		Args.notNull(application, APPLICATION);
 		Args.notNull(sessionId, "sessionId");
 
 		Collection<IWebSocketConnection> connections = Collections.emptyList();
@@ -83,7 +86,7 @@ public class SimpleWebSocketConnectionRegistry implements IWebSocketConnectionRe
 	@Override
 	public Collection<IWebSocketConnection> getConnections(Application application, IConnectionsFilter connectionsFilter)
 	{
-		Args.notNull(application, "application");
+		Args.notNull(application, APPLICATION);
 		Args.notNull(connectionsFilter, "connectionsFilter");
 
 		Collection<IWebSocketConnection> connections = new ArrayList<>();
@@ -115,7 +118,7 @@ public class SimpleWebSocketConnectionRegistry implements IWebSocketConnectionRe
 	@Override
 	public Collection<IWebSocketConnection> getConnections(Application application)
 	{
-		Args.notNull(application, "application");
+		Args.notNull(application, APPLICATION);
 
 		Collection<IWebSocketConnection> connections = new ArrayList<>();
 		ConcurrentMap<String, ConcurrentMap<IKey, IWebSocketConnection>> connectionsBySession = application.getMetaData(KEY);
@@ -132,7 +135,7 @@ public class SimpleWebSocketConnectionRegistry implements IWebSocketConnectionRe
 	@Override
 	public void setConnection(Application application, String sessionId, IKey key, IWebSocketConnection connection)
 	{
-		Args.notNull(application, "application");
+		Args.notNull(application, APPLICATION);
 		Args.notNull(sessionId, "sessionId");
 		Args.notNull(key, "key");
 

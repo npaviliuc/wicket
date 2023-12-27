@@ -562,68 +562,73 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		 * children. Keeps track when the iterator was last sync'd with the markup container's
 		 * tracking of changes to the list of children.
 		 */
-		class MarkupChildIterator implements Iterator<Component>
+
+		MarkupChildIterator iter = new MarkupChildIterator();
+		return iter;
+	}
+
+
+	class MarkupChildIterator implements Iterator<Component>{
+		private int indexInRemovalsSinceLastUpdate;
+		private int expectedModCounter = -1;
+		private Component currentComponent = null;
+		private Iterator<Component> internalIterator = null;
+
+		@Override
+		public boolean hasNext()
 		{
-			private int indexInRemovalsSinceLastUpdate;
-			private int expectedModCounter = -1;
-			private Component currentComponent = null;
-			private Iterator<Component> internalIterator = null;
+			refreshInternalIteratorIfNeeded();
+			return internalIterator.hasNext();
+		}
 
-			@Override
-			public boolean hasNext()
-			{
-				refreshInternalIteratorIfNeeded();
-				return internalIterator.hasNext();
+		@Override
+		public Component next()
+		{
+			refreshInternalIteratorIfNeeded();
+			return currentComponent = internalIterator.next();
+		}
+
+		@Override
+		public void remove()
+		{
+			MarkupContainer.this.remove(currentComponent);
+			refreshInternalIteratorIfNeeded();
+		}
+
+		private void refreshInternalIteratorIfNeeded()
+		{
+			if (expectedModCounter >= modCounter) {
+				// no new modifications
+				return;
 			}
 
-			@Override
-			public Component next()
+			if (children == null)
 			{
-				refreshInternalIteratorIfNeeded();
-				return currentComponent = internalIterator.next();
+				internalIterator = Collections.emptyIterator();
 			}
-
-			@Override
-			public void remove()
+			else if (children instanceof Component)
 			{
-				MarkupContainer.this.remove(currentComponent);
-				refreshInternalIteratorIfNeeded();
+				internalIterator = Collections.singleton((Component)children).iterator();
 			}
-
-			private void refreshInternalIteratorIfNeeded()
+			else if (children instanceof List)
 			{
-				if (expectedModCounter >= modCounter) {
-					// no new modifications
-					return;
-				}
-
-				if (children == null)
-				{
-					internalIterator = Collections.emptyIterator();
-				}
-				else if (children instanceof Component)
-				{
-					internalIterator = Collections.singleton((Component)children).iterator();
-				}
-				else if (children instanceof List)
-				{
-					List<Component> childrenList = children();
-					internalIterator = childrenList.iterator();
-				}
-				else
-				{
-					Map<String, Component> childrenMap = children();
-					internalIterator = childrenMap.values().iterator();
-				}
+				List<Component> childrenList = children();
+				internalIterator = childrenList.iterator();
+			}
+			else
+			{
+				Map<String, Component> childrenMap = children();
+				internalIterator = childrenMap.values().iterator();
+			}
 
 				// since we now have a new iterator, we need to set it to the last known position
-				currentComponent = findLastExistingChildAlreadyReturned(currentComponent);
-				expectedModCounter = modCounter;
+			currentComponent = findLastExistingChildAlreadyReturned(currentComponent);
+			expectedModCounter = modCounter;
 
-				if (currentComponent != null)
-				{
-					// move the new internal iterator to the place of the last processed component
-					while (internalIterator.hasNext() &&
+			if (currentComponent != null)
+			{
+				// move the new internal iterator to the place of the last processed component
+				while (internalIterator.hasNext() &&
 						internalIterator.next() != currentComponent)
 						// noop
 						;
@@ -664,8 +669,6 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 				return current;
 			}
 		};
-		return new MarkupChildIterator();
-	}
 
 	/**
 	 * Creates an iterator that iterates over children in the order specified by comparator. This
@@ -1581,7 +1584,12 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	 */
 	private void renderComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
 	{
-		if ((markupStream != null) && (markupStream.getCurrentIndex() > 0))
+		if (markupStream == null || openTag == null) {
+			// Add appropriate handling for null cases, log an error, or throw an exception if needed
+       		 return;
+		}
+
+		if(markupStream.getCurrentIndex() > 0)
 		{
 			// If the original tag has been changed from open-close to open-body-close, than we are
 			// done. Other components, e.g. BorderBody, rely on this method being called.
@@ -1594,7 +1602,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 
 		// If the open tag requires a close tag
 		boolean render = openTag.requiresCloseTag();
-		if (render == false)
+		if (!render)
 		{
 			// Tags like <p> do not require a close tag, but they may have.
 			render = !openTag.hasNoCloseTag();

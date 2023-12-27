@@ -17,6 +17,8 @@
 package org.apache.wicket.validation.validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.Validatable;
@@ -67,83 +69,19 @@ class CreditCardValidatorTest
 	 * Tests a couple of credit card numbers that should be valid. Those numbers has been taken from
 	 * https://www.paypal.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
 	 */
-	@Test
-	void validCreditCardNumbers()
-	{
-		// American Express
+	
+
+	@ParameterizedTest
+	@ValueSource(strings = {
+			"378282246310005", "371449635398431", "378734493671000", "378 - 7344-9367 1000",
+			"30569309025904", "6011111111111117", "6011000990139424", "3530111333300000",
+			"3566002020360505", "5555555555554444", "5105105105105100", "4111111111111111",
+			"4012888888881881", "4222222222222", "6331101999990016"
+	})
+
+	void validCreditCardNumbers(String creditCardNumber) {
 		CreditCardValidator test = new CreditCardValidator();
-		IValidatable<String> validatable = new Validatable<String>("378282246310005");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// American Express
-		validatable = new Validatable<String>("371449635398431");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// American Express Corporate
-		validatable = new Validatable<String>("378734493671000");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// American Express Corporate with dashes and spaces (should be filtered
-		// and are therefor legal)
-		validatable = new Validatable<String>("378 - 7344-9367 1000");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Diners Club
-		validatable = new Validatable<String>("30569309025904");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Discover
-		validatable = new Validatable<String>("6011111111111117");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Discover
-		validatable = new Validatable<String>("6011000990139424");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// JCB
-		validatable = new Validatable<String>("3530111333300000");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// JCB
-		validatable = new Validatable<String>("3566002020360505");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Mastercard
-		validatable = new Validatable<String>("5555555555554444");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Mastercard
-		validatable = new Validatable<String>("5105105105105100");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Visa
-		validatable = new Validatable<String>("4111111111111111");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Visa
-		validatable = new Validatable<String>("4012888888881881");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Visa
-		validatable = new Validatable<String>("4222222222222");
-		test.validate(validatable);
-		assertEquals(true, validatable.isValid());
-
-		// Switch / Solo
-		validatable = new Validatable<String>("6331101999990016");
+		IValidatable<String> validatable = new Validatable<>(creditCardNumber);
 		test.validate(validatable);
 		assertEquals(true, validatable.isValid());
 	}

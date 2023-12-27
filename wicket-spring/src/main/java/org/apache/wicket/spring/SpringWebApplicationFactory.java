@@ -147,11 +147,11 @@ public class SpringWebApplicationFactory implements IWebApplicationFactory
 		if (beanName != null)
 		{
 			application = (WebApplication)applicationContext.getBean(beanName);
-			if (application == null)
+			/*if (application == null)
 			{
 				throw new IllegalArgumentException(
 					"Unable to find WebApplication bean with name [" + beanName + "]");
-			}
+			}*/
 		}
 		else
 		{

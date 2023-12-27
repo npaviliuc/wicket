@@ -154,7 +154,7 @@ public interface HttpServletRequest extends jakarta.servlet.http.HttpServletRequ
 
     @Override
     default String getRequestedSessionId() {
-        return getDelegate().getRequestedSessionId();
+        return getDelegate().getSession().getId();
     }
 
     @Override

@@ -139,101 +139,102 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 	}
 
 	@Override
-	public void parseFileParts() throws FileUploadException
-	{
+	public void parseFileParts() throws FileUploadException {
 		HttpServletRequest request = getContainerRequest();
+		String encoding = getCharacterEncoding(request);
 
-		// The encoding that will be used to decode the string parameters
-		// It should NOT be null at this point, but it may be
-		// especially if the older Servlet API 2.2 is used
+		AbstractFileUpload fileUpload = newFileUpload(encoding);
+		List<FileItem> items = parseRequestWithProgress(request, fileUpload);
+
+		processFileItems(items, encoding);
+	}
+
+	private String getCharacterEncoding(HttpServletRequest request) {
 		String encoding = request.getCharacterEncoding();
 
-		// The encoding can also be null when using multipart/form-data encoded forms.
-		// In that case we use the [application-encoding] which we always demand using
-		// the attribute 'accept-encoding' in wicket forms.
-		if (encoding == null)
-		{
+		if (encoding == null) {
 			encoding = Application.get().getRequestCycleSettings().getResponseRequestEncoding();
 		}
 
-		AbstractFileUpload fileUpload = newFileUpload(encoding);
+		return encoding;
+	}
 
+	private List<FileItem> parseRequestWithProgress(HttpServletRequest request, AbstractFileUpload fileUpload)
+			throws FileUploadException {
 		List<FileItem> items;
 
-		if (wantUploadProgressUpdates())
-		{
-			JakartaServletRequestContext ctx = new JakartaServletRequestContext(request)
-			{
-				@Override
-				public InputStream getInputStream() throws IOException
-				{
-					return new CountingInputStream(super.getInputStream());
-				}
-			};
-			totalBytes = request.getContentLength();
-
-			onUploadStarted(totalBytes);
-			try
-			{
-				items = fileUpload.parseRequest(ctx);
-			}
-			finally
-			{
-				onUploadCompleted();
-			}
-		}
-		else
-		{
-			// try to parse the file uploads by using Apache Commons FileUpload APIs
-			// because they are feature richer (e.g. progress updates, cleaner)
-			items = fileUpload.parseRequest(new JakartaServletRequestContext(request));
-			if (items.isEmpty())
-			{
-				// fallback to Servlet 3.0 APIs
-				items = readServlet3Parts(request);
-			}
+		if (wantUploadProgressUpdates()) {
+			items = parseWithProgress(request, fileUpload);
+		} else {
+			items = parseWithoutProgress(request, fileUpload);
 		}
 
-		// Loop through items
-		for (final FileItem item : items)
-		{
-			// Get next item
-			// If item is a form field
-			if (item.isFormField())
-			{
-				// Set parameter value
-				final String value;
-				if (encoding != null)
-				{
-					try
-					{
-						value = item.getString(Charset.forName(encoding));
-					}
-					catch (IOException e)
-					{
-						throw new WicketRuntimeException(e);
-					}
-				}
-				else
-				{
-					value = item.getString();
-				}
+		return items;
+	}
 
-				addParameter(item.getFieldName(), value);
+	private List<FileItem> parseWithProgress(HttpServletRequest request, AbstractFileUpload fileUpload)
+			throws FileUploadException {
+		JakartaServletRequestContext ctx = new JakartaServletRequestContext(request) {
+			@Override
+			public InputStream getInputStream() throws IOException {
+				return new CountingInputStream(super.getInputStream());
 			}
-			else
-			{
-				List<FileItem> fileItems = files.get(item.getFieldName());
-				if (fileItems == null)
-				{
-					fileItems = new ArrayList<>();
-					files.put(item.getFieldName(), fileItems);
-				}
-				// Add to file list
-				fileItems.add(item);
-			}
+		};
+
+		totalBytes = request.getContentLength();
+		onUploadStarted(totalBytes);
+
+		try {
+			return fileUpload.parseRequest(ctx);
+		} finally {
+			onUploadCompleted();
 		}
 	}
+
+	private List<FileItem> parseWithoutProgress(HttpServletRequest request, AbstractFileUpload fileUpload)
+			throws FileUploadException {
+		List<FileItem> items = fileUpload.parseRequest(new JakartaServletRequestContext(request));
+
+		if (items.isEmpty()) {
+			// fallback to Servlet 3.0 APIs
+			items = readServlet3Parts(request);
+		}
+
+		return items;
+	}
+
+	private void processFileItems(List<FileItem> items, String encoding) {
+		for (final FileItem item : items) {
+			processFileItem(item, encoding);
+		}
+	}
+
+	private void processFileItem(FileItem item, String encoding) {
+		if (item.isFormField()) {
+			processFormField(item, encoding);
+		} else {
+			processFileField(item);
+		}
+	}
+
+	private void processFormField(FileItem item, String encoding) {
+		final String value = getValue(item, encoding);
+		addParameter(item.getFieldName(), value);
+	}
+
+	private String getValue(FileItem item, String encoding) {
+		try {
+			return (encoding != null) ? item.getString(Charset.forName(encoding)) : item.getString();
+		} catch (IOException e) {
+			throw new WicketRuntimeException(e);
+		}
+	}
+
+	private void processFileField(FileItem item) {
+		List<FileItem> fileItems = files.computeIfAbsent(item.getFieldName(), k -> new ArrayList<>());
+		fileItems.add(item);
+	}
+
 
 	/**
 	 * Reads the uploads' parts by using Servlet 3.0 APIs.
@@ -488,10 +489,9 @@ public class MultipartServletWebRequestImpl extends MultipartServletWebRequest
 				if (fileMaxSize != null && fileItem.getSize() > fileMaxSize.bytes())
 				{
 					String fieldName = entry.getKey();
-					FileUploadException fslex = new FileUploadByteCountLimitException("The field '" +
+					throw new FileUploadByteCountLimitException("The field '" +
 							fieldName + "' exceeds its maximum permitted size of '" +
 							maxSize + "' characters.", fileItem.getSize(), fileMaxSize.bytes(), fileItem.getName(), fieldName);
-					throw fslex;
 				}
 			}
 		}

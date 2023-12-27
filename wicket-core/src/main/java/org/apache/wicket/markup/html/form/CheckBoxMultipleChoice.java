@@ -28,7 +28,7 @@ import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.util.value.IValueMap;
-
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * A choice subclass that shows choices via checkboxes.
@@ -446,7 +446,9 @@ public class CheckBoxMultipleChoice<T> extends ListMultipleChoice<T>
 	 */
 	protected IValueMap getAdditionalAttributesForLabel(int index, T choice)
 	{
-		return null;
+		IValueMap emptyValueMap = new ValueMap();
+
+		return emptyValueMap;
 	}
 
 	/**

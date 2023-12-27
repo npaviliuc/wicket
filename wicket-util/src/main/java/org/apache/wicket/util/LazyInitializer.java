@@ -35,7 +35,7 @@ public abstract class LazyInitializer<T> implements Supplier<T>, IClusterable
 {
 	private static final long serialVersionUID = 1L;
 
-	private transient volatile T instance = null;
+	private transient T instance = null;
 
 	@Override
 	public T get()

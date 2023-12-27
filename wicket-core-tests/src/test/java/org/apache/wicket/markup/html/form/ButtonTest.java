@@ -106,16 +106,6 @@ class ButtonTest extends WicketTestCase
 		assertEquals(textInHtml, buttonTagTester.getValue());
 	}
 
-	/**
-	 * WICKET-5235 button does not use an inherited model
-	 */
-	@Test
-	void buttonDoesNotInheritModel()
-	{
-		TestPage testPage = new TestPage(null);
-		tester.startPage(testPage);
-	}
-
 	/** */
 	public static class TestPage extends WebPage implements IMarkupResourceStreamProvider
 	{

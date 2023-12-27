@@ -132,7 +132,7 @@ public abstract class RequestHandlerExecutor
 			active = null;
 		}
 
-		RuntimeException rethrow = null;;
+		RuntimeException rethrow = null;
 		for (IRequestHandler handler : inactiveRequestHandlers)
 		{
 			try
@@ -141,16 +141,25 @@ public abstract class RequestHandlerExecutor
 			}
 			catch (Exception exception)
 			{
-				if (rethrow == null && exception instanceof RuntimeException) {
-					rethrow = (RuntimeException) exception;
-				} else {
+				if ( exception instanceof RuntimeException runtimeexception) 
+				{
+					if ( rethrow == null)
+					{
+						rethrow = runtimeexception;
+					} 
+					else 
+					{
+						log.error("Error detaching RequestHandler", runtimeexception);
+					}
+				}
+				else
+				{
 					log.error("Error detaching RequestHandler", exception);
 				}
 			}
 		}
 		if (rethrow != null) {
 			// WICKET-6001 runtime exceptions are rethrown
-			// TODO obsolete should component-queueing be removed
 			throw rethrow;
 		}
 	}
@@ -208,7 +217,7 @@ public abstract class RequestHandlerExecutor
 		 * @see java.lang.Throwable#fillInStackTrace()
 		 */
 		@Override
-		public Throwable fillInStackTrace()
+		public synchronized Throwable fillInStackTrace()
 		{
 			// don't do anything here
 			return null;

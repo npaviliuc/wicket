@@ -15,24 +15,31 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="ja" xml:lang="ja" xmlns:wicket="http://wicket.apache.org">
+
+<head>
+  <title>Sign In Panel</title>
+</head>
+
 <body>
   <wicket:panel>
-    <span wicket:id="feedback"/>
-    
-	<form wicket:id="signInForm">
-		<dl>
-			<dt>ユーザー名:</dt>
-			<dd><input wicket:id="username" type="text" size="30"/></dd>
-			<dt>パスワード:</dt>
-			<dd><input wicket:id="password" type="password" size="30"/></dd>
-			<dd wicket:id="rememberMeContainer"><input wicket:id="rememberMe" type="checkbox" /> ユーザー名を記憶する </dd>
-			<dd>
-				<input type="submit" name="submit" value="サインイン"/>
-				<input type="reset" value="リセット"/>
-			</dd>
-		</dl>
-	</form>
+    <span wicket:id="feedback" />
+
+    <form wicket:id="signInForm">
+      <dl>
+        <dt>ユーザー名:</dt>
+        <dd><input wicket:id="username" type="text" size="30" /></dd>
+        <dt>パスワード:</dt>
+        <dd><input wicket:id="password" type="password" size="30" /></dd>
+        <dd wicket:id="rememberMeContainer"><input wicket:id="rememberMe" type="checkbox" /> ユーザー名を記憶する </dd>
+        <dd>
+          <input type="submit" name="submit" value="サインイン" />
+          <input type="reset" value="リセット" />
+        </dd>
+      </dl>
+    </form>
   </wicket:panel>
 </body>
+
 </html>

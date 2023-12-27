@@ -29,7 +29,7 @@ public class UrlDecoderTest
 	private static final Charset CHARSET = StandardCharsets.UTF_8;
 
 	@Test
-	public void mustNotEmitNullByteForPath()
+	void mustNotEmitNullByteForPath()
 	{
 		String evil = "http://www.devil.com/highway/to%00hell";
 		String decoded = UrlDecoder.PATH_INSTANCE.decode(evil, CHARSET);
@@ -38,7 +38,7 @@ public class UrlDecoderTest
 	}
 
 	@Test
-	public void mustNotEmitNullByteForQuery()
+	void mustNotEmitNullByteForQuery()
 	{
 		String evil = "http://www.devil.com/highway?destination=%00hell";
 		String decoded = UrlDecoder.QUERY_INSTANCE.decode(evil, CHARSET);
@@ -50,7 +50,7 @@ public class UrlDecoderTest
 	 * https://issues.apache.org/jira/browse/WICKET-4803
 	 */
 	@Test
-	public void badUrlEntities()
+	void badUrlEntities()
 	{
 		String url = "http://localhost/test?a=%%%";
 		String decoded = UrlDecoder.QUERY_INSTANCE.decode(url, CHARSET);
@@ -70,7 +70,7 @@ public class UrlDecoderTest
 	}
 
 	@Test
-	public void decode()
+	void decode()
 	{
 		assertEquals("", UrlDecoder.QUERY_INSTANCE.decode("", CHARSET));
 		assertEquals("foobar", UrlDecoder.QUERY_INSTANCE.decode("foobar", CHARSET));

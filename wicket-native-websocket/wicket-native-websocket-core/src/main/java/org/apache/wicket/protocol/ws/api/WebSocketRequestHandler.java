@@ -46,6 +46,7 @@ public class WebSocketRequestHandler extends AbstractPartialPageRequestHandler i
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WebSocketRequestHandler.class);
 
+	private static final String MESSAGE = "message";
 
 	private final IWebSocketConnection connection;
 
@@ -64,7 +65,7 @@ public class WebSocketRequestHandler extends AbstractPartialPageRequestHandler i
 	{
 		if (connection.isOpen())
 		{
-			Args.notNull(message, "message");
+			Args.notNull(message, MESSAGE);
 			try
 			{
 				connection.sendMessage(message.toString());
@@ -84,7 +85,7 @@ public class WebSocketRequestHandler extends AbstractPartialPageRequestHandler i
 	{
 		if (connection.isOpen())
 		{
-			Args.notNull(message, "message");
+			Args.notNull(message, MESSAGE);
 			return connection.sendMessageAsync(message.toString(), timeout);
 		}
 		else
@@ -105,7 +106,7 @@ public class WebSocketRequestHandler extends AbstractPartialPageRequestHandler i
 	{
 		if (connection.isOpen())
 		{
-			Args.notNull(message, "message");
+			Args.notNull(message, MESSAGE);
 			try
 			{
 				connection.sendMessage(message, offset, length);
@@ -131,7 +132,7 @@ public class WebSocketRequestHandler extends AbstractPartialPageRequestHandler i
 	{
 		if (connection.isOpen())
 		{
-			Args.notNull(message, "message");
+			Args.notNull(message, MESSAGE);
 			return connection.sendMessageAsync(message, offset, length, timeout);
 		}
 		else
@@ -181,12 +182,9 @@ public class WebSocketRequestHandler extends AbstractPartialPageRequestHandler i
 	@Override
 	public void respond(IRequestCycle requestCycle)
 	{
-		if (update != null)
+		if (update != null && (shouldPushWhenEmpty() || !update.isEmpty()))
 		{
-			if (shouldPushWhenEmpty() || !update.isEmpty())
-			{
-				update.writeTo(requestCycle.getResponse(), "UTF-8");
-			}
+			update.writeTo(requestCycle.getResponse(), "UTF-8");
 		}
 	}
 

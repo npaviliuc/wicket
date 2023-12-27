@@ -35,23 +35,20 @@ final class ValidationModelResolver
      *
      * @return property-aware model, extracted from supplied component or <code>null</code>
      */
-    public static IPropertyReflectionAwareModel<?> resolvePropertyModelFrom(FormComponent<?> component)
-    {
+    public static IPropertyReflectionAwareModel<?> resolvePropertyModelFrom(FormComponent<?> component) {
         IModel<?> model = component.getModel();
-        while (model != null) {
-            if (model instanceof IPropertyReflectionAwareModel)
-            {
-                return (IPropertyReflectionAwareModel<?>) model;
-            }
-            if (model instanceof IWrapModel<?>)
-            {
-                model = ((IWrapModel<?>)model).getWrappedModel();
-                continue;
-            }
-            break; // not model found
+
+        while (model instanceof IWrapModel<?>) {
+            model = ((IWrapModel<?>) model).getWrappedModel();
         }
+
+        if (model instanceof IPropertyReflectionAwareModel) {
+            return (IPropertyReflectionAwareModel<?>) model;
+        }
+
         return null;
     }
+
 
     private ValidationModelResolver()
     {

@@ -79,7 +79,7 @@ public class WellFormedXmlTestCase
 		}
 		catch (ParserConfigurationException e)
 		{
-			throw new RuntimeException("Configuration exception while parsing xml markup.", e);
+			throw new XmlParsingException("Configuration exception while parsing xml markup.", e);
 		}
 
 		builder.setEntityResolver(entityResolver);
@@ -91,24 +91,21 @@ public class WellFormedXmlTestCase
 		}
 		catch (SAXException e)
 		{
-			throw new RuntimeException("Parsing xml sax failed, file: " + file, e);
+			throw new XmlParsingException("Parsing xml sax failed, file: " + file, e);
 		}
 		catch (IOException e)
 		{
-			throw new RuntimeException("Parsing xml io failed, file: " + file, e);
+			throw new XmlParsingException("Parsing xml io failed, file: " + file, e);
 		}
 	}
 
-	private static final FileFilter fileFilter = new FileFilter()
+	private static final FileFilter fileFilter = (File pathname) ->
 	{
-		@Override
-		public boolean accept(File pathname)
-		{
-			String path = pathname.getAbsolutePath().replace('\\', '/');
-			return !path.contains("/src/test/") && !path.contains("/target/") &&
+		String path = pathname.getAbsolutePath().replace('\\', '/');
+		return !path.contains("/src/test/") && !path.contains("/target/") &&
 				!"package.html".equals(pathname.getName()) &&
 				(pathname.isDirectory() || pathname.getName().endsWith(".html"));
-		}
+		
 	};
 
 	private static final ErrorHandler errorHandler = new ErrorHandler()
@@ -135,9 +132,9 @@ public class WellFormedXmlTestCase
 
 	private static final EntityResolver entityResolver = new EntityResolver()
 	{
-		private final Map<String, String> systemIdToUri = new HashMap<>();
+		private static final Map<String, String> systemIdToUri = new HashMap<>();
 
-		{
+		static {
 			systemIdToUri.put("http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd",
 				"xhtml1-transitional.dtd");
 			systemIdToUri.put("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
@@ -162,4 +159,10 @@ public class WellFormedXmlTestCase
 			return null;
 		}
 	};
+
+	public static class XmlParsingException extends RuntimeException {
+		public XmlParsingException(String message, Throwable cause) {
+			super(message, cause);
+		}
+	}
 }

@@ -457,7 +457,8 @@ class AjaxRequestHandlerTest extends WicketTestCase
 			tester.clickLink(MockPageWithLink.LINK_ID);
 		});
 
-		assertEquals(exception.getMessage(), "Cannot add another page");
+		assertEquals("Cannot add another page", exception.getMessage());
+
 	}
 
 	/**

@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Pedro Santos
  */
-public class BufferedWebResponseTest extends WicketTestCase
+class BufferedWebResponseTest extends WicketTestCase
 {
 	enum TestAction {
 		SET_CONTENT_LENGTH, WRITE_RESPONSE, DISABLE_CACHING

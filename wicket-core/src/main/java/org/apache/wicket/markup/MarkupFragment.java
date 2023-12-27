@@ -17,6 +17,7 @@
 package org.apache.wicket.markup;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.apache.wicket.markup.parser.filter.HtmlHandler;
 import org.apache.wicket.util.lang.Args;
@@ -217,6 +218,10 @@ public class MarkupFragment extends AbstractMarkupFragment
 
 			@Override
 			public MarkupElement next() {
+				if(!hasNext())
+				{
+					throw new NoSuchElementException("No more elements");
+				}
 				return get(index++);
 			}
 

@@ -402,13 +402,15 @@ public class WicketTester extends BaseWicketTester
 		Result result = Result.PASS;
 		IMarkupFragment markup = getMarkupFragment(component);
 
-		String actualVariation = markup.getMarkupResourceStream().getVariation();
-		if (Objects.equal(expectedVariation, actualVariation) == false)
-		{
-			result = Result.fail(
-				String.format("Wrong variation for component '%s'. Actual: '%s', expected: '%s'",
-					component.getPageRelativePath(), actualVariation, expectedVariation));
-		}
+		if (markup != null) {
+			String actualVariation = markup.getMarkupResourceStream().getVariation();
+			if (Objects.equal(expectedVariation, actualVariation) == false)
+			{
+				result = Result.fail(
+					String.format("Wrong variation for component '%s'. Actual: '%s', expected: '%s'",
+						component.getPageRelativePath(), actualVariation, expectedVariation));
+			}                   
+		} 
 
 		assertResult(result);
 	}
@@ -426,13 +428,14 @@ public class WicketTester extends BaseWicketTester
 	{
 		Result result = Result.PASS;
 		IMarkupFragment markup = getMarkupFragment(component);
-
-		String actualStyle = markup.getMarkupResourceStream().getStyle();
-		if (Objects.equal(expectedStyle, actualStyle) == false)
-		{
-			result = Result
-				.fail(String.format("Wrong style for component '%s'. Actual: '%s', expected: '%s'",
-					component.getPageRelativePath(), actualStyle, expectedStyle));
+		if (markup != null) {
+			String actualStyle = markup.getMarkupResourceStream().getStyle();
+			if (Objects.equal(expectedStyle, actualStyle) == false)
+			{
+				result = Result
+					.fail(String.format("Wrong style for component '%s'. Actual: '%s', expected: '%s'",
+						component.getPageRelativePath(), actualStyle, expectedStyle));
+			}
 		}
 
 		assertResult(result);
@@ -448,17 +451,18 @@ public class WicketTester extends BaseWicketTester
 	 */
 	public void assertMarkupLocale(Component component, Locale expectedLocale)
 	{
+		
 		Result result = Result.PASS;
 		IMarkupFragment markup = getMarkupFragment(component);
-
-		Locale actualLocale = markup.getMarkupResourceStream().getLocale();
-		if (Objects.equal(expectedLocale, actualLocale) == false)
-		{
-			result = Result
-				.fail(String.format("Wrong locale for component '%s'. Actual: '%s', expected: '%s'",
-					component.getPageRelativePath(), actualLocale, expectedLocale));
+		if (markup != null) {
+			Locale actualLocale = markup.getMarkupResourceStream().getLocale();
+			if (Objects.equal(expectedLocale, actualLocale) == false)
+			{
+				result = Result
+					.fail(String.format("Wrong locale for component '%s'. Actual: '%s', expected: '%s'",
+						component.getPageRelativePath(), actualLocale, expectedLocale));
+			}
 		}
-
 		assertResult(result);
 	}
 

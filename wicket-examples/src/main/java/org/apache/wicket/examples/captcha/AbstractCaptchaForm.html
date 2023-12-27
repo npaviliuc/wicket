@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:wicket="http://wicket.apache.org">
+<html lang="en" xml:lang="en" xmlns:wicket="http://wicket.apache.org">
+
+<head>
+    <title>Abstract Captcha Form</title>
+</head>
+
 <body>
 
     <wicket:panel>
         <form wicket:id="form">
             <p>
-                <img wicket:id="image" />
+                <img wicket:id="image" alt="Captcha Image"/>
                 <a wicket:id="changeLink">change</a>
             </p>
             <p>
@@ -20,4 +25,5 @@
     </wicket:panel>
 
 </body>
+
 </html>

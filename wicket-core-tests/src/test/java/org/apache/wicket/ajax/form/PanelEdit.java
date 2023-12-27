@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 
 public class PanelEdit extends Panel {
-
+    public boolean isSubmitted = false;
     public PanelEdit(String id) {
         super(id);
 
@@ -51,6 +51,7 @@ public class PanelEdit extends Panel {
                 		.setOutputMarkupId(true);
 				currentcomponent.replaceWith(newComponent);
                 target.add(newComponent);
+                isSubmitted = true;
             }
 
         };

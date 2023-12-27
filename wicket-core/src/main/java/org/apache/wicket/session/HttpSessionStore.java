@@ -48,6 +48,13 @@ import org.slf4j.LoggerFactory;
  * @author Eelco Hillenius
  * @author Matej Knopp
  */
+
+class InvalidRequestException extends RuntimeException {
+	public InvalidRequestException(String message) {
+		super(message);
+	}
+}
+
 public class HttpSessionStore implements ISessionStore
 {
 	private static final Logger log = LoggerFactory.getLogger(HttpSessionStore.class);
@@ -63,9 +70,9 @@ public class HttpSessionStore implements ISessionStore
 	protected final HttpServletRequest getHttpServletRequest(final Request request)
 	{
 		Object containerRequest = request.getContainerRequest();
-		if ((containerRequest instanceof HttpServletRequest) == false)
+		if (!(containerRequest instanceof HttpServletRequest))
 		{
-			throw new IllegalArgumentException("Request must be ServletWebRequest");
+			throw new InvalidRequestException("Request must be ServletWebRequest");
 		}
 		return (HttpServletRequest)containerRequest;
 	}
@@ -259,10 +266,7 @@ public class HttpSessionStore implements ISessionStore
 		HttpSession httpSession = getHttpSession(request, false);
 		if (httpSession != null)
 		{
-			return withSession(httpSession.getId(), () -> {
-				return (Serializable)httpSession
-					.getAttribute(getSessionAttributePrefix(request) + name);
-			});
+			return withSession(httpSession.getId(), () -> (Serializable)httpSession.getAttribute(getSessionAttributePrefix(request) + name));
 		}
 		return null;
 	}

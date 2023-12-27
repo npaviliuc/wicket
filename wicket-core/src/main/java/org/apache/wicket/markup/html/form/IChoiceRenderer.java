@@ -73,11 +73,11 @@ public interface IChoiceRenderer<T> extends IDetachable
 	 */
 	default T getObject(String id, IModel<? extends List<? extends T>> choices)
 	{
-		List<? extends T> _choices = choices.getObject();
-		for (int index = 0; index < _choices.size(); index++)
+		List<? extends T> choicesList = choices.getObject();
+		for (int index = 0; index < choicesList.size(); index++)
 		{
 			// Get next choice
-			final T choice = _choices.get(index);
+			final T choice = choicesList.get(index);
 			if (getIdValue(choice, index).equals(id))
 			{
 				return choice;

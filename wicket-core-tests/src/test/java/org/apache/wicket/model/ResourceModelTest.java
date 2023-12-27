@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link ResourceModel}.
  */
-public class ResourceModelTest extends WicketTestCase
+class ResourceModelTest extends WicketTestCase
 {
 	/**
 	 * Test page.

@@ -44,7 +44,7 @@ public class ChartUpdater
         scheduledExecutorService.schedule(updateTask, 1, TimeUnit.SECONDS);
 	}
 
-
+	private static Random randomGenerator = new Random();
 
 	/**
 	 * Generates some random data to send to the client
@@ -52,7 +52,6 @@ public class ChartUpdater
 	 */
 	private static Record[] generateData()
 	{
-		Random randomGenerator = new Random();
 		Record[] data = new Record[1000];
 		for (int i = 0; i < 1000; i++)
 		{

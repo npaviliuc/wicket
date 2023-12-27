@@ -70,7 +70,7 @@ public class ByteBuddyInterceptor
 	}
 
 	@RuntimeType
-	public Object intercept(@Origin Method method, @AllArguments Object[] args, @Pipe Function pipe) throws Exception
+	public Object intercept(@Origin Method method, @AllArguments Object[] args, @Pipe Function pipe) throws MyCustomException
 	{
 		if (LazyInitProxyFactory.isFinalizeMethod(method))
 		{
@@ -95,7 +95,11 @@ public class ByteBuddyInterceptor
 			target = locator.locateProxyTarget();
 		}
 		
-		return pipe.apply(target);
+		try {
+			return pipe.apply(target);
+		} catch (Exception e) {
+			throw new MyCustomException("Error invoking method", e);
+		}
 	}
 
 	@Override
@@ -108,5 +112,11 @@ public class ByteBuddyInterceptor
 	public Object writeReplace() throws ObjectStreamException
 	{
 		return new ProxyReplacement(typeName, locator);
+	}
+
+	public static class MyCustomException extends Exception {
+		public MyCustomException(String message, Throwable cause) {
+			super(message, cause);
+		}
 	}
 }

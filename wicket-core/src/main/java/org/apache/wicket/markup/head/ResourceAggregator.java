@@ -354,12 +354,12 @@ public class ResourceAggregator extends DecoratingHeaderResponse
 			if (markItemRendered(curItem))
 			{
 				domReadScript.append('\n');
-				if (curItem instanceof OnDomReadyHeaderItem)
+				if (curItem instanceof OnDomReadyHeaderItem ondomreadyheaderitem)
 				{
-					domReadScript.append(((OnDomReadyHeaderItem)curItem).getJavaScript());
-				} else if (curItem instanceof OnEventHeaderItem)
+					domReadScript.append(ondomreadyheaderitem.getJavaScript());
+				} else if (curItem instanceof OnEventHeaderItem oneventheaderitem)
 				{
-					domReadScript.append(((OnEventHeaderItem)curItem).getCompleteJavaScript());
+					domReadScript.append(oneventheaderitem.getCompleteJavaScript());
 				}
 				domReadScript.append(';');
 			}

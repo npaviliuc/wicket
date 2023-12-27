@@ -18,6 +18,7 @@ package org.apache.wicket.protocol.ws.api;
 
 import java.util.Map;
 import java.util.Set;
+import java.io.IOException;
 
 import jakarta.servlet.SessionTrackingMode;
 import jakarta.servlet.http.Cookie;
@@ -114,11 +115,18 @@ public class BaseWebSocketBehavior extends Behavior
 	}
 
 	protected String getWebSocketSetupScript(Map<String, Object> parameters) {
-		PackageTextTemplate webSocketSetupTemplate =
-				new PackageTextTemplate(WicketWebSocketJQueryResourceReference.class,
-						"res/js/wicket-websocket-setup.js.tmpl");
-
-		return webSocketSetupTemplate.asString(parameters);
+		try{
+			try(PackageTextTemplate webSocketSetupTemplate =
+					new PackageTextTemplate(WicketWebSocketJQueryResourceReference.class,
+							"res/js/wicket-websocket-setup.js.tmpl"))
+				{
+					return webSocketSetupTemplate.asString(parameters);
+				}
+			}
+		catch (IOException e)
+		{
+			return null;
+		}
 	}
 
 	/**

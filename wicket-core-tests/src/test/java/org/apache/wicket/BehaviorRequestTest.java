@@ -70,9 +70,12 @@ class BehaviorRequestTest extends WicketTestCase
 	@Test
 	void disabledBehaviorRequest()
 	{
+
+		String url = urlForBehavior(page.disabledBehavior);
+
 		try
 		{
-			tester.executeUrl(urlForBehavior(page.disabledBehavior));
+			tester.executeUrl(url);
 			fail("Executing the listener on disabled component is not allowed.");
 		}
 		catch (ListenerInvocationNotAllowedException expected)

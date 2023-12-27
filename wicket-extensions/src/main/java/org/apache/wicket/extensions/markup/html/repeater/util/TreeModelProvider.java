@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -99,6 +100,10 @@ public abstract class TreeModelProvider<T> implements ITreeProvider<T>
 				@Override
 				public T next()
 				{
+					if (!next)
+					{
+						throw new NoSuchElementException();
+					}
 					next = false;
 					return cast(treeModel.getRoot());
 				}
@@ -140,6 +145,12 @@ public abstract class TreeModelProvider<T> implements ITreeProvider<T>
 			public T next()
 			{
 				index++;
+
+				if (index >= size)
+				{
+					throw new NoSuchElementException("No more elements in the collection");
+				}
+
 				return cast(treeModel.getChild(object, index));
 			}
 

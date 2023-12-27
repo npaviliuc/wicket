@@ -19,6 +19,7 @@ package org.apache.wicket.page;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -307,7 +308,7 @@ class PageAccessSynchronizerTest
 		// make sure we can serialize the synchronizer
 
 		final PageAccessSynchronizer sync2 = WicketObjects.cloneObject(sync);
-		assertTrue(sync != sync2);
+		assertNotSame(sync, sync2);
 
 		// make sure the clone does not retain locks by attempting to lock page locked by locker1 in
 		// locker2

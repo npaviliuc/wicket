@@ -55,10 +55,10 @@ public class DefaultExceptionMapper implements IExceptionMapper
 		{
 			Response response = RequestCycle.get().getResponse();
 			// WICKET-7067 WebSocketResponse doesn't allow setting headers
-			if (response instanceof WebResponse && ((WebResponse) response).isHeaderSupported())
+			if (response instanceof WebResponse webresponse && webresponse.isHeaderSupported())
 			{
 				// we don't want to cache an exceptional reply in the browser
-				((WebResponse) response).disableCaching();
+				webresponse.disableCaching();
 			}
 			return internalMap(e);
 		}

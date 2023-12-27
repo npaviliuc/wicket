@@ -16,6 +16,7 @@
  */
 package org.apache.wicket.ajax;
 
+import java.lang.IllegalStateException;
 import java.util.Optional;
 import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -26,6 +27,9 @@ import org.danekja.java.util.function.serializable.SerializableConsumer;
  */
 public class AjaxUtils
 {
+    private AjaxUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Runs action if current request is of type "AJAX". Otherwise, nothing is done.

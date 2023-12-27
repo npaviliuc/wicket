@@ -95,9 +95,7 @@ public class GCMSIVCrypter implements ICrypter
 
 			Cipher cipher = getCipher();
 			cipher.init(Cipher.DECRYPT_MODE, key, new AEADParameterSpec(nonce, 128));
-			byte[] decrypted = cipher.doFinal(ciphertext);
-
-			return decrypted;
+			return cipher.doFinal(ciphertext);
 		}
 		catch (GeneralSecurityException ex)
 		{

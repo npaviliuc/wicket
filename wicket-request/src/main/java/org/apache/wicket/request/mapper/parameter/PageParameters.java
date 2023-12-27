@@ -320,9 +320,9 @@ public class PageParameters implements IClusterable, IIndexedParameters, INamedP
 		Args.notEmpty(name, "name");
 		Args.notNull(value, "value");
 
-		if (value instanceof String[])
+		if (value instanceof String[] strings)
 		{
-			addNamed(name, (String[]) value, index, type);
+			addNamed(name, strings, index, type);
 		}
 		else
 		{
@@ -545,19 +545,10 @@ public class PageParameters implements IClusterable, IIndexedParameters, INamedP
 	 */
 	public static boolean equals(final PageParameters p1, final PageParameters p2)
 	{
-		if (Objects.equal(p1, p2))
-		{
-			return true;
-		}
-		if ((p1 == null) && (p2.getIndexedCount() == 0) && p2.getNamedCount() == 0)
-		{
-			return true;
-		}
-		if ((p2 == null) && (p1.getIndexedCount() == 0) && p1.getNamedCount() == 0)
-		{
-			return true;
-		}
-		return false;
+		return Objects.equal(p1, p2) || 
+				((p1 == null) && (p2.getIndexedCount() == 0) && p2.getNamedCount() == 0) || 
+				((p2 == null) && (p1.getIndexedCount() == 0) && p1.getNamedCount() == 0)
+		;
 	}
 
 	/**

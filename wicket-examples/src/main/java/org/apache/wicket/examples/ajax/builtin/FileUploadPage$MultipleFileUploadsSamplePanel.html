@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <head>
+    <title>File Upload Page with Multiple files</title>
     <wicket:head>
         <script type="text/css">
             table.files {
@@ -27,6 +29,8 @@
         File field (can select multiple files): <input wicket:id="file" type="file" multiple="multiple"/> (<span wicket:id="max"></span> max)<br/><br/>
         <br/>
         <table wicket:id="selectedFileInfo" class="files">
+            <th></th>
+            <caption>Info selected file</caption>
         </table>
         <br/>
         <div wicket:id="progress"></div>

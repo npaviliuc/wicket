@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.github.openjson.JSONObject;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 
 /**
  * The resource that handles the file uploads.
@@ -53,11 +54,17 @@ import jakarta.servlet.http.HttpServletResponse;
  * some UI allowing to delete/preview files and so on).
  * Here we are just using plain jQuery code at client side to upload a single file.
  */
-public abstract class AbstractFileUploadResource extends AbstractResource
+public abstract class AbstractFileUploadResource extends AbstractResource implements Serializable
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractFileUploadResource.class);
 
 	public static final String PARAM_NAME = "WICKET-FILE-UPLOAD";
+
+	private static final String APPLICATION_JSON = "application/json";
+	
+	private static final String ERROR = "error";
+
+	private static final String ERROR_MESSAGE = "errorMessage";
 
 	/**
 	 * This resource is usually an application singleton. Thus, client side pass
@@ -72,9 +79,11 @@ public abstract class AbstractFileUploadResource extends AbstractResource
 	 */
 	public static final String NO_FILE_SELECTED = "wicket.no.files.selected";
 
-	private final IUploadsFileManager fileManager;
+	private static final long serialVersionUID = 123456789L;
 
-	public AbstractFileUploadResource(IUploadsFileManager fileManager)
+	private final transient IUploadsFileManager fileManager;
+
+	protected AbstractFileUploadResource(IUploadsFileManager fileManager)
 	{
 		this.fileManager = fileManager;
 	}
@@ -124,15 +133,15 @@ public abstract class AbstractFileUploadResource extends AbstractResource
 			}
 			else
 			{
-				resourceResponse.setContentType("application/json");
+				resourceResponse.setContentType(APPLICATION_JSON);
 				resourceResponse.setWriteCallback(new WriteCallback()
 				{
 					@Override
 					public void writeData(Attributes attributes) throws IOException
 					{
 						JSONObject json = new JSONObject();
-						json.put("error", true);
-						json.put("errorMessage", NO_FILE_SELECTED);
+						json.put(ERROR, true);
+						json.put(ERROR_MESSAGE, NO_FILE_SELECTED);
 						String error = json.toString();
 						attributes.getResponse().write(error);
 					}
@@ -143,15 +152,15 @@ public abstract class AbstractFileUploadResource extends AbstractResource
 		}
 		catch (FileUploadException fux)
 		{
-			resourceResponse.setContentType("application/json");
+			resourceResponse.setContentType(APPLICATION_JSON);
 			// even when this is an exceptional situation we want the request to be successful
 			// as we are just sending back to the client some JSON with error messages,
 			// which will in turn be sent to wicket component (who will handle the errors)
 			resourceResponse.setStatusCode(HttpServletResponse.SC_OK);
 			JSONObject json = new JSONObject();
-			json.put("error", true);
+			json.put(ERROR, true);
 			String errorMessage = getFileUploadExceptionKey(fux);
-			json.put("errorMessage", errorMessage);
+			json.put(ERROR_MESSAGE, errorMessage);
 			String error = json.toString();
 			resourceResponse.setWriteCallback(new WriteCallback()
 			{
@@ -165,11 +174,11 @@ public abstract class AbstractFileUploadResource extends AbstractResource
 		}
 		catch (Exception fux)
 		{
-			resourceResponse.setContentType("application/json");
+			resourceResponse.setContentType(APPLICATION_JSON);
 			JSONObject json = new JSONObject();
-			json.put("error", true);
+			json.put(ERROR, true);
 			String errorMessage = LOG.isDebugEnabled() ? fux.getMessage() :  Form.UPLOAD_FAILED_RESOURCE_KEY;
-			json.put("errorMessage", errorMessage);
+			json.put(ERROR_MESSAGE, errorMessage);
 			String error = json.toString();
 			resourceResponse.setWriteCallback(new WriteCallback()
 			{
@@ -217,7 +226,7 @@ public abstract class AbstractFileUploadResource extends AbstractResource
 	 */
 	protected void prepareResponse(ResourceResponse resourceResponse, ServletWebRequest webRequest, List<FileUpload> fileItems)
 	{
-		resourceResponse.setContentType("application/json");
+		resourceResponse.setContentType(APPLICATION_JSON);
 		final String responseContent = generateJsonResponse(resourceResponse, webRequest, fileItems);
 
 		resourceResponse.setWriteCallback(new WriteCallback()

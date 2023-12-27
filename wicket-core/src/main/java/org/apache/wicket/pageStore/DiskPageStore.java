@@ -504,13 +504,13 @@ public class DiskPageStore extends AbstractPersistentPageStore implements IPersi
 		{
 			if (sessionIdentifier == null)
 			{
-				return null;
+				return new byte[0];
 			}
 
 			FileWindow window = getManager().getPageWindow(id);
 			if (window == null)
 			{
-				return null;
+				return new byte[0];
 			}
 
 			return loadData(window);

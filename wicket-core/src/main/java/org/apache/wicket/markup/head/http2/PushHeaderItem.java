@@ -17,6 +17,7 @@
 package org.apache.wicket.markup.head.http2;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -61,7 +62,7 @@ import org.apache.wicket.util.lang.Args;
  * @author Tobias Soloschenko
  *
  */
-public class PushHeaderItem extends HeaderItem
+public class PushHeaderItem extends HeaderItem implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -112,7 +113,7 @@ public class PushHeaderItem extends HeaderItem
 	 */
 	private Page page;
 
-	private final IPushBuilder pushBuilder;
+	private final transient IPushBuilder pushBuilder;
 
 	/**
 	 * Creates a push header item based on the given page and the corresponding page request / page

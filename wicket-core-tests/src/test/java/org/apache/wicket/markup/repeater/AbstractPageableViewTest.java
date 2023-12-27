@@ -30,14 +30,14 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link AbstractPageableView}. 
  */
-public class AbstractPageableViewTest extends WicketTestCase
+class AbstractPageableViewTest extends WicketTestCase
 {
 	private static int count = 5;
 	
 	/**
 	 */
 	@Test
-	public void cachedItemCount()
+	void cachedItemCount()
 	{
 		View view = new View("f");
 		

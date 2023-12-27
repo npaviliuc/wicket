@@ -267,9 +267,8 @@ class IModelTest
 	@Test
 	void nullAs()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			LoadableDetachableModel.of(TextMatchingStatus.NotSubmitted::new).as(null);
-		});
+		IModel<TextMatchingStatus> statusModel = LoadableDetachableModel.of(TextMatchingStatus.NotSubmitted::new);
+		assertThrows(IllegalArgumentException.class, () -> statusModel.as(null));
 	}
 
 }

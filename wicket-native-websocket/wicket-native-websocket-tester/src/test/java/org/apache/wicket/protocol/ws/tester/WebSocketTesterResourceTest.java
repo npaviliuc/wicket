@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @since 6.0
  */
-public class WebSocketTesterResourceTest
+class WebSocketTesterResourceTest
 {
 	private static final String EXPECTED_TEXT = "expected text";
 	private static final byte[] EXPECTED_BINARY = new byte[] {1, 2, 3};
@@ -86,7 +86,7 @@ public class WebSocketTesterResourceTest
 	 * pushed back the same message but capitalized.
 	 */
 	@Test
-	public void sendTextMessage()
+	void sendTextMessage()
 	{
 		assertFalse(TestWebSocketResource.ON_CONNECT_CALLED.get());
 
@@ -117,7 +117,7 @@ public class WebSocketTesterResourceTest
 	 * pushed back the same message but capitalized.
 	 */
 	@Test
-	public void sendBinaryMessage()
+	void sendBinaryMessage()
 	{
 		assertFalse(TestWebSocketResource.ON_CONNECT_CALLED.get());
 
@@ -128,8 +128,8 @@ public class WebSocketTesterResourceTest
 			{
 				ON_OUT_BINARY_CALLED.set(true);
 				assertArrayEquals(EXPECTED_BINARY, message);
-				assertEquals(offset, offset);
-				assertEquals(length, length);
+				assertEquals(EXPECTED_OFFSET, offset);
+				assertEquals(EXPECTED_LENGTH, length);
 			}
 		};
 

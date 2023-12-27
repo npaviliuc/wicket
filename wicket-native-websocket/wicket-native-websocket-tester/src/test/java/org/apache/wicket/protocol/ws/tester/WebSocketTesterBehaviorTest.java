@@ -59,7 +59,7 @@ public class WebSocketTesterBehaviorTest
 	 * pushed back the same message but capitalized.
 	 */
 	@Test
-	public void sendTextMessageBehavior()
+	void sendTextMessageBehavior()
 	{
 		final String expectedMessage = "some message";
 
@@ -84,7 +84,7 @@ public class WebSocketTesterBehaviorTest
 	 * pushes back the same message but capitalized, offset plus 1 and length minus 1.
 	 */
 	@Test
-	public void sendBinaryMessageBehavior()
+	void sendBinaryMessageBehavior()
 	{
 		final byte[] expectedMessage = "some message".getBytes(StandardCharsets.UTF_8);
 		final int offset = 1;
@@ -112,7 +112,7 @@ public class WebSocketTesterBehaviorTest
 	}
 
 	@Test
-	public void serverSideBroadcast()
+	void serverSideBroadcast()
 	{
 		final String expectedMessage = "Broadcasted Message";
 		final BroadcastMessage broadcastMessage = new BroadcastMessage(expectedMessage);

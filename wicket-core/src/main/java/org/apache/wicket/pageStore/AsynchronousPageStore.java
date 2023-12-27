@@ -317,6 +317,9 @@ public class AsynchronousPageStore extends DelegatingPageStore
 			catch (InterruptedException e)
 			{
 				log.error(e.getMessage(), e);
+				// Re-interrupt the current thread and rethrow the InterruptedException
+    	        Thread.currentThread().interrupt();
+	            throw new RuntimeException("Interrupted while waiting for pageSavingThread to finish", e);
 			}
 		}
 
@@ -356,7 +359,9 @@ public class AsynchronousPageStore extends DelegatingPageStore
 		PendingAdd entry = queueMap.remove(key);
 		if (entry != null)
 		{
-			queue.remove(entry);
+			if(!queue.remove(entry)) {
+				log.info("Entry not in queue");
+			}
 		}
 
 		getDelegate().removePage(context, page);
@@ -385,6 +390,7 @@ public class AsynchronousPageStore extends DelegatingPageStore
 			}
 			catch (InterruptedException e)
 			{
+				Thread.currentThread().interrupt();
 				log.error(e.getMessage(), e);
 				queueMap.remove(key);
 			}

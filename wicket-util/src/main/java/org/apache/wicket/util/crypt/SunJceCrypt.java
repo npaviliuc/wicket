@@ -51,6 +51,8 @@ public class SunJceCrypt extends AbstractCrypt
 	private final int iterationCount;
 	
 	private final byte[] salt;
+
+	private static final Random random = new Random();
  
 	/**
 	 * Constructor.
@@ -169,7 +171,7 @@ public class SunJceCrypt extends AbstractCrypt
 		// must be 8 bytes - for anything else PBES1Core throws
 		// InvalidAlgorithmParameterException: Salt must be 8 bytes long  
 		byte[] salt = new byte[8];
-		new Random().nextBytes(salt);
+		random.nextBytes(salt);
 		return salt;
 	}
 }

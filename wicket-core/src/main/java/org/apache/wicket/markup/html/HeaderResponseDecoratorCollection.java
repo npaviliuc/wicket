@@ -31,6 +31,8 @@ import org.apache.wicket.util.lang.Args;
  */
 public class HeaderResponseDecoratorCollection implements IHeaderResponseDecorator
 {
+	private static final String DECORATOR = "decorator";
+
 	private final List<IHeaderResponseDecorator> decorators = new CopyOnWriteArrayList<>();
 
 	private IHeaderResponseDecorator resourceAggregation = ResourceAggregator::new;
@@ -52,7 +54,7 @@ public class HeaderResponseDecoratorCollection implements IHeaderResponseDecorat
 	 */
 	public HeaderResponseDecoratorCollection add(IHeaderResponseDecorator decorator)
 	{
-		Args.notNull(decorator, "decorator");
+		Args.notNull(decorator, DECORATOR);
 		decorators.add(0, decorator);
 		return this;
 	}
@@ -70,7 +72,7 @@ public class HeaderResponseDecoratorCollection implements IHeaderResponseDecorat
 	public HeaderResponseDecoratorCollection addPreResourceAggregationDecorator(
 		IHeaderResponseDecorator decorator)
 	{
-		Args.notNull(decorator, "decorator");
+		Args.notNull(decorator, DECORATOR);
 
 		for (int i = 0; i < decorators.size(); i++)
 		{
@@ -95,7 +97,7 @@ public class HeaderResponseDecoratorCollection implements IHeaderResponseDecorat
 	public HeaderResponseDecoratorCollection addPostProcessingDecorator(
 		IHeaderResponseDecorator decorator)
 	{
-		Args.notNull(decorator, "decorator");
+		Args.notNull(decorator, DECORATOR);
 		decorators.add(decorator);
 		return this;
 	}
@@ -110,7 +112,7 @@ public class HeaderResponseDecoratorCollection implements IHeaderResponseDecorat
 	 */
 	public HeaderResponseDecoratorCollection replaceAll(IHeaderResponseDecorator decorator)
 	{
-		Args.notNull(decorator, "decorator");
+		Args.notNull(decorator, DECORATOR);
 		decorators.clear();
 		resourceAggregation = null;
 		decorators.add(decorator);

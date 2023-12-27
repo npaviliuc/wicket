@@ -38,7 +38,7 @@ import org.apache.wicket.util.collections.ClassMetaCache;
 public class NonContextual<T>
 {
 	private static final Object lock = new Object();
-	private static volatile Map<BeanManager, ClassMetaCache<NonContextual<?>>> cache = Collections
+	private static Map<BeanManager, ClassMetaCache<NonContextual<?>>> cache = Collections
 			.emptyMap();
 
 	final InjectionTarget<T> it;

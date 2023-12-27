@@ -33,10 +33,12 @@ import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Test for {@link ResourceIsolationRequestCycleListener}. 
  */
-public class ResourceIsolationRequestCycleListenerTest extends WicketTestCase
+class ResourceIsolationRequestCycleListenerTest extends WicketTestCase
 {
 
 	private ResourceIsolationRequestCycleListener listener;
@@ -192,10 +194,8 @@ public class ResourceIsolationRequestCycleListenerTest extends WicketTestCase
 	private void assertRequestAborted()
 	{
 		tester.clickLink("link");
-		assertEquals(tester.getLastResponse().getStatus(),
-			jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
-		assertEquals(tester.getLastResponse().getErrorMessage(),
-			ResourceIsolationRequestCycleListener.ERROR_MESSAGE);
+		assertEquals(HttpServletResponse.SC_FORBIDDEN, tester.getLastResponse().getStatus());
+		assertEquals(ResourceIsolationRequestCycleListener.ERROR_MESSAGE, tester.getLastResponse().getErrorMessage());
 	}
 
 	private void assertRequestAccepted()

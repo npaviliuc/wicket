@@ -106,7 +106,7 @@ public final class Packages
 						throw new IllegalArgumentException("Invalid path " + path);
 					}
 				}
-				else if (".".equals(folder) == false)
+				else if (!".".equals(folder))
 				{
 					// Add to stack
 					absolutePath.add(folder);

@@ -76,6 +76,7 @@ class AjaxFormSubmitBehaviorTest extends WicketTestCase
 		FormTester formTester = tester.newFormTester(panelEdit.getId() + ":form");
 		//AjaxFormSubmitBehavior onSubmit must not be called when form is removed
 		formTester.submit("submit");
+		assertTrue(panelEdit.isSubmitted);
 	}
 
 	public static class NestedFormTestPage extends NestedFormPage

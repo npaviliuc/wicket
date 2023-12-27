@@ -36,7 +36,7 @@ abstract class TestWebSocketConnection implements IWebSocketConnection
 	private final IKey registryKey;
 	private boolean isOpen = true;
 
-	public TestWebSocketConnection(WebApplication application, String sessionId, IKey registryKey)
+	protected TestWebSocketConnection(WebApplication application, String sessionId, IKey registryKey)
 	{
 		this.application = application;
 		this.sessionId = sessionId;
@@ -121,7 +121,7 @@ abstract class TestWebSocketConnection implements IWebSocketConnection
 
 	private void checkOpenness()
 	{
-		if (isOpen() == false)
+		if (!isOpen())
 		{
 			throw new IllegalStateException("The connection is closed!");
 		}

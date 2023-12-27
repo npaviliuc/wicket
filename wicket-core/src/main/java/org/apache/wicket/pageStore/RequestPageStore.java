@@ -94,7 +94,7 @@ public class RequestPageStore extends DelegatingPageStore
 		RequestData requestData = getRequestData(context);
 		for (IManageablePage page : requestData.pages())
 		{
-			if (isPageStateless(page) == false)
+			if (!isPageStateless(page))
 			{
 				// last opportunity to create a session
 				context.getSessionId(true);
@@ -109,7 +109,7 @@ public class RequestPageStore extends DelegatingPageStore
 		RequestData requestData = getRequestData(context);
 		for (IManageablePage page : requestData.pages())
 		{
-			if (isPageStateless(page) == false)
+			if (!isPageStateless(page))
 			{
 				getDelegate().addPage(context, page);
 			}

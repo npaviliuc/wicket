@@ -45,17 +45,13 @@ class HtmlHeaderItemsContainerTest extends WicketTestCase
 		int idxTitleElement = responseAsString.indexOf("<title>Apache Wicket Quickstart</title>");
 		int idxMetaFromBasePage = responseAsString.indexOf("<meta name='fromBasePage' content='1'");
 
-		assertThat(idxMetaCharset).isLessThan(idxMetaPanelWicketHead).withFailMessage(
-			"<meta charset> should be rendered before <meta name=\"panel-wicket-head\"");
+		assertThat(idxMetaCharset).withFailMessage("<meta charset> should be rendered before <meta name=\"panel-wicket-head\"").isLessThan(idxMetaPanelWicketHead);
 
-		assertThat(idxMetaPanelWicketHead).isLessThan(idxWicketAjaxJs).withFailMessage(
-			"<meta  name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>");
+		assertThat(idxMetaPanelWicketHead).withFailMessage("<meta  name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>").isLessThan(idxWicketAjaxJs);
 
-		assertThat(idxWicketAjaxJs).isLessThan(idxTitleElement).withFailMessage(
-			"<script src=wicket-ajax-jquery.js> should be rendered before the <title> element");
+		assertThat(idxWicketAjaxJs).withFailMessage("<script src=wicket-ajax-jquery.js> should be rendered before the <title> element").isLessThan(idxTitleElement);
 
-		assertThat(idxMetaFromBasePage).isLessThan(idxTitleElement).withFailMessage(
-			"<meta name='fromBasePage'> should be rendered before the <title> element");
+		assertThat(idxMetaFromBasePage).withFailMessage("<meta name='fromBasePage'> should be rendered before the <title> element").isLessThan(idxTitleElement);
 	}
 
 	@Test
@@ -70,17 +66,13 @@ class HtmlHeaderItemsContainerTest extends WicketTestCase
 		int idxTitleElement = responseAsString.indexOf("<title>Apache Wicket Quickstart</title>");
 		int idxMetaFromBasePage = responseAsString.indexOf("<meta name='fromBasePage' content='1'");
 
-		assertThat(idxMetaPanelWicketHead).isLessThan(idxWicketAjaxJs).withFailMessage(
-			"<meta name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>");
+		assertThat(idxMetaPanelWicketHead).withFailMessage("<meta name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>").isLessThan(idxWicketAjaxJs);
 
-		assertThat(idxWicketAjaxJs).isLessThan(idxMetaCharset).withFailMessage(
-			"<script src=wicket-ajax-jquery.js> should be rendered before <meta charset>");
+		assertThat(idxWicketAjaxJs).withFailMessage("<script src=wicket-ajax-jquery.js> should be rendered before <meta charset>").isLessThan(idxMetaCharset);
 
-		assertThat(idxMetaCharset).isLessThan(idxTitleElement)
-			.withFailMessage("<meta charset> should be rendered before the <title> element");
+		assertThat(idxMetaCharset).withFailMessage("<meta charset> should be rendered before the <title> element").isLessThan(idxTitleElement);
 
-		assertThat(idxTitleElement).isLessThan(idxMetaFromBasePage).withFailMessage(
-			"<title> should be rendered before the <meta name='fromBasePage'> element");
+		assertThat(idxTitleElement).withFailMessage("<title> should be rendered before the <meta name='fromBasePage'> element").isLessThan(idxMetaFromBasePage);
 	}
 
 	@Test
@@ -97,20 +89,15 @@ class HtmlHeaderItemsContainerTest extends WicketTestCase
 		int idxMetaFromSubPage = responseAsString
 			.indexOf("<meta name=\"SubPageWithoutHeaderItemsAndWicketHead\"");
 
-		assertThat(idxMetaPanelWicketHead).isLessThan(idxWicketAjaxJs).withFailMessage(
-			"<meta name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>");
+		assertThat(idxMetaPanelWicketHead).withFailMessage("<meta name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>").isLessThan(idxWicketAjaxJs);
 
-		assertThat(idxWicketAjaxJs).isLessThan(idxMetaCharset).withFailMessage(
-			"<script src=wicket-ajax-jquery.js> should be rendered before <meta charset>");
+		assertThat(idxWicketAjaxJs).withFailMessage("<script src=wicket-ajax-jquery.js> should be rendered before <meta charset>").isLessThan(idxMetaCharset);
 
-		assertThat(idxMetaCharset).isLessThan(idxTitleElement)
-			.withFailMessage("<meta charset> should be rendered before the <title> element");
+		assertThat(idxMetaCharset).withFailMessage("<meta charset> should be rendered before the <title> element").isLessThan(idxTitleElement);
 
-		assertThat(idxTitleElement).isLessThan(idxMetaFromSubPage).withFailMessage(
-			"<title> should be rendered before the <meta name=\"SubPageWithoutHeaderItemsAndWicketHead\" element");
+		assertThat(idxTitleElement).withFailMessage("<title> should be rendered before the <meta name=\"SubPageWithoutHeaderItemsAndWicketHead\" element").isLessThan(idxMetaFromSubPage);
 
-		assertThat(idxMetaFromSubPage).isLessThan(idxMetaFromBasePage).withFailMessage(
-			"<meta name='fromBasePage'> should be rendered before the <meta name=\"SubPageWithoutHeaderItemsAndWicketHead\" element");
+		assertThat(idxMetaFromSubPage).withFailMessage("<meta name='fromBasePage'> should be rendered before the <meta name=\"SubPageWithoutHeaderItemsAndWicketHead\" element").isLessThan(idxMetaFromBasePage);
 	}
 
 	@Test
@@ -127,20 +114,15 @@ class HtmlHeaderItemsContainerTest extends WicketTestCase
 		int idxMetaFromSubPage = responseAsString
 			.indexOf("<meta name=\"SubPageWithHeaderItemsAndWicketHead\"");
 
-		assertThat(idxMetaCharset).isLessThan(idxMetaPanelWicketHead).withFailMessage(
-			"<meta charset> should be rendered before <meta name=\"panel-wicket-head\"");
+		assertThat(idxMetaCharset).withFailMessage("<meta charset> should be rendered before <meta name=\"panel-wicket-head\"").isLessThan(idxMetaPanelWicketHead);
 
-		assertThat(idxMetaPanelWicketHead).isLessThan(idxWicketAjaxJs).withFailMessage(
-			"<meta  name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>");
+		assertThat(idxMetaPanelWicketHead).withFailMessage("<meta  name=\"panel-wicket-head\"> should be rendered before <script src=wicket-ajax-jquery.js>").isLessThan(idxWicketAjaxJs);
 
-		assertThat(idxWicketAjaxJs).isLessThan(idxTitleElement).withFailMessage(
-			"<script src=wicket-ajax-jquery.js> should be rendered before the <title> element");
+		assertThat(idxWicketAjaxJs).withFailMessage("<script src=wicket-ajax-jquery.js> should be rendered before the <title> element").isLessThan(idxTitleElement);
 
-		assertThat(idxMetaFromSubPage).isLessThan(idxMetaFromBasePage).withFailMessage(
-			"<meta name=\"SubPageWithoutHeaderItemsAndWicketHead\"> should be rendered before the <meta name='fromBasePage'> element");
+		assertThat(idxMetaFromSubPage).withFailMessage("<meta name=\"SubPageWithoutHeaderItemsAndWicketHead\"> should be rendered before the <meta name='fromBasePage'> element").isLessThan(idxMetaFromBasePage);
 
-		assertThat(idxMetaFromBasePage).isLessThan(idxTitleElement).withFailMessage(
-			"<meta name='fromBasePage'> should be rendered before the <title> element");
+		assertThat(idxMetaFromBasePage).withFailMessage("<meta name='fromBasePage'> should be rendered before the <title> element").isLessThan(idxTitleElement);
 	}
 
 	/**

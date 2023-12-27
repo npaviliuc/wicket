@@ -73,7 +73,9 @@ public class NestedFolders
 
 	private String createPathFrom(final String name)
 	{
-		int hash = Math.abs(name.hashCode());
+		int hash = name.hashCode();
+		hash = (hash == Integer.MIN_VALUE) ? 0 : Math.abs(hash);
+
 		String low = String.valueOf(hash % 9973);
 		String high = String.valueOf((hash / 9973) % 9973);
 		StringBuilder bs = new StringBuilder(name.length() + 10);

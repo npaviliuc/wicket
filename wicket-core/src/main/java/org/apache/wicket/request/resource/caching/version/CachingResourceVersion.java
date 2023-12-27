@@ -125,7 +125,7 @@ public class CachingResourceVersion implements IResourceVersion
 		}
 
 		//noinspection StringEquality
-		if (version == NULL_VALUE)
+		if (NULL_VALUE.equals(version))
 		{
 			// replace holder with null value
 			return null;

@@ -285,68 +285,76 @@ public class ResourceIsolationRequestCycleListener implements IRequestCycleListe
 	}
 
 	@Override
-	public void onRequestHandlerResolved(RequestCycle cycle, IRequestHandler handler)
-	{
-		if (!isEnabled())
-		{
+	public void onRequestHandlerResolved(RequestCycle cycle, IRequestHandler handler) {
+		if (!isEnabled()) {
 			log.trace("CSRF listener is disabled, no checks performed");
 			return;
 		}
 
 		handler = unwrap(handler);
-		if (isChecked(handler))
-		{
-			IPageRequestHandler pageRequestHandler = (IPageRequestHandler)handler;
-			IRequestablePage targetedPage = pageRequestHandler.getPage();
-			HttpServletRequest containerRequest = (HttpServletRequest)cycle.getRequest()
-				.getContainerRequest();
 
-			if (!isChecked(targetedPage))
-			{
-				if (log.isDebugEnabled())
-				{
-					log.debug("Targeted page {} was opted out of resource isolation, allowed",
-						targetedPage.getClass().getName());
-				}
-				return;
-			}
-
-			String pathInfo = containerRequest.getPathInfo();
-			if (exemptedPaths.contains(pathInfo))
-			{
-				if (log.isDebugEnabled())
-				{
-					log.debug("Allowing request to {} because it matches an exempted path",
-						new Object[] { pathInfo });
-				}
-				return;
-			}
-
-			for (IResourceIsolationPolicy policy : resourceIsolationPolicies)
-			{
-				ResourceIsolationOutcome outcome = policy
-					.isRequestAllowed(containerRequest, targetedPage);
-				if (ResourceIsolationOutcome.DISALLOWED.equals(outcome))
-				{
-					log.debug("Isolation policy {} has rejected a request to {}",
-						Classes.simpleName(policy.getClass()), pathInfo);
-					disallowedOutcomeAction.apply(this, containerRequest, targetedPage);
-					return;
-				}
-				else if (ResourceIsolationOutcome.ALLOWED.equals(outcome))
-				{
-					return;
-				}
-			}
-			unknownOutcomeAction.apply(this, containerRequest, targetedPage);
-		}
-		else
-		{
+		if (!isChecked(handler)) {
 			if (log.isTraceEnabled())
 				log.trace("Resolved handler {} is not checked, no CSRF check performed",
 					handler.getClass().getName());
+			return;
+		}
+
+		handleCheckedHandler(cycle, handler);
+	}
+
+	private void handleCheckedHandler(RequestCycle cycle, IRequestHandler handler) {
+		IPageRequestHandler pageRequestHandler = (IPageRequestHandler) handler;
+		IRequestablePage targetedPage = pageRequestHandler.getPage();
+		HttpServletRequest containerRequest = (HttpServletRequest) cycle.getRequest().getContainerRequest();
+
+		if (!isChecked(targetedPage)) {
+			handleUncheckedPage(targetedPage);
+			return;
+		}
+
+		String pathInfo = containerRequest.getPathInfo();
+		if (exemptedPaths.contains(pathInfo)) {
+			handleExemptedPath(pathInfo);
+			return;
+		}
+
+		handleResourceIsolationPolicies(containerRequest, targetedPage, pathInfo);
+	}
+
+	private void handleUncheckedPage(IRequestablePage targetedPage) {
+		if (log.isDebugEnabled()) {
+			log.debug("Targeted page {} was opted out of resource isolation, allowed",
+					targetedPage.getClass().getName());
 		}
 	}
+
+	private void handleExemptedPath(String pathInfo) {
+		if (log.isDebugEnabled()) {
+			log.debug("Allowing request to {} because it matches an exempted path", pathInfo);
+		}
+	}
+
+	private void handleResourceIsolationPolicies(HttpServletRequest containerRequest,
+												IRequestablePage targetedPage, String pathInfo) {
+		for (IResourceIsolationPolicy policy : resourceIsolationPolicies) {
+			ResourceIsolationOutcome outcome = policy.isRequestAllowed(containerRequest, targetedPage);
+			if (ResourceIsolationOutcome.DISALLOWED.equals(outcome)) {
+				handleDisallowedOutcomeAction(policy.getClass(), pathInfo, containerRequest, targetedPage);
+				return;
+			} else if (ResourceIsolationOutcome.ALLOWED.equals(outcome)) {
+				return;
+			}
+		}
+		unknownOutcomeAction.apply(this, containerRequest, targetedPage);
+	}
+
+	private void handleDisallowedOutcomeAction(Class<?> policyClass, String pathInfo,
+											HttpServletRequest containerRequest, IRequestablePage targetedPage) {
+		log.debug("Isolation policy {} has rejected a request to {}", Classes.simpleName(policyClass), pathInfo);
+		disallowedOutcomeAction.apply(this, containerRequest, targetedPage);
+	}
+
 
 	/**
 	 * Allow isolation policy to add headers.
@@ -356,9 +364,8 @@ public class ResourceIsolationRequestCycleListener implements IRequestCycleListe
 	@Override
 	public void onEndRequest(RequestCycle cycle)
 	{
-		if (cycle.getResponse() instanceof WebResponse)
+		if (cycle.getResponse() instanceof WebResponse webResponse)
 		{
-			WebResponse webResponse = (WebResponse)cycle.getResponse();
 			if (webResponse.isHeaderSupported())
 			{
 				for (IResourceIsolationPolicy resourceIsolationPolicy : resourceIsolationPolicies)
@@ -417,9 +424,9 @@ public class ResourceIsolationRequestCycleListener implements IRequestCycleListe
 
 	private static IRequestHandler unwrap(IRequestHandler handler)
 	{
-		while (handler instanceof IRequestHandlerDelegate)
+		while (handler instanceof IRequestHandlerDelegate irequesthandlerdelegate)
 		{
-			handler = ((IRequestHandlerDelegate)handler).getDelegateHandler();
+			handler = irequesthandlerdelegate.getDelegateHandler();
 		}
 		return handler;
 	}

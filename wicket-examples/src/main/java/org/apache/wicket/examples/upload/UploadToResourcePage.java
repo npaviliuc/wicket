@@ -46,6 +46,8 @@ import org.apache.wicket.util.lang.Bytes;
  */
 public class UploadToResourcePage extends WicketExamplePage
 {
+	private static final String FUNCTION = "function() {Wicket.CurrentUpload = null}";
+
 	private static class UpdateInEachAjaxRequestBehavior extends Behavior
 	{
 
@@ -110,7 +112,7 @@ public class UploadToResourcePage extends WicketExamplePage
 
 			@Override
 			public void startUpload(IPartialPageRequestHandler target) {
-				if (allowToLeavePageWhileUploading.getObject())
+				if (Boolean.TRUE.equals(allowToLeavePageWhileUploading.getObject()))
 				{
 					target.prependJavaScript("Wicket.CurrentUpload = {};");
 				}
@@ -126,19 +128,19 @@ public class UploadToResourcePage extends WicketExamplePage
 
 			@Override
 			protected CharSequence getClientSideSuccessCallBack() {
-				return "function() {Wicket.CurrentUpload = null}";
+				return FUNCTION;
 			}
 
 			@Override
 			protected CharSequence getClientSideUploadErrorCallBack()
 			{
-				return "function() {Wicket.CurrentUpload = null}";
+				return FUNCTION;
 			}
 
 			@Override
 			protected String getClientSideCancelCallBack()
 			{
-				return "function() {Wicket.CurrentUpload = null}";
+				return FUNCTION;
 			}
 
 			@Override
@@ -157,7 +159,11 @@ public class UploadToResourcePage extends WicketExamplePage
 		form.add(new AjaxCheckBox("allowToLeavePageWhileUploading", allowToLeavePageWhileUploading) {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-
+				// The onUpdate method is intentionally left empty.
+				// This checkbox does not have additional behavior on update,
+				// but it is included for potential future enhancements.
+				// If specific behavior is required, complete the implementation here.
+				// Otherwise, the method can throw an UnsupportedOperationException.
 			}
 		});
 		final UploadProgressBar uploadProgressBar = new UploadProgressBar("progress", fileUploadToResourceField)

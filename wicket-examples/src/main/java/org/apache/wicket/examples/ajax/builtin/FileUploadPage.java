@@ -56,6 +56,12 @@ public class FileUploadPage extends BasePage
 {
 	private static final long serialVersionUID = 1L;
 
+	private static final String NO_FILE_UPLOADED = "No file uploaded";
+
+	private static final String FILE_SIZE = " File-Size: ";
+
+	private static final String FILE_NAME = "File-Name: ";
+
 	private static class SingleFileUploadSamplePanel extends Panel {
 
 		private final FileUploadField file;
@@ -85,11 +91,11 @@ public class FileUploadPage extends BasePage
 					FileUpload upload = file.getFileUpload();
 					if (upload == null)
 					{
-						info("No file uploaded");
+						info(NO_FILE_UPLOADED);
 					}
 					else
 					{
-						info("File-Name: " + upload.getClientFileName() + " File-Size: " +
+						info(FILE_NAME + upload.getClientFileName() + FILE_SIZE +
 								Bytes.bytes(upload.getSize()).toString());
 					}
 				}
@@ -104,13 +110,13 @@ public class FileUploadPage extends BasePage
 			// create the file upload field
 			form.add(file = new FileUploadField("file"));
 
-			add(selectedFileInfo = new Label("selectedFileInfo", (IModel<String>) () -> fileInfo) {
+			selectedFileInfo = new Label("selectedFileInfo", (IModel<String>) () -> fileInfo) {
 				@Override
 				protected void onAfterRender() {
 					super.onAfterRender();
 					fileInfo = null;
 				}
-			});
+			};
 			selectedFileInfo.setOutputMarkupId(true);
 			form.add(selectedFileInfo);
 
@@ -119,11 +125,12 @@ public class FileUploadPage extends BasePage
 			form.add(new UploadProgressBar("progress", form, file));
 
 			// create a submit button
-			form.add(submit = new Button("submit"));
+			submit = new Button("submit");
+			form.add(submit);
 			submit.setOutputMarkupId(true);
 
-			// create the ajax button used to submit the form
-			form.add(ajaxSubmit = new AjaxButton("ajaxSubmit")
+			// create the ajax button used to submit the form			
+			ajaxSubmit = new AjaxButton("ajaxSubmit")
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -152,7 +159,7 @@ public class FileUploadPage extends BasePage
 					target.add(feedback);
 				}
 
-			});
+			};
 			ajaxSubmit.setOutputMarkupId(true);
 
 			file.add(FilesSelectedBehavior.onSelected(
@@ -188,12 +195,12 @@ public class FileUploadPage extends BasePage
 					// display uploaded info
 					if (files == null || files.isEmpty())
 					{
-						info("No file uploaded");
+						info(NO_FILE_UPLOADED);
 					}
 					else
 					{
 						for (FileUpload file : files) {
-							info("File-Name: " + file.getClientFileName() + " File-Size: " +
+							info(FILE_NAME + file.getClientFileName() + FILE_SIZE +
 									Bytes.bytes(file.getSize()).toString());
 						}
 					}
@@ -278,11 +285,11 @@ public class FileUploadPage extends BasePage
 					FileUpload upload = file.getFileUpload();
 					if (upload == null)
 					{
-						info("No file uploaded");
+						info(NO_FILE_UPLOADED);
 					}
 					else
 					{
-						info("File-Name: " + upload.getClientFileName() + " File-Size: " +
+						info(FILE_NAME + upload.getClientFileName() + FILE_SIZE +
 								Bytes.bytes(upload.getSize()).toString());
 					}
 				}
@@ -295,7 +302,8 @@ public class FileUploadPage extends BasePage
 			columns.add(new PropertyColumn<>(Model.of("Size"), "fileSize"));
 			columns.add(new PropertyColumn<>(Model.of("Last Modified"), "lastModified"));
 			columns.add(new PropertyColumn<>(Model.of("MIME Type"), "mimeType"));
-			selectedFileInfo = new AjaxFallbackDefaultDataTable<>("selectedFileInfo", columns, dataProvider = new DataProvider(), 100) {
+			dataProvider = new DataProvider();
+			selectedFileInfo = new AjaxFallbackDefaultDataTable<>("selectedFileInfo", columns, dataProvider, 100) {
 				@Override
 				protected void onConfigure() {
 					super.onConfigure();
@@ -306,22 +314,25 @@ public class FileUploadPage extends BasePage
 			selectedFileInfo.setOutputMarkupPlaceholderTag(true);
 
 			// create a textfield to demo non-file content
-			form.add(text = new TextField<>("text", Model.of()));
+			text = new TextField<>("text", Model.of());
+			form.add(text);
 			text.add(StringValidator.minimumLength(2));
 
 			// create the file upload field
-			form.add(file = new FileUploadField("file"));
+			file = new FileUploadField("file");
+			form.add(file);
 
 			form.add(new Label("max", form::getMaxSize));
 
 			form.add(new UploadProgressBar("progress", form, file));
 
 			// create a submit button
-			form.add(submit = new Button("submit"));
+			submit = new Button("submit");
+			form.add(submit);
 			submit.setOutputMarkupId(true);
 
 			// create the ajax button used to submit the form
-			form.add(ajaxSubmit = new AjaxButton("ajaxSubmit")
+			ajaxSubmit = new AjaxButton("ajaxSubmit")
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -350,7 +361,7 @@ public class FileUploadPage extends BasePage
 					target.add(feedback);
 				}
 
-			});
+			};
 			ajaxSubmit.setOutputMarkupId(true);
 			file.add(FilesSelectedBehavior.onSelected(
 					(AjaxRequestTarget target, List<FileDescription> fileDescriptions) ->

@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @since 6.18.0
  */
-public class WebSocketTesterRequestCycleListenerTest
+class WebSocketTesterRequestCycleListenerTest
 {
 	private final AtomicBoolean beginRequestCalled = new AtomicBoolean(false);
 	private final AtomicBoolean endRequestCalled = new AtomicBoolean(false);
@@ -81,7 +81,7 @@ public class WebSocketTesterRequestCycleListenerTest
 	 * pushed back the same message but capitalized.
 	 */
 	@Test
-	public void verifyRequestCycleListeners()
+	void verifyRequestCycleListeners()
 	{
 		final String expectedMessage = "some message";
 

@@ -59,7 +59,7 @@ public class StalePageException extends WicketRuntimeException implements IWicke
 	 * @see java.lang.Throwable#fillInStackTrace()
 	 */
 	@Override
-	public Throwable fillInStackTrace()
+	public synchronized Throwable fillInStackTrace()
 	{
 		// don't do anything here
 		return null;

@@ -134,7 +134,7 @@ class ApacheLicenceHeaderTest extends ApacheLicenseHeaderTestCase
 	 * Checks the license headers of wicket-core.
 	 */
 	@Test
-	public void checkWicketCoreLicenseHeaders()
+	void checkWicketCoreLicenseHeaders()
 	{
 		final String propertyName = "basedir";
 		final String basedir = System.getProperty(propertyName);
