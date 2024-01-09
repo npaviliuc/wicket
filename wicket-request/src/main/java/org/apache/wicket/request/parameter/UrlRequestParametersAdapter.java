@@ -82,7 +82,7 @@ public class UrlRequestParametersAdapter implements IRequestParameters
 		List<StringValue> values = null;
 		for (QueryParameter parameter : url.getQueryParameters())
 		{
-			if (Objects.equal(name, parameter.getName()))
+			if (Objects.areEquals(name, parameter.getName()))
 			{
 				if (values == null)
 				{

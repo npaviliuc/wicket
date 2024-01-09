@@ -124,6 +124,6 @@ public class AjaxListPanel extends Panel
 			target.appendJavaScript(String.format("Wicket.DOM.remove(Wicket.DOM.get('%s'));", component.getMarkupId()));
 		}
 		
-		return (T)component;
+		return component;
 	}
 }

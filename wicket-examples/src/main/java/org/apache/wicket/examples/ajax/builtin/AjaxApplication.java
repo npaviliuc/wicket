@@ -39,14 +39,9 @@ public class AjaxApplication extends WicketExampleApplication
 
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 
-		getComponentInitializationListeners().add(new IComponentInitializationListener()
-		{
-			@Override
-			public void onInitialize(Component component)
-			{
-				if (component instanceof WebPage) {
-					component.add(new AjaxNewWindowNotifyingBehavior());
-				}
+		getComponentInitializationListeners().add(component -> {
+			if (component instanceof WebPage) {
+				component.add(new AjaxNewWindowNotifyingBehavior());
 			}
 		});
 

@@ -126,15 +126,13 @@ class MountedPageLinkTest extends WicketTestCase
 			new PageParameters().add("param", "value", INamedParameters.Type.MANUAL));
 		Link<?> link = (Link<?>)page.get("link");
 
-		assertThrows(PageExpiredException.class, () -> {
-			String url = link.getURL().toString();
+		String url = link.getURL().toString();
 			assertEquals(
 				"./wicket/bookmarkable/org.apache.wicket.markup.html.link.PageWithLink?0-1.-link",
 				url);
 			// simulate a page expiry
-			url = url.replace("PageWithLink?0", "PageWithLink?3");
+		final String url2 = url.replace("PageWithLink?0", "PageWithLink?3");
 
-			tester.executeUrl(url);
-		});
+		assertThrows(PageExpiredException.class, () -> tester.executeUrl(url2));
 	}
 }

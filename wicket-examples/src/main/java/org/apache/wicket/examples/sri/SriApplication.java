@@ -18,7 +18,6 @@ package org.apache.wicket.examples.sri;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.examples.WicketExampleApplication;
-import org.apache.wicket.markup.head.ResourceAggregator;
 
 public class SriApplication extends WicketExampleApplication
 {

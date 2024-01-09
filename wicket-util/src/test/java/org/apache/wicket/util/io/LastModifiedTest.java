@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author pertl
  */
-public class LastModifiedTest
+class LastModifiedTest
 {
 	private static final String FILE = "/some/folder/file.jar";
 

@@ -54,13 +54,21 @@ public class ModificationWatcher implements IModificationWatcher
 	protected static final class Entry
 	{
 		// The most recent lastModificationTime polled on the object
-		public Instant lastModifiedTime;
+		private Instant lastModifiedTime;
 
 		// The set of listeners to call when the modifiable changes
 		public final ChangeListenerSet<IModifiable> listeners = new ChangeListenerSet<>();
 
 		// The modifiable thing
 		public IModifiable modifiable;
+
+		public Instant getLastModifiedTime() {
+			return this.lastModifiedTime;
+		}
+
+		public void setLastModifiedTime(Instant lastModifiedTime) {
+			this.lastModifiedTime = lastModifiedTime;
+		}
 	}
 
 	/**
@@ -97,7 +105,7 @@ public class ModificationWatcher implements IModificationWatcher
 				final Entry newEntry = new Entry();
 
 				newEntry.modifiable = modifiable;
-				newEntry.lastModifiedTime = lastModifiedTime;
+				newEntry.setLastModifiedTime(lastModifiedTime);
 				newEntry.listeners.add(listener);
 
 				// Put in map
@@ -156,13 +164,13 @@ public class ModificationWatcher implements IModificationWatcher
 			// modification time
 			final Instant modifiableLastModified = entry.modifiable.lastModifiedTime();
 			if ((modifiableLastModified != null) &&
-					modifiableLastModified.isAfter(entry.lastModifiedTime))
+					modifiableLastModified.isAfter(entry.getLastModifiedTime()))
 			{
 				// Notify all listeners that the modifiable was modified
 				entry.listeners.notifyListeners(entry.modifiable);
 
 				// Update timestamp
-				entry.lastModifiedTime = modifiableLastModified;
+				entry.setLastModifiedTime(modifiableLastModified);
 			}
 		}
 	}

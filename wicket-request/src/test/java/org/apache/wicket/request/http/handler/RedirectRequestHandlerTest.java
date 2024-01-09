@@ -95,7 +95,7 @@ class RedirectRequestHandlerTest
 	 * https://issues.apache.org/jira/browse/WICKET-6638
 	 */
 	@Test
-	public void seeOtherShouldSetAjaxLocationHeaderForAjaxRequests()
+	void seeOtherShouldSetAjaxLocationHeaderForAjaxRequests()
 	{
 		RedirectRequestHandler handler = new RedirectRequestHandler(REDIRECT_URL,
 				HttpServletResponse.SC_SEE_OTHER);

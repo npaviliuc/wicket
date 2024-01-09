@@ -42,8 +42,6 @@ public class SelectOptions<T> extends RepeatingView
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LoggerFactory.getLogger(SelectOptions.class);
-
 	private boolean recreateChoices = false;
 
 	private final IOptionRenderer<T> renderer;

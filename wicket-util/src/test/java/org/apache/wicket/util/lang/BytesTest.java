@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the <code>Bytes</code> class.
  */
-public class BytesTest
+class BytesTest
 {
 	/**
 	 * Backup of the default locale.

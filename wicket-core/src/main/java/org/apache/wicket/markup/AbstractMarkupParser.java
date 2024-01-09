@@ -54,11 +54,12 @@ public abstract class AbstractMarkupParser
 	private static final Logger log = LoggerFactory.getLogger(AbstractMarkupParser.class);
 
 	/** Opening a conditional comment section, which is NOT treated as a comment section */
-	public static final Pattern CONDITIONAL_COMMENT_OPENING = Pattern.compile("(s?)^[^>]*?<!--\\[if.*?\\]>(-->)?(<!.*?-->)?");
+	public static final Pattern CONDITIONAL_COMMENT_OPENING = Pattern.compile("^[^>]*?<!--\\[if.*?\\]>(-->)?(<!.*?-->)?");
 
 	private static final Pattern PRE_BLOCK = Pattern.compile("<pre>.*?</pre>", Pattern.DOTALL | Pattern.MULTILINE);
 	private static final Pattern SPACE_OR_TAB_PATTERN = Pattern.compile("[ \\t]+");
-	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("(?: ?[\\r\\n] ?)+");
+	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("\\s+");
+
 
 	/** The XML parser to use */
 	private final IXmlPullParser xmlParser;

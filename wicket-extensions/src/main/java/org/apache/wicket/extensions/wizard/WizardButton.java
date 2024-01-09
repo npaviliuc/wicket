@@ -48,7 +48,7 @@ public abstract class WizardButton extends Button
 	 * @param label
 	 *            The button's label
 	 */
-	public WizardButton(final String id, final IWizard wizard, final IModel<String> label)
+	protected WizardButton(final String id, final IWizard wizard, final IModel<String> label)
 	{
 		super(id, label);
 		this.wizard = wizard;
@@ -89,16 +89,10 @@ public abstract class WizardButton extends Button
 		{
 			onClick();
     	} 
-		catch (ClassCastException e) 
-		{
-			// Handle the ClassCastException, log, and take appropriate actions
-        	e.printStackTrace();
-        	// You can add more specific error handling here
-    	} 
-		catch (Exception e) 
-		{
-        	// Handle other exceptions if needed
-        	e.printStackTrace();
-    	}
+		catch (Exception e) {
+			// Handle the exception, log, and take appropriate actions
+			e.printStackTrace();
+			// You can add more specific error handling here
+		}
 	}
 }

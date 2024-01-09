@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 
  * @author Jonathan Locke
  */
-public final class BytesTest
+final class BytesTest
 {
 	/**
 	 * Backup of the default locale.

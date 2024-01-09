@@ -213,7 +213,7 @@ public class PropertyValidator<T> extends Behavior implements INullAcceptingVali
 	{
 		BeanValidationContext config = BeanValidationConfiguration.get();
 
-		HashSet<Class<?>> groups = new HashSet<Class<?>>(Arrays.asList(getGroups()));
+		HashSet<Class<?>> groups = new HashSet<>(Arrays.asList(getGroups()));
 
 		Iterator<ConstraintDescriptor<?>> it = new ConstraintIterator(config.getValidator(), getProperty());
 		while (it.hasNext())

@@ -71,7 +71,7 @@ public final class Strings
 	 */
 	// the field is not 'final' because we need to modify it in a unit test
 	// see https://github.com/openjdk/jdk/pull/5027#issuecomment-968177213
-	private static String session_id_param = ';' + SESSION_ID_PARAM_NAME + '=';
+	private static String sessionIdParam = ';' + SESSION_ID_PARAM_NAME + '=';
 
 	/**
 	 * Private constructor prevents construction.
@@ -690,7 +690,7 @@ public final class Strings
 		if (separatorNotEmpty && lhsClosed && rhsClosed) {
 			buff.append(fragment.substring(1));
 		} else if (!lhsClosed && !rhsClosed) {
-			appendSeparatorAndFragment(buff, separatorNotEmpty, fragment, separator);
+			appendSeparatorAndFragment(buff, fragment, separator);
 		} else {
 			buff.append(fragment);
 		}
@@ -704,7 +704,7 @@ public final class Strings
 		return fragment != null && fragment.startsWith(separator);
 	}
 
-	private static void appendSeparatorAndFragment(AppendingStringBuffer buff, boolean separatorNotEmpty, String fragment, String separator) {
+	private static void appendSeparatorAndFragment(AppendingStringBuffer buff, String fragment, String separator) {
 		if (!Strings.isEmpty(fragment)) {
 			buff.append(separator);
 		}
@@ -923,7 +923,7 @@ public final class Strings
 		}
 
 		// http://.../abc;jsessionid=...?param=...
-		int ixSemiColon = url.indexOf(session_id_param);
+		int ixSemiColon = url.indexOf(sessionIdParam);
 		if (ixSemiColon == -1)
 		{
 			return url;
@@ -1041,10 +1041,7 @@ public final class Strings
 				}
 				outBuffer.append(' ');
 				break;
-			case '\t':
-			case '\n':
-			case '\r':
-			case '\f':
+			case '\t', '\n', '\r', '\f':
 				outBuffer.append('\\');
 				outBuffer.append(getEscapeChar(aChar));
 				break;

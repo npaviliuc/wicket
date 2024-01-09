@@ -18,6 +18,7 @@ package org.apache.wicket.core.util.resource.locator;
 
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 import org.apache.wicket.util.string.Strings;
 
@@ -93,7 +94,11 @@ public class LocaleResourceNameIterator implements Iterator<String>
 	 */
 	@Override
 	public String next()
-	{
+	{ 
+		 if (!hasNext()) {
+            throw new NoSuchElementException("No more elements in the collection");
+			}
+
 		if (locale == null)
 		{
 			state = 999;

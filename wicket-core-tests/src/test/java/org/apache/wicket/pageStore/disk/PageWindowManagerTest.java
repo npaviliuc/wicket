@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author Matej Knopp
  */
-public class PageWindowManagerTest
+class PageWindowManagerTest
 {
 	/**
 	 * https://issues.apache.org/jira/browse/WICKET-4572
@@ -104,7 +104,7 @@ public class PageWindowManagerTest
 	 * 
 	 */
 	@Test
-	public void pageWindowCycle()
+	void pageWindowCycle()
 	{
 		PageWindowManager manager = new PageWindowManager(100);
 		FileWindow window;
@@ -216,7 +216,7 @@ public class PageWindowManagerTest
 	 * @throws Exception
 	 */
 	@Test
-	public void randomOperations() throws Exception
+	void randomOperations() throws Exception
 	{
 		ExecutorService executorService = Executors.newFixedThreadPool(50);
 

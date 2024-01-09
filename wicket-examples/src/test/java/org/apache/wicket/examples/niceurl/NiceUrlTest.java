@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 /**
  * jWebUnit test for Hello World.
  */
-public class NiceUrlTest
+class NiceUrlTest
 {
 	private WicketTester tester;
 

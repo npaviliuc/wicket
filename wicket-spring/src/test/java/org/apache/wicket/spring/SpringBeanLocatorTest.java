@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author ivaynberg
  * 
  */
-public class SpringBeanLocatorTest
+class SpringBeanLocatorTest
 {
 	private ApplicationContextMock ctx;
 

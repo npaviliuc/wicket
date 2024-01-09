@@ -32,6 +32,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.wicket.mock.MockPageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static java.util.concurrent.CompletableFuture.delayedExecutor;
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * Concurrency tests for stores.
@@ -169,14 +172,8 @@ public abstract class AbstractConcurrentPageStoreTest
 					bytesWritten.addAndGet(page.getData().length);
 				}
 
-				try
-				{
-					Thread.sleep(random.nextInt(SLEEP_MAX));
-				}
-				catch (InterruptedException e)
-				{
-					log.error(e.getMessage(), e);
-				}
+				
+				runAsync(() -> {}, delayedExecutor(random.nextInt(SLEEP_MAX), MILLISECONDS)).join();
 			}
 
 			saveDone.set(true);
@@ -205,14 +202,7 @@ public abstract class AbstractConcurrentPageStoreTest
 					bytesRead.addAndGet(other.getData().length);
 				}
 
-				try
-				{
-					Thread.sleep(random.nextInt(SLEEP_MAX));
-				}
-				catch (InterruptedException e)
-				{
-					log.error(e.getMessage(), e);
-				}
+				runAsync(() -> {}, delayedExecutor(random.nextInt(SLEEP_MAX), MILLISECONDS)).join();
 			}
 
 			read1Done.set(true);
@@ -239,14 +229,7 @@ public abstract class AbstractConcurrentPageStoreTest
 					bytesRead.addAndGet(other.getData().length);
 				}
 
-				try
-				{
-					Thread.sleep(random.nextInt(SLEEP_MAX));
-				}
-				catch (InterruptedException e)
-				{
-					log.error(e.getMessage(), e);
-				}
+				runAsync(() -> {}, delayedExecutor(random.nextInt(SLEEP_MAX), MILLISECONDS)).join();
 			}
 
 			read2Done.set(true);
@@ -279,14 +262,9 @@ public abstract class AbstractConcurrentPageStoreTest
 
 		while (!(read1Done.get() && read2Done.get() && saveDone.get()))
 		{
-			try
-			{
-				Thread.sleep(50);
-			}
-			catch (InterruptedException e)
-			{
-				log.error(e.getMessage(), e);
-			}
+			
+			runAsync(() -> {}, delayedExecutor(50, MILLISECONDS)).join();
+		
 		}
 
 		if (exceptionThrownByThread != null)

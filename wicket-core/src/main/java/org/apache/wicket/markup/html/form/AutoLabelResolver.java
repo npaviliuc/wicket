@@ -103,9 +103,9 @@ public class AutoLabelResolver implements IComponentResolver
 				"' while trying to resolve wicket:for attribute");
 		}
 		// check if component implements ILabelProviderLocator
-		if (component instanceof ILabelProviderLocator)
+		if (component instanceof ILabelProviderLocator labelProviderLocatorVar)
 		{
-			component = ((ILabelProviderLocator) component).getAutoLabelComponent();
+			component = (labelProviderLocatorVar).getAutoLabelComponent();
 		}
 
 		if (!(component instanceof ILabelProvider))

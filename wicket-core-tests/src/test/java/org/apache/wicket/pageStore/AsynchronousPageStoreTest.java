@@ -39,6 +39,9 @@ import org.apache.wicket.page.IManageablePage;
 import org.apache.wicket.util.WicketTestTag;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import static java.util.concurrent.CompletableFuture.delayedExecutor;
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
 /**
@@ -47,7 +50,7 @@ import org.junit.jupiter.api.Test;
  * @author manuelbarzi
  */
 @Tag(WicketTestTag.SLOW)
-public class AsynchronousPageStoreTest
+class AsynchronousPageStoreTest
 {
 	@SuppressWarnings("serial")
 	private static class DummyPage implements IManageablePage, Cloneable
@@ -360,7 +363,7 @@ public class AsynchronousPageStoreTest
 	 * Store does not allow modifications when pages are added asynchronously.
 	 */
 	@Test
-	public void storeAsynchronousContextClosed() throws Throwable
+	void storeAsynchronousContextClosed() throws Throwable
 	{
 		final AtomicReference<Throwable> asyncFail = new AtomicReference<>();
 		
@@ -470,14 +473,7 @@ public class AsynchronousPageStoreTest
 
 				super.addPage(context, dummyPage.clone());
 				
-				try
-				{
-					Thread.sleep(dummyPage.writeMillis);
-				}
-				catch (InterruptedException e)
-				{
-					throw new RuntimeException(e);
-				}
+				runAsync(() -> {}, delayedExecutor(dummyPage.writeMillis, MILLISECONDS)).join();
 				
 				lock.countDown();
 			}
@@ -486,15 +482,8 @@ public class AsynchronousPageStoreTest
 			public IManageablePage getPage(IPageContext context, int id) {
 				DummyPage dummyPage = (DummyPage) super.getPage(context, id);
 				
-				try
-				{
-					Thread.sleep(dummyPage.readMillis);
-				}
-				catch (InterruptedException e)
-				{
-					throw new RuntimeException(e);
-				}
-				
+				runAsync(() -> {}, delayedExecutor(dummyPage.writeMillis, MILLISECONDS)).join();
+
 				return dummyPage;
 			}
 		};

@@ -275,7 +275,7 @@ public abstract class Session implements IClusterable, IEventSink, IMetadataCont
 	 * @param request
 	 *            The current request
 	 */
-	public Session(Request request)
+	protected Session(Request request)
 	{
 		Locale locale = request.getLocale();
 		if (locale == null)
@@ -568,7 +568,7 @@ public abstract class Session implements IClusterable, IEventSink, IMetadataCont
 	 */
 	public void invalidateNow()
 	{
-		if (isSessionInvalidated() == false) 
+		if (!(isSessionInvalidated())) 
 		{
 			invalidate();
 		}
@@ -648,7 +648,7 @@ public abstract class Session implements IClusterable, IEventSink, IMetadataCont
 	{
 		Args.notNull(locale, "locale");
 
-		if (!Objects.equal(getLocale(), locale))
+		if (!Objects.areEquals(getLocale(), locale))
 		{
 			this.locale.set(locale);
 			rtlLocale = isRtlLanguage(locale);
@@ -695,7 +695,7 @@ public abstract class Session implements IClusterable, IEventSink, IMetadataCont
 	 */
 	public final Session setStyle(final String style)
 	{
-		if (!Objects.equal(getStyle(), style))
+		if (!Objects.areEquals(getStyle(), style))
 		{
 			this.style.set(style);
 			dirty();

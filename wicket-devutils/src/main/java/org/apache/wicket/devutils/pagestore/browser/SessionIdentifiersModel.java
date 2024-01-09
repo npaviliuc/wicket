@@ -42,17 +42,17 @@ public class SessionIdentifiersModel extends LoadableDetachableModel<List<String
 	@Override
 	protected List<String> load()
 	{
-		IPersistentPageStore store = this.store.getObject();
-		if (store == null)
+		IPersistentPageStore storeVar = this.store.getObject();
+		if (storeVar == null)
 		{
 			return Collections.emptyList();
 		}
 
-		ArrayList<String> identifiers = new ArrayList<>(store.getSessionIdentifiers());
+		ArrayList<String> identifiers = new ArrayList<>(storeVar.getSessionIdentifiers());
 
 		IPageContext context = new DefaultPageContext();
-		String current = store.getSessionIdentifier(context);
-		if (identifiers.contains(current) == false)
+		String current = storeVar.getSessionIdentifier(context);
+		if (!(identifiers.contains(current)))
 		{
 			// identifiers of the store seem no to match their sessions ids,
 			// thus add the default identifier so the select works properly  

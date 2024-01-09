@@ -172,7 +172,7 @@ class ValidatorStringResourceLoaderTest extends WicketTestCase
 		@Override
 		public void validate(Form<?> form)
 		{
-			if (Objects.equal(fc1.getRawInput(), fc2.getRawInput()) == false)
+			if (Objects.areEquals(fc1.getRawInput(), fc2.getRawInput()) == false)
 			{
 				form.error(form.getString("formValidatorFailed"));
 			}

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * 
  */
-public class WebXmlFileTest
+class WebXmlFileTest
 {
 	/**
 	 * 

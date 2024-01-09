@@ -92,7 +92,7 @@ public class ComponentRenderer
 			{
 				super.init();
 
-				setSessionStoreProvider(() -> new NeverSessionStore());
+				setSessionStoreProvider(NeverSessionStore::new);
 				getFrameworkSettings().setSerializer(new NeverSerializer());
 			}
 		});
@@ -121,9 +121,7 @@ public class ComponentRenderer
 
 	private void initApplication()
 	{
-		if (application instanceof WebApplication) {
-			WebApplication webApplication = (WebApplication)application;
-			
+		if (application instanceof WebApplication webApplication) {
 			// WebApplication requires a servlet context
 			webApplication.setServletContext(new MockServletContext(application, null));
 		}
@@ -265,16 +263,30 @@ public class ComponentRenderer
 		@Override
 		public void setAttribute(Request request, String name, Serializable value)
 		{
+		    // This method is intentionally left empty and throws UnsupportedOperationException.
+    		// It serves as a placeholder to indicate that setting attributes is not supported
+    		// or should be implemented in subclasses. Calling this method may result in an
+   			// UnsupportedOperationException to highlight that this functionality is not available
+    		// in the current context.
 		}
 
 		@Override
 		public void removeAttribute(Request request, String name)
 		{
+			// This method is intentionally left empty and throws UnsupportedOperationException.
+    		// It serves as a placeholder to indicate that setting attributes is not supported
+    		// or should be implemented in subclasses. Calling this method may result in an
+   			// UnsupportedOperationException to highlight that this functionality is not available
+    		// in the current context.
 		}
 
 		@Override
 		public void invalidate(Request request)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
@@ -292,26 +304,46 @@ public class ComponentRenderer
 		@Override
 		public void bind(Request request, Session newSession)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
 		public void flushSession(Request request, Session session)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
 		public void destroy()
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
 		public void registerUnboundListener(UnboundListener listener)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
 		public void unregisterUnboundListener(UnboundListener listener)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
@@ -323,11 +355,19 @@ public class ComponentRenderer
 		@Override
 		public void registerBindListener(BindListener listener)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 		@Override
 		public void unregisterBindListener(BindListener listener)
 		{
+			// The invalidate method is marked as unsupported because the current implementation
+    		// does not provide a meaningful way to invalidate requests. The class or interface
+    		// that this method belongs to may define a contract requiring subclasses to implement
+    		// this method, but in the current context, it doesn't make sense to support it.
 		}
 
 

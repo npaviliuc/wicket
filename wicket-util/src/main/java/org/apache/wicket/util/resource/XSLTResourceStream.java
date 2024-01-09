@@ -78,6 +78,10 @@ public class XSLTResourceStream extends AbstractResourceStream
 
 			// create an instance of TransformerFactory
 			javax.xml.transform.TransformerFactory transFact = javax.xml.transform.TransformerFactory.newInstance();
+			
+			// disabling external entity declarations
+			transFact.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			transFact.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 
 			javax.xml.transform.Transformer trans = transFact.newTransformer(xsltSource);
 			Map<Object, Object> parameters = getParameters();

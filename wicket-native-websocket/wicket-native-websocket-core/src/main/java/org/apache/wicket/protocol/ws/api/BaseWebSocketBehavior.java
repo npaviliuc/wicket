@@ -223,13 +223,12 @@ public class BaseWebSocketBehavior extends Behavior
 		{
 			sessionId = component.getSession().getId();
 		}
-		else if (containerRequest instanceof HttpServletRequest)
+		else if (containerRequest instanceof HttpServletRequest httpServletRequest)
 		{
 			CookieUtils cookieUtils = new CookieUtils();
 			final String jsessionCookieName = cookieUtils.getSessionIdCookieName(application);
 			final Cookie jsessionid = cookieUtils.getCookie(jsessionCookieName);
-			HttpServletRequest httpServletRequest = (HttpServletRequest) containerRequest;
-			if (jsessionid == null || httpServletRequest.isRequestedSessionIdValid() == false)
+			if (jsessionid == null || !(httpServletRequest.isRequestedSessionIdValid()))
 			{
 				sessionId = component.getSession().getId();
 			}

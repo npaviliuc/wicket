@@ -37,6 +37,8 @@ public abstract class WebResponse extends Response
 	// one year, maximum recommended cache duration in RFC-2616
 	public static final Duration MAX_CACHE_DURATION = Duration.ofDays(365);
 
+	private static final String CACHE_CONTROL_CONST = "Cache-Control";
+
 	/**
 	 * Add a cookie to the web response
 	 * 
@@ -240,7 +242,7 @@ public abstract class WebResponse extends Response
 		setDateHeader("Date", Instant.now());
 		setDateHeader("Expires", Instant.EPOCH);
 		setHeader("Pragma", "no-cache");
-		setHeader("Cache-Control", "no-cache, no-store");
+		setHeader(CACHE_CONTROL_CONST, "no-cache, no-store");
 	}
 
 	/**
@@ -279,10 +281,10 @@ public abstract class WebResponse extends Response
 		setDateHeader("Expires", now.plus(duration));
 
 		// Set cache scope
-		setHeader("Cache-Control", scope.cacheControl);
+		setHeader(CACHE_CONTROL_CONST, scope.cacheControl);
 
 		// Set maximum age for caching in seconds (rounded)
-		addHeader("Cache-Control", "max-age=" + Math.round(duration.getSeconds()));
+		addHeader(CACHE_CONTROL_CONST, "max-age=" + duration.getSeconds());
 
 		// Though 'cache' is not an official value it will eliminate an eventual 'no-cache' header
 		setHeader("Pragma", "cache");

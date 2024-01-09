@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Igor Vaynberg (ivaynberg)
  * 
  */
-public class InjectorTest
+class InjectorTest
 {
 	private static MockDependency dependency = new MockDependency("inject");
 

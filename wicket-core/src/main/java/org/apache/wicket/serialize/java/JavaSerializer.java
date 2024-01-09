@@ -282,56 +282,69 @@ public class JavaSerializer implements ISerializer
 		 */
 		@Override
 		protected Class<?> resolveProxyClass(String[] interfaces)
-			throws ClassNotFoundException, IOException
-		{
-			try
-			{
+				throws ClassNotFoundException, IOException {
+			try {
 				return super.resolveProxyClass(interfaces);
+			} catch (ClassNotFoundException cnfEx) {
+				handleProxyClassResolutionException(cnfEx, interfaces);
 			}
-			catch (ClassNotFoundException cnfEx)
-			{
-				// Log the exception with contextual information
-				log.error("Proxy Class not found by the ObjectOutputStream itself, trying the IClassResolver", cnfEx);
+			return super.resolveProxyClass(interfaces);
+		}
 
-				ClassLoader latestLoader = latestUserDefinedLoader();
-				ClassLoader nonPublicLoader = null;
-				boolean hasNonPublicInterface = false;
+		private void handleProxyClassResolutionException(ClassNotFoundException cnfEx, String[] interfaces)
+				throws ClassNotFoundException {
+			// Log the exception with contextual information
+			log.error("Proxy Class not found by the ObjectOutputStream itself, trying the IClassResolver", cnfEx);
 
-				// define proxy in class loader of non-public interface(s), if any
-				Class<?>[] classObjs = new Class<?>[interfaces.length];
-				for (int i = 0; i < interfaces.length; i++)
-				{
-					Class<?> cl = resolveClassByName(interfaces[i], latestLoader);
-					if ((cl.getModifiers() & Modifier.PUBLIC) == 0)
-					{
-						if (hasNonPublicInterface)
-						{
-							if (nonPublicLoader != cl.getClassLoader())
-							{
-								throw new IllegalAccessError(
-									"conflicting non-public interface class loaders");
-							}
-						}
-						else
-						{
-							nonPublicLoader = cl.getClassLoader();
-							hasNonPublicInterface = true;
-						}
-					}
-					classObjs[i] = cl;
-				}
-				try
-				{
-					final InvocationHandler invocationHandler = (proxy, method, args) -> null;
-					final Object proxyInstance = Proxy.newProxyInstance(
-							hasNonPublicInterface ? nonPublicLoader : latestLoader, classObjs, invocationHandler);
-					return proxyInstance.getClass();
-				}
-				catch (IllegalArgumentException e)
-				{
-					throw new ClassNotFoundException(null, e);
-				}
+			ClassLoader latestLoader = latestUserDefinedLoader();
+			ClassLoader nonPublicLoader = null;
+			boolean hasNonPublicInterface = false;
+
+			Class<?>[] classObjs = resolveInterfaces(interfaces, latestLoader, nonPublicLoader, hasNonPublicInterface);
+
+			try {
+				createAndReturnProxyClass(latestLoader, nonPublicLoader, hasNonPublicInterface, classObjs);
+			} catch (IllegalArgumentException e) {
+				throw new ClassNotFoundException(null, e);
 			}
+		}
+
+		private Class<?>[] resolveInterfaces(String[] interfaces, ClassLoader latestLoader,
+											ClassLoader nonPublicLoader, boolean hasNonPublicInterface)
+				throws ClassNotFoundException {
+			Class<?>[] classObjs = new Class<?>[interfaces.length];
+			for (int i = 0; i < interfaces.length; i++) {
+				Class<?> cl = resolveClassByName(interfaces[i], latestLoader);
+				if ((cl.getModifiers() & Modifier.PUBLIC) == 0) {
+					handleNonPublicInterface(cl, nonPublicLoader, hasNonPublicInterface);
+				}
+				classObjs[i] = cl;
+			}
+			return classObjs;
+		}
+
+		private void handleNonPublicInterface(Class<?> cl, ClassLoader nonPublicLoader,
+											boolean hasNonPublicInterface) {
+			if (hasNonPublicInterface) {
+				validateNonPublicInterfaceLoaders(cl, nonPublicLoader);
+			} else {
+				nonPublicLoader = cl.getClassLoader();
+				hasNonPublicInterface = true;
+			}
+		}
+
+		private void validateNonPublicInterfaceLoaders(Class<?> cl, ClassLoader nonPublicLoader) {
+			if (nonPublicLoader != cl.getClassLoader()) {
+				throw new IllegalAccessError("conflicting non-public interface class loaders");
+			}
+		}
+
+		private Class<?> createAndReturnProxyClass(ClassLoader latestLoader, ClassLoader nonPublicLoader,
+												boolean hasNonPublicInterface, Class<?>[] classObjs) {
+			InvocationHandler invocationHandler = (proxy, method, args) -> null;
+			Object proxyInstance = Proxy.newProxyInstance(
+					hasNonPublicInterface ? nonPublicLoader : latestLoader, classObjs, invocationHandler);
+			return proxyInstance.getClass();
 		}
 
 		private static ClassLoader latestUserDefinedLoader()

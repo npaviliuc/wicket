@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class TreeModelProviderTest
+class TreeModelProviderTest
 {
 	private DefaultMutableTreeNode root;
 

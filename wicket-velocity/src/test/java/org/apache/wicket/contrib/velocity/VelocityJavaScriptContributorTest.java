@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test header contributions.
  */
-public class VelocityJavaScriptContributorTest
+class VelocityJavaScriptContributorTest
 {
 	/**
 	 * Test that the header contribution is added correctly.

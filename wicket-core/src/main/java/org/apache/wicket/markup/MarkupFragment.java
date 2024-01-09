@@ -58,22 +58,18 @@ public class MarkupFragment extends AbstractMarkupFragment
 	 * @throws IndexOutOfBoundsException
 	 *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
 	 */
-	public MarkupFragment(final IMarkupFragment markup, final int startIndex)
-	{
+	public MarkupFragment(final IMarkupFragment markup, final int startIndex) {
 		Args.notNull(markup, "markup");
 
-		if (startIndex < 0)
-		{
+		if (startIndex < 0) {
 			throw new IllegalArgumentException("Parameter 'startIndex' must not be < 0");
 		}
 
 		// cache the value for better performance
 		int markupSize = markup.size();
 
-		if (startIndex >= markupSize)
-		{
-			throw new IllegalArgumentException(
-				"Parameter 'startIndex' must not be >= markup.size()");
+		if (startIndex >= markupSize) {
+			throw new IllegalArgumentException("Parameter 'startIndex' must not be >= markup.size()");
 		}
 
 		this.markup = markup;
@@ -81,52 +77,40 @@ public class MarkupFragment extends AbstractMarkupFragment
 
 		// Make sure we are at an open tag
 		MarkupElement startElem = markup.get(startIndex);
-		if ((startElem instanceof ComponentTag) == false)
-		{
-			throw new IllegalArgumentException(
-				"Parameter 'startIndex' does not point to a Wicket open tag");
+		if (!(startElem instanceof ComponentTag)) {
+			throw new IllegalArgumentException("Parameter 'startIndex' does not point to a Wicket open tag");
 		}
 
 		// Determine the size. Find the close tag
 		int endIndex;
-		ComponentTag startTag = (ComponentTag)startElem;
-		if (startTag.isOpenClose())
-		{
+		ComponentTag startTag = (ComponentTag) startElem;
+		if (startTag.isOpenClose()) {
 			endIndex = startIndex;
-		}
-		else if (startTag.hasNoCloseTag())
-		{
-			if (HtmlHandler.requiresCloseTag(startTag.getName()) == false)
-			{
+		} else if (startTag.hasNoCloseTag()) {
+			if (HtmlHandler.requiresCloseTag(startTag.getName()) == false) {
 				// set endIndex to a "good" value
 				endIndex = startIndex;
-			}
-			else
-			{
+			} else {
 				// set endIndex to a value which will indicate an error
 				endIndex = markupSize;
 			}
-		}
-		else
-		{
-			for (endIndex = startIndex + 1; endIndex < markupSize; endIndex++)
-			{
+		} else {
+			for (endIndex = startIndex + 1; endIndex < markupSize; endIndex++) {
 				MarkupElement elem = markup.get(endIndex);
-				if (elem instanceof ComponentTag)
-				{
-					ComponentTag tag = (ComponentTag)elem;
-					if (tag.closes(startTag))
-					{
+				if (elem instanceof ComponentTag) {
+					ComponentTag tag = (ComponentTag) elem;
+					if (tag.closes(startTag)) {
 						break;
 					}
 				}
 			}
 		}
 
-		if (endIndex >= markupSize)
-		{
+		if (endIndex >= markupSize) {
+			String markupResourceStreamInfo = getRootMarkup() != null ?
+					getRootMarkup().getMarkupResourceStream().toString() : "unknown";
 			throw new MarkupException("Unable to find close tag for: '" + startTag.toString() +
-				"' in " + getRootMarkup().getMarkupResourceStream().toString());
+					"' in " + markupResourceStreamInfo);
 		}
 
 		size = endIndex - startIndex + 1;
@@ -218,11 +202,14 @@ public class MarkupFragment extends AbstractMarkupFragment
 
 			@Override
 			public MarkupElement next() {
-				if(!hasNext())
-				{
+				if (!hasNext()) {
 					throw new NoSuchElementException("No more elements");
 				}
-				return get(index++);
+				MarkupElement markupElement = get(index++);
+				if (markupElement == null) {
+					throw new NullPointerException("getRootMarkup() returned null");
+				}
+				return markupElement;
 			}
 
 			@Override

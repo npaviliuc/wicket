@@ -36,11 +36,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link TimeField}.
  */
-public class TimeFieldTest extends WicketTestCase
+class TimeFieldTest extends WicketTestCase
 {
 
 	@Test
-	public void timeNull()
+	void timeNull()
 	{
 		TestPage page = new TestPage(null);
 		tester.startPage(page);
@@ -51,7 +51,7 @@ public class TimeFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void timeEmptyHours()
+	void timeEmptyHours()
 	{
 		TestPage page = new TestPage(null);
 		tester.startPage(page);
@@ -62,7 +62,7 @@ public class TimeFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void timeEmptyMinutes()
+	void timeEmptyMinutes()
 	{
 		TestPage page = new TestPage(null);
 		tester.startPage(page);
@@ -73,7 +73,7 @@ public class TimeFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void timeNotNull()
+	void timeNotNull()
 	{
 		TestPage page = new TestPage(LocalTime.of(6, 15));
 		tester.startPage(page);

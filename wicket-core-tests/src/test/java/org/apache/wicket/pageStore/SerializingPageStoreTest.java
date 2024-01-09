@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link SerializingPageStore}.
  */
-public class SerializingPageStoreTest
+class SerializingPageStoreTest
 {
 
 	@Test

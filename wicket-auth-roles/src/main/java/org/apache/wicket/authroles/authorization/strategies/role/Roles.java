@@ -40,6 +40,8 @@ public class Roles extends HashSet<String> implements IClusterable
 	/** ADMIN role (for use in annotations) */
 	public static final String ADMIN = "ADMIN";
 
+	private static final String ROLES_CONST = "roles";
+
 	/**
 	 * Construct.
 	 */
@@ -55,7 +57,7 @@ public class Roles extends HashSet<String> implements IClusterable
 	 */
 	public Roles(final String roles)
 	{
-		Args.notNull(roles, "roles");
+		Args.notNull(roles, ROLES_CONST);
 		for (final String role : roles.split("\\s*,\\s*"))
 		{
 			add(role);
@@ -70,7 +72,7 @@ public class Roles extends HashSet<String> implements IClusterable
 	 */
 	public Roles(final String[] roles)
 	{
-		Args.notNull(roles, "roles");
+		Args.notNull(roles, ROLES_CONST);
 		for (final String role : roles)
 		{
 			add(role);
@@ -78,7 +80,7 @@ public class Roles extends HashSet<String> implements IClusterable
 	}
 
 	public Roles(final Collection<String> roles) {
-		Args.notNull(roles, "roles");
+		Args.notNull(roles, ROLES_CONST);
 		addAll(roles);
 	}
 

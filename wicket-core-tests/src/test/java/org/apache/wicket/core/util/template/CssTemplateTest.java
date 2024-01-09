@@ -22,36 +22,34 @@ import org.apache.wicket.util.template.CssTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test of {@link CssTemplate}
  */
-class CssTemplateTest
-{
+class CssTemplateTest {
 
-	/**
-	 * Test that a {@link CssTemplate} can be constructed without problems.
-	 * 
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-3187">WICKET-3187</a>
-	 */
-	@Test
-    void simpleConstructor()
-	{
-		new CssTemplate(new TextTemplate()
-		{
-			private static final long serialVersionUID = 1L;
+    /**
+     * Test that a {@link CssTemplate} can be constructed without problems.
+     *
+     * @see <a href="https://issues.apache.org/jira/browse/WICKET-3187">WICKET-3187</a>
+     */
+    @Test
+    void simpleConstructor() {
+        CssTemplate cssTemplate = new CssTemplate(new TextTemplate() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public TextTemplate interpolate(Map<String, ?> variables)
-			{
-				return this;
-			}
+            @Override
+            public TextTemplate interpolate(Map<String, ?> variables) {
+                return this;
+            }
 
-			@Override
-			public String getString()
-			{
-				return "";
-			}
-		});
-	}
+            @Override
+            public String getString() {
+                return "";
+            }
+        });
+
+        assertNotNull(cssTemplate, "CssTemplate should not be null");
+    }
 }

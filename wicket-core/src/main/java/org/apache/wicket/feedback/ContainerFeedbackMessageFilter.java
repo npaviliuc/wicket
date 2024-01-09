@@ -50,6 +50,6 @@ public class ContainerFeedbackMessageFilter implements IFeedbackMessageFilter
 		final Component reporter = message.getReporter();
 
 		return reporter != null && 
-		       (container.contains(reporter, true) || Objects.equal(container, reporter));
+		       (container.contains(reporter, true) || Objects.areEquals(container, reporter));
 	}
 }

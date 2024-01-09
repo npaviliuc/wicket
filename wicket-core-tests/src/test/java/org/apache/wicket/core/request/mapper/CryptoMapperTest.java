@@ -659,9 +659,8 @@ class CryptoMapperTest extends AbstractMapperTest
 		encryptedUrl.getSegments().remove(0);
 		encryptedUrl.getSegments().add(0, "crypt.no decryptable");
 
-		assertThrows(PageExpiredException.class, () -> {
-			mapper.mapRequest(getRequest(encryptedUrl));
-		});
+		Request req = getRequest(encryptedUrl);
+		assertThrows(PageExpiredException.class, () -> mapper.mapRequest(req));
 	}
 
 	/**

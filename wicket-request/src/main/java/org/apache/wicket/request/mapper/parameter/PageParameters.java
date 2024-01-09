@@ -545,7 +545,7 @@ public class PageParameters implements IClusterable, IIndexedParameters, INamedP
 	 */
 	public static boolean equals(final PageParameters p1, final PageParameters p2)
 	{
-		return Objects.equal(p1, p2) || 
+		return Objects.areEquals(p1, p2) || 
 				((p1 == null) && (p2.getIndexedCount() == 0) && p2.getNamedCount() == 0) || 
 				((p2 == null) && (p1.getIndexedCount() == 0) && p1.getNamedCount() == 0)
 		;

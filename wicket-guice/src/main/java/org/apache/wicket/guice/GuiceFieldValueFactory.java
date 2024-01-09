@@ -29,6 +29,7 @@ import org.apache.wicket.proxy.LazyInitProxyFactory;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Inject;
 import org.apache.wicket.util.lang.Generics;
+import org.apache.wicket.WicketRuntimeException;
 
 /**
  *
@@ -54,78 +55,76 @@ public class GuiceFieldValueFactory implements IFieldValueFactory
 	 * {@inheritDoc}
 	 */
 	@Override
-public Object getFieldValue(final Field field, final Object fieldOwner) {
-    Object target = null;
+	public Object getFieldValue(final Field field, final Object fieldOwner) {
+		Object target = null;
 
-    if (supportsField(field)) {
-        Inject injectAnnotation = field.getAnnotation(Inject.class);
-        jakarta.inject.Inject jakartaInjectAnnotation = field.getAnnotation(jakarta.inject.Inject.class);
+		if (supportsField(field)) {
+			Inject injectAnnotation = field.getAnnotation(Inject.class);
+			jakarta.inject.Inject jakartaInjectAnnotation = field.getAnnotation(jakarta.inject.Inject.class);
 
-        if (!isFieldStatic(field) && hasInjectAnnotation(injectAnnotation, jakartaInjectAnnotation)) {
-            try {
-                boolean optional = injectAnnotation != null && injectAnnotation.optional();
-                Annotation bindingAnnotation = findBindingAnnotation(field.getAnnotations());
-                target = locateAndWrapProxy(field, bindingAnnotation, optional);
-                cacheTargetIfSingleton(field, target, bindingAnnotation, optional);
+			if (!isFieldStatic(field) && hasInjectAnnotation(injectAnnotation, jakartaInjectAnnotation)) {
+				try {
+					boolean optional = injectAnnotation != null && injectAnnotation.optional();
+					Annotation bindingAnnotation = findBindingAnnotation(field.getAnnotations());
+					target = locateAndWrapProxy(field, bindingAnnotation, optional);
+					cacheTargetIfSingleton(field, target, bindingAnnotation, optional);
 
-                makeFieldAccessible(field, fieldOwner);
-            } catch (MoreThanOneBindingException e) {
-                handleMoreThanOneBindingException(field);
-            }
-        }
-    }
+					makeFieldAccessible(field, fieldOwner);
+				} catch (MoreThanOneBindingException e) {
+					handleMoreThanOneBindingException(field);
+				}
+			}
+		}
 
-    return target;
-}
+		return target;
+	}
 
-private boolean isFieldStatic(Field field) {
-    return Modifier.isStatic(field.getModifiers());
-}
+	private boolean isFieldStatic(Field field) {
+		return Modifier.isStatic(field.getModifiers());
+	}
 
-private boolean hasInjectAnnotation(Inject injectAnnotation, jakarta.inject.Inject jakartaInjectAnnotation) {
-    return !isInjectAnnotationMissing(injectAnnotation) || jakartaInjectAnnotation != null;
-}
+	private boolean hasInjectAnnotation(Inject injectAnnotation, jakarta.inject.Inject jakartaInjectAnnotation) {
+		return !isInjectAnnotationMissing(injectAnnotation) || jakartaInjectAnnotation != null;
+	}
 
-private boolean isInjectAnnotationMissing(Inject injectAnnotation) {
-    return injectAnnotation == null;
-}
+	private boolean isInjectAnnotationMissing(Inject injectAnnotation) {
+		return injectAnnotation == null;
+	}
 
-private Object locateAndWrapProxy(Field field, Annotation bindingAnnotation, boolean optional) {
-    GuiceProxyTargetLocator locator = new GuiceProxyTargetLocator(field, bindingAnnotation, optional);
-    Object cachedValue = cache.get(locator);
+	private Object locateAndWrapProxy(Field field, Annotation bindingAnnotation, boolean optional) {
+		GuiceProxyTargetLocator locator = new GuiceProxyTargetLocator(field, bindingAnnotation, optional);
+		Object cachedValue = cache.get(locator);
 
-    if (cachedValue != null) {
-        return cachedValue == NULL_SENTINEL ? null : cachedValue;
-    }
+		if (cachedValue != null) {
+			return cachedValue == NULL_SENTINEL ? null : cachedValue;
+		}
 
-    Object target = locator.locateProxyTarget();
+		Object target = locator.locateProxyTarget();
 
-    return wrapInProxies ? LazyInitProxyFactory.createProxy(field.getType(), locator) : target;
-}
+		return wrapInProxies ? LazyInitProxyFactory.createProxy(field.getType(), locator) : target;
+	}
 
-private void cacheTargetIfSingleton(Field field, Object target, Annotation bindingAnnotation, boolean optional) {
-    if (target != null && isSingletonScope(bindingAnnotation)) {
-        Object tmpTarget = cache.putIfAbsent(new GuiceProxyTargetLocator(field, bindingAnnotation, optional), target == null ? NULL_SENTINEL : target);
-        if (tmpTarget != null) {
-            target = tmpTarget;
-        }
-    }
-}
+	private void cacheTargetIfSingleton(Field field, Object target, Annotation bindingAnnotation, boolean optional) {
+		if (target != null && isSingletonScope(bindingAnnotation)) {
+			Object tmpTarget = cache.putIfAbsent(new GuiceProxyTargetLocator(field, bindingAnnotation, optional), target);
+			target = (tmpTarget != null) ? tmpTarget : target;
+		}
+	}
 
-private boolean isSingletonScope(Annotation bindingAnnotation) {
-    return bindingAnnotation != null; // replace with actual condition for singleton scope
-}
+	private boolean isSingletonScope(Annotation bindingAnnotation) {
+		return bindingAnnotation != null; // replace with actual condition for singleton scope
+	}
 
-private void makeFieldAccessible(Field field, Object fieldOwner) {
-    if (!field.canAccess(fieldOwner)) {
-        field.setAccessible(true);
-    }
-}
+	private void makeFieldAccessible(Field field, Object fieldOwner) {
+		if (!field.canAccess(fieldOwner)) {
+			field.setAccessible(true);
+		}
+	}
 
-private void handleMoreThanOneBindingException(Field field) {
-    throw new RuntimeException("Can't have more than one BindingAnnotation on field " + field.getName() +
-            " of class " + field.getDeclaringClass().getName());
-}
+	private void handleMoreThanOneBindingException(Field field) {
+		throw new WicketRuntimeException("Can't have more than one BindingAnnotation on field " + field.getName() +
+				" of class " + field.getDeclaringClass().getName());
+	}
 
 
 	/**

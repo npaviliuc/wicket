@@ -88,15 +88,13 @@ public class AjaxEnclosureListener implements AjaxRequestTarget.IListener
 						final Component controller = component;
 						target.add(enclosure);
 						visit.dontGoDeeper();
-						enclosure.visitChildren(new IVisitor<Component, Void>() {
-							@Override
-							public void component(Component descendant, IVisit<Void> visit) {
-								if (descendant == controller) {
-									// if the controlling component is in the enclosure we do not need to repaint it
-									// individually, it will be repainted as part of the enclosure repaint
-									keysToRemove.add(controller.getId());
-								}
+						enclosure.visitChildren((Component descendant, IVisit<Void> innerVisit) -> {
+							if (descendant == controller) {
+								// if the controlling component is in the enclosure we do not need to repaint it
+								// individually, it will be repainted as part of the enclosure repaint
+								keysToRemove.add(controller.getId());
 							}
+							
 						});
 						break;
 					}

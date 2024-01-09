@@ -44,6 +44,7 @@ import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.Test;
+import org.apache.wicket.request.cycle.RequestCycle;
 
 /**
  * Tests for {@link ListenerRequestHandler}
@@ -64,9 +65,13 @@ public class ListenerRequestHandlerTest extends WicketTestCase
 
 		// non-existing component on old page fails
 		PageAndComponentProvider oldPage = new PageAndComponentProvider(new DummyPage(), "foo");
+		ListenerRequestHandler listener = null;
+		RequestCycle requestCycle = null;
+		listener = new ListenerRequestHandler(oldPage);
+		requestCycle = tester.getRequestCycle();
 		try
 		{
-			new ListenerRequestHandler(oldPage).respond(tester.getRequestCycle());
+			listener.respond(requestCycle);
 			fail();
 		}
 		catch (WicketRuntimeException ex)

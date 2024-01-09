@@ -25,6 +25,8 @@ class AbstractInjector
 {
 	public AbstractInjector()
 	{
+		// This default constructor is intentionally left empty and throws UnsupportedOperationException
+ 		// to signal that subclasses must provide their own implementation of this constructor.
 	}
 
 	protected <T> void postConstruct(T instance)

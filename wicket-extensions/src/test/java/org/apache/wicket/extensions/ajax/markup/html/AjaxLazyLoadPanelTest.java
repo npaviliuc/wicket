@@ -24,11 +24,11 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class AjaxLazyLoadPanelTest extends WicketTestCase
+class AjaxLazyLoadPanelTest extends WicketTestCase
 {
 
 	@Test
-	public void immediatelyContentReady() {
+	void immediatelyContentReady() {
 		
 		AjaxLazyLoadPanelPage page = new AjaxLazyLoadPanelPage();
 		page.contentReady = true;
@@ -49,7 +49,7 @@ public class AjaxLazyLoadPanelTest extends WicketTestCase
 	}
 	
 	@Test
-	public void lateContentReady() {
+	void lateContentReady() {
 		
 		AjaxLazyLoadPanelPage page = new AjaxLazyLoadPanelPage();
 		page.contentReady = false;
@@ -78,7 +78,7 @@ public class AjaxLazyLoadPanelTest extends WicketTestCase
 	}
 	
 	@Test
-	public void lateVisible() {
+	void lateVisible() {
 		
 		AjaxLazyLoadPanelPage page = new AjaxLazyLoadPanelPage();
 		page.contentReady = true;

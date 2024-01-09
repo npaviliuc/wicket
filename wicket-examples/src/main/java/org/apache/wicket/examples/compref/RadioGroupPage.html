@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
 <head>
 	<title>Wicket Examples - component reference</title>
@@ -19,17 +20,19 @@
 		<p>
 		<form wicket:id="form">
 			<span wicket:id="group">
+				<!-- Table structure for a radio group choice validation form -->
 				<table class="dotted-box">
 					<th></th>
 					<caption>Radio group choice validation</caption>
 					<tr>
 						<td valign="top">Select a person</td>
 						<td>
+							<!-- with this table users can select a person using radio buttons, and the first name and last name of the selected person will be displayed dynamically -->
 							<table cellspacing="0" cellpadding="2">
 								<tr>
-									<td><b>Select</b></td>
-									<td><b>First Name</b></td>
-									<td><b>Last Name</b></td>
+									<th><b>Select</b></th>
+									<th><b>First Name</b></th>
+									<th><b>Last Name</b></th>
 								</tr>
 								<tr wicket:id="persons">
 									<td><input type="radio" wicket:id="radio" /></td>

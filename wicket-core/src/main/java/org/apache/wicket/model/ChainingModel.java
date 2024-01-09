@@ -57,7 +57,7 @@ public class ChainingModel<T> implements IModel<T>
 					+ "in models directly as it may lead to serialization problems. "
 					+ "If you need to access a property of the session via the model use the "
 					+ "page instance as the model object and 'session.attribute' as the path.");
-		} else if (modelObject != null && (modelObject instanceof Serializable == false))
+		} else if (modelObject != null && !(modelObject instanceof Serializable))
 		{
 			LOG.warn("It is not a good idea to reference non-serializable {} "
 					+ "in a model directly as it may lead to serialization problems.", modelObject.getClass());
@@ -127,11 +127,11 @@ public class ChainingModel<T> implements IModel<T>
 	/**
 	 * @return The target - if it is a model, null otherwise
 	 */
-	public IModel<?> getChainedModel()
+	public IModel<T> getChainedModel()
 	{
 		if (target instanceof IModel)
 		{
-			return (IModel<?>)target;
+			return (IModel<T>)target;
 		}
 		return null;
 	}

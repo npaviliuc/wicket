@@ -45,6 +45,6 @@ public class ComponentFeedbackMessageFilter implements IFeedbackMessageFilter
 	@Override
 	public boolean accept(FeedbackMessage message)
 	{
-		return Objects.equal(component, message.getReporter());
+		return Objects.areEquals(component, message.getReporter());
 	}
 }

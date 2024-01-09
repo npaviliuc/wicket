@@ -246,9 +246,7 @@ public class RequestCycle implements IRequestCycle, IEventSink, IMetadataContext
 			if (handler == null)
 			{
 				// Did not find any suitable handler, thus not executing the request
-				log.debug(
-					"No suitable handler found for URL {}, falling back to container to process this request",
-					request.getUrl());
+				log.debug("No suitable handler found, falling back to container to process this request");
 			}
 			else
 			{
@@ -326,7 +324,7 @@ public class RequestCycle implements IRequestCycle, IEventSink, IMetadataContext
 		IRequestHandler handler = handleException(exception);
 		if (handler == null)
 		{
-			log.error("Error during request processing. URL=" + request.getUrl(), exception);
+			log.error("Error during request processing...");
 			return false;
 		}
 

@@ -28,14 +28,14 @@ import org.junit.jupiter.api.Test;
  * @author Chris Turner
  * @version 1.0
  */
-public class HangManTest
+class HangManTest
 {
 	/**
 	 * Tests the hangman class directly for a winning game.
 	 *
      */
 	@Test
-	public void test_1() {
+	void test_1() {
 		Game hangman = new Game();
 		hangman.newGame(5, new WordGenerator(new String[] { "testing" }));
 
@@ -43,6 +43,14 @@ public class HangManTest
 		Assert.assertFalse(hangman.isWon());
 		Assert.assertFalse(hangman.isLost());
 
+		hangmanTest1(hangman);
+		hangmanTest2(hangman);
+		hangmanTest3(hangman);
+		
+	}
+
+
+	private void hangmanTest1(Game hangman) {
 		doGuessTest(hangman, 'a', false);
 		Assert.assertEquals(4, hangman.getGuessesRemaining());
 		Assert.assertFalse(hangman.isWon());
@@ -52,7 +60,9 @@ public class HangManTest
 		Assert.assertEquals(4, hangman.getGuessesRemaining());
 		Assert.assertFalse(hangman.isWon());
 		Assert.assertFalse(hangman.isLost());
+	}
 
+	private void hangmanTest2(Game hangman) {
 		doGuessTest(hangman, 't', true);
 		Assert.assertEquals(4, hangman.getGuessesRemaining());
 		Assert.assertFalse(hangman.isWon());
@@ -67,7 +77,9 @@ public class HangManTest
 		Assert.assertEquals(4, hangman.getGuessesRemaining());
 		Assert.assertFalse(hangman.isWon());
 		Assert.assertFalse(hangman.isLost());
+	}
 
+	private void hangmanTest3(Game hangman) {
 		doGuessTest(hangman, 'i', true);
 		Assert.assertEquals(4, hangman.getGuessesRemaining());
 		Assert.assertFalse(hangman.isWon());
@@ -106,7 +118,7 @@ public class HangManTest
 	 *
      */
 	@Test
-	public void testHangmanLoseGame() {
+	void testHangmanLoseGame() {
 		Game hangman = new Game();
 		hangman.newGame(2, new WordGenerator(new String[] { "foo" }));
 

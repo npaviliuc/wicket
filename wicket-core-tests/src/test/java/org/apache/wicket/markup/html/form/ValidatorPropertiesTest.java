@@ -88,6 +88,45 @@ class ValidatorPropertiesTest extends WicketTestCase
 		page.getText14().setInput("");
 		page.getText14().validateRequired();
 
+		
+		supportTest1First(page);
+
+		// now test Dutch
+
+		tester.getSession().setLocale(new Locale("nl"));
+		page = new TestPage();
+		form = (Form<?>)page.get("form1");
+		assertNotNull(form);
+
+		page.getText1().setInput("");
+		page.getText1().validateRequired();
+		page.getText2().setInput("");
+		page.getText2().validateRequired();
+		page.getText3().setInput("");
+		page.getText3().validateRequired();
+		page.getText4().setInput("");
+		page.getText4().validateRequired();
+		page.getText5().setInput("");
+		page.getText5().validateRequired();
+		page.getText6().setInput("");
+		page.getText6().validateRequired();
+		page.getText7().setInput("");
+		page.getText7().validateRequired();
+		page.getText8().setInput("");
+		page.getText8().validateRequired();
+		page.getText9().setInput("");
+		page.getText9().validateRequired();
+		page.getText10().setInput("");
+		page.getText10().validateRequired();
+		page.getText11().setInput("");
+		page.getText11().validateRequired();
+		page.getText12().setInput("");
+		page.getText12().validateRequired();
+
+		supportTest1Second(page);
+	}
+
+	private void supportTest1First(TestPage page) {
 		assertEquals("text1label is required", page.getText1()
 			.getFeedbackMessages()
 			.iterator()
@@ -181,38 +220,9 @@ class ValidatorPropertiesTest extends WicketTestCase
 			.getMessage()
 			.toString());
 
-		// now test Dutch
+	}
 
-		tester.getSession().setLocale(new Locale("nl"));
-		page = new TestPage();
-		form = (Form<?>)page.get("form1");
-		assertNotNull(form);
-
-		page.getText1().setInput("");
-		page.getText1().validateRequired();
-		page.getText2().setInput("");
-		page.getText2().validateRequired();
-		page.getText3().setInput("");
-		page.getText3().validateRequired();
-		page.getText4().setInput("");
-		page.getText4().validateRequired();
-		page.getText5().setInput("");
-		page.getText5().validateRequired();
-		page.getText6().setInput("");
-		page.getText6().validateRequired();
-		page.getText7().setInput("");
-		page.getText7().validateRequired();
-		page.getText8().setInput("");
-		page.getText8().validateRequired();
-		page.getText9().setInput("");
-		page.getText9().validateRequired();
-		page.getText10().setInput("");
-		page.getText10().validateRequired();
-		page.getText11().setInput("");
-		page.getText11().validateRequired();
-		page.getText12().setInput("");
-		page.getText12().validateRequired();
-
+	private void supportTest1Second(TestPage page) {
 		assertEquals("text1label is verplicht", page.getText1()
 			.getFeedbackMessages()
 			.iterator()

@@ -24,6 +24,7 @@ import org.apache.wicket.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.velocity.markup.html.VelocityPanel;
@@ -45,29 +46,34 @@ public class DynamicPage extends WicketExamplePage
 	{
 		final IResourceStream template = new PackageResourceStream(DynamicPage.class,
 			"fields.vm");
+		try {
 
-		Map<String, List<Field>> map = new HashMap<>();
-		List<Field> fields = VelocityTemplateApplication.getFields();
-		map.put("fields", fields);
+			Map<String, List<Field>> map = new HashMap<>();
+			List<Field> fields = VelocityTemplateApplication.getFields();
+			map.put("fields", fields);
 
-		VelocityPanel panel;
-		add(panel = new VelocityPanel("templatePanel", new MapModel<>(map))
-		{
-			@Override
-			protected IResourceStream getTemplateResource()
+			VelocityPanel panel;
+			add(panel = new VelocityPanel("templatePanel", new MapModel<>(map))
 			{
-				return template;
-			}
+				@Override
+				protected IResourceStream getTemplateResource()
+				{
+					return template;
+				}
 
-			@Override
-			protected boolean parseGeneratedMarkup()
+				@Override
+				protected boolean parseGeneratedMarkup()
+				{
+					return true;
+				}
+			});
+			for (Field field : fields)
 			{
-				return true;
+				panel.add(new TextField<>(field.getFieldName()));
 			}
-		});
-		for (Field field : fields)
-		{
-			panel.add(new TextField<>(field.getFieldName()));
 		}
+		finally{
+			IOUtils.closeQuietly(template);
+		 }
 	}
 }

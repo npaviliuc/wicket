@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link SignInPanel}
  */
-public class SignInPanelTest
+class SignInPanelTest
 {
 
 	/**

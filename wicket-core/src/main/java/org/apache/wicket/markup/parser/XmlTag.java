@@ -109,7 +109,7 @@ public class XmlTag
 	public final boolean equalTo(final XmlTag element)
 	{
 		final XmlTag that = element;
-		if (!Objects.equal(getNamespace(), that.getNamespace()))
+		if (!Objects.areEquals(getNamespace(), that.getNamespace()))
 		{
 			return false;
 		}

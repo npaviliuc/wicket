@@ -46,107 +46,19 @@ class PagedTableNavigatorWithLabelProviderTest extends WicketTestCase
 		DiffUtil.validatePage(document, this.getClass(),
 			"PagedTableNavigatorWithLabelProviderExpectedResult_1.html", true);
 
-		Link<?> link = (Link<?>)page.get("navigator:first");
-		assertFalse(link.isEnabled());
+		Link<?> link = null;
+		
+		linkTest1(link, page);
 
-		link = (Link<?>)page.get("navigator:prev");
-		assertFalse(link.isEnabled());
+		linkTest2(link, page, document);
 
-		link = (Link<?>)page.get("navigator:next");
-		assertTrue(link.isEnabled());
+		linkTest3(link, page, document);
 
-		link = (Link<?>)page.get("navigator:last");
-		assertTrue(link.isEnabled());
+		linkTest4(link, page, document);
 
-		link = (Link<?>)page.get("navigator:next");
-		tester.clickLink(link.getPageRelativePath());
-		document = tester.getLastResponseAsString();
-		DiffUtil.validatePage(document, this.getClass(),
-			"PagedTableNavigatorWithLabelProviderExpectedResult_2.html", true);
+		linkTest5(link, page, document);
 
-		link = (Link<?>)page.get("navigator:first");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:prev");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:next");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:last");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:prev");
-		tester.clickLink(link.getPageRelativePath());
-		document = tester.getLastResponseAsString();
-		DiffUtil.validatePage(document, this.getClass(),
-			"PagedTableNavigatorWithLabelProviderExpectedResult_3.html", true);
-
-		link = (Link<?>)page.get("navigator:first");
-		assertFalse(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:prev");
-		assertFalse(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:next");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:last");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:last");
-		tester.clickLink(link.getPageRelativePath());
-		document = tester.getLastResponseAsString();
-		DiffUtil.validatePage(document, this.getClass(),
-			"PagedTableNavigatorWithLabelProviderExpectedResult_4.html", true);
-
-		link = (Link<?>)page.get("navigator:first");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:prev");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:next");
-		assertFalse(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:last");
-		assertFalse(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:first");
-		tester.clickLink(link.getPageRelativePath());
-		document = tester.getLastResponseAsString();
-		DiffUtil.validatePage(document, this.getClass(),
-			"PagedTableNavigatorWithLabelProviderExpectedResult_5.html", true);
-
-		link = (Link<?>)page.get("navigator:first");
-		assertFalse(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:prev");
-		assertFalse(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:next");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:last");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:navigation:3:pageLink");
-		tester.clickLink(link.getPageRelativePath());
-		document = tester.getLastResponseAsString();
-		DiffUtil.validatePage(document, this.getClass(),
-			"PagedTableNavigatorWithLabelProviderExpectedResult_6.html", true);
-
-		link = (Link<?>)page.get("navigator:first");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:prev");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:next");
-		assertTrue(link.isEnabled());
-
-		link = (Link<?>)page.get("navigator:last");
-		assertTrue(link.isEnabled());
+		linkTest6(link, page, document);
 
 		link = (Link<?>)page.get("navigator:prev");
 		tester.clickLink(link.getPageRelativePath());
@@ -166,5 +78,119 @@ class PagedTableNavigatorWithLabelProviderTest extends WicketTestCase
 		link = (Link<?>)page.get("navigator:last");
 		assertTrue(link.isEnabled());
 
+	}
+
+	private void linkTest1(Link<?> link, PagedTableNavigatorWithLabelProviderPage page) {
+		link = (Link<?>)page.get("navigator:first");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:prev");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:next");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:last");
+		assertTrue(link.isEnabled());
+	}
+
+	private void linkTest2(Link<?> link, PagedTableNavigatorWithLabelProviderPage page, String document) throws Exception {
+		link = (Link<?>)page.get("navigator:next");
+		tester.clickLink(link.getPageRelativePath());
+		document = tester.getLastResponseAsString();
+		DiffUtil.validatePage(document, this.getClass(),
+			"PagedTableNavigatorWithLabelProviderExpectedResult_2.html", true);
+
+		link = (Link<?>)page.get("navigator:first");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:prev");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:next");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:last");
+		assertTrue(link.isEnabled());
+	}
+
+	private void linkTest3(Link<?> link, PagedTableNavigatorWithLabelProviderPage page, String document) throws Exception {
+		link = (Link<?>)page.get("navigator:prev");
+		tester.clickLink(link.getPageRelativePath());
+		document = tester.getLastResponseAsString();
+		DiffUtil.validatePage(document, this.getClass(),
+			"PagedTableNavigatorWithLabelProviderExpectedResult_3.html", true);
+
+		link = (Link<?>)page.get("navigator:first");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:prev");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:next");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:last");
+		assertTrue(link.isEnabled());
+	}
+
+	private void linkTest4(Link<?> link, PagedTableNavigatorWithLabelProviderPage page, String document) throws Exception {
+		link = (Link<?>)page.get("navigator:last");
+		tester.clickLink(link.getPageRelativePath());
+		document = tester.getLastResponseAsString();
+		DiffUtil.validatePage(document, this.getClass(),
+			"PagedTableNavigatorWithLabelProviderExpectedResult_4.html", true);
+
+		link = (Link<?>)page.get("navigator:first");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:prev");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:next");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:last");
+		assertFalse(link.isEnabled());
+	}
+
+	private void linkTest5(Link<?> link, PagedTableNavigatorWithLabelProviderPage page, String document) throws Exception {
+		link = (Link<?>)page.get("navigator:first");
+		tester.clickLink(link.getPageRelativePath());
+		document = tester.getLastResponseAsString();
+		DiffUtil.validatePage(document, this.getClass(),
+			"PagedTableNavigatorWithLabelProviderExpectedResult_5.html", true);
+
+		link = (Link<?>)page.get("navigator:first");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:prev");
+		assertFalse(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:next");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:last");
+		assertTrue(link.isEnabled());
+	}
+
+	private void linkTest6(Link<?> link, PagedTableNavigatorWithLabelProviderPage page, String document) throws Exception {
+		link = (Link<?>)page.get("navigator:navigation:3:pageLink");
+		tester.clickLink(link.getPageRelativePath());
+		document = tester.getLastResponseAsString();
+		DiffUtil.validatePage(document, this.getClass(),
+			"PagedTableNavigatorWithLabelProviderExpectedResult_6.html", true);
+
+		link = (Link<?>)page.get("navigator:first");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:prev");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:next");
+		assertTrue(link.isEnabled());
+
+		link = (Link<?>)page.get("navigator:last");
+		assertTrue(link.isEnabled());
 	}
 }

@@ -213,7 +213,7 @@ public abstract class ResourceReference implements IClusterable
 			return false;
 		}
 		ResourceReference that = (ResourceReference)obj;
-		return Objects.equal(data, that.data);
+		return Objects.areEquals(data, that.data);
 	}
 
 	/**
@@ -362,9 +362,9 @@ public abstract class ResourceReference implements IClusterable
 				return false;
 			}
 			UrlAttributes that = (UrlAttributes)obj;
-			return Objects.equal(getLocale(), that.getLocale()) &&
-				Objects.equal(getStyle(), that.getStyle()) &&
-				Objects.equal(getVariation(), that.getVariation());
+			return Objects.areEquals(getLocale(), that.getLocale()) &&
+				Objects.areEquals(getStyle(), that.getStyle()) &&
+				Objects.areEquals(getVariation(), that.getVariation());
 		}
 
 		@Override
@@ -450,11 +450,11 @@ public abstract class ResourceReference implements IClusterable
 				return false;
 			}
 			Key that = (Key)obj;
-			return Objects.equal(scope, that.scope) && //
-				Objects.equal(name, that.name) && //
-				Objects.equal(locale, that.locale) && //
-				Objects.equal(style, that.style) && //
-				Objects.equal(variation, that.variation);
+			return Objects.areEquals(scope, that.scope) && //
+				Objects.areEquals(name, that.name) && //
+				Objects.areEquals(locale, that.locale) && //
+				Objects.areEquals(style, that.style) && //
+				Objects.areEquals(variation, that.variation);
 		}
 
 		@Override

@@ -46,14 +46,9 @@ public abstract class AbstractPartialPageRequestHandler implements IPartialPageR
         Args.notNull(parent, "parent");
         Args.notNull(childCriteria, "childCriteria");
 
-        parent.visitChildren(childCriteria, new IVisitor<Component, Void>()
-        {
-            @Override
-            public void component(final Component component, final IVisit<Void> visit)
-            {
-                add(component);
-                visit.dontGoDeeper();
-            }
+        parent.visitChildren(childCriteria, (Component component, IVisit<Void> visit) -> {
+            add(component);
+            visit.dontGoDeeper();
         });
     }
 
@@ -114,7 +109,7 @@ public abstract class AbstractPartialPageRequestHandler implements IPartialPageR
     @Override
     public final void focusComponent(Component component)
     {
-        if (component != null && component.getOutputMarkupId() == false)
+        if (component != null && !(component.getOutputMarkupId()))
         {
             throw new IllegalArgumentException(
                     "cannot update component that does not have setOutputMarkupId property set to true. Component: " +

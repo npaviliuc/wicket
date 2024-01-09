@@ -259,10 +259,17 @@ public class UploadProgressBar extends Panel
 
 		final String status = new StringResourceModel(RESOURCE_STARTING, this, null).getString();
 
-		CharSequence url = form != null ? urlFor(ref, UploadStatusResource.newParameter(getPage().getId())) :
-				(uploadField != null ? urlFor(ref, UploadStatusResource.newParameter(uploadField.getMarkupId())):urlFor(ref, UploadStatusResource.newParameter("null")));
+		CharSequence url;
+		if (form != null) {
+			url = urlFor(ref, UploadStatusResource.newParameter(getPage().getId()));
+		}
+		else if (uploadField != null) {
+			url = urlFor(ref, UploadStatusResource.newParameter(uploadField.getMarkupId()));
+		}
+		else {
+			url = urlFor(ref, UploadStatusResource.newParameter("null"));
+		}
 				
-
 		StringBuilder builder = new StringBuilder(128);
 		try(Formatter formatter = new Formatter(builder)) {
 			Form<?> formCallback = getCallbackForm();

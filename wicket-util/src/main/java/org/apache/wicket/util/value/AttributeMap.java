@@ -100,6 +100,7 @@ public final class AttributeMap extends ValueMap
 	 * 
 	 * @see Strings#escapeMarkup(CharSequence)
 	 */
+	@Override
 	public String toString()
 	{
 		return toCharSequence().toString();

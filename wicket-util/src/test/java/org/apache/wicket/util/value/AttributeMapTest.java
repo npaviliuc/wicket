@@ -28,11 +28,11 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class AttributeMapTest
+class AttributeMapTest
 {
 
 	@Test
-	public void encoding() {
+	void encoding() {
 		AttributeMap map = new AttributeMap();
 		
 		map.putAttribute("key", "-&-ö-<->-");
@@ -41,7 +41,7 @@ public class AttributeMapTest
 	}
 	
 	@Test
-	public void putString()
+	void putString()
 	{
 		AttributeMap map = new AttributeMap();
 

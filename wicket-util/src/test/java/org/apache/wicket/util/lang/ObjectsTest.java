@@ -26,26 +26,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 
  * @author Martijn Dashorst
  */
-public class ObjectsTest
+class ObjectsTest
 {
 	/**
-	 * Test method for 'org.apache.wicket.util.lang.Objects.equal(Object, Object)'
+	 * Test method for 'org.apache.wicket.util.lang.Objects.areEquals(Object, Object)'
 	 */
 	@Test
 	public void equal()
 	{
 		Object object = new Object();
-		assertTrue(Objects.equal(object, object));
+		assertTrue(Objects.areEquals(object, object));
 
-		assertFalse(Objects.equal(null, object));
-		assertFalse(Objects.equal(object, null));
-		assertTrue(Objects.equal(null, null));
+		assertFalse(Objects.areEquals(null, object));
+		assertFalse(Objects.areEquals(object, null));
+		assertTrue(Objects.areEquals(null, null));
 
-		assertFalse(Objects.equal(new Object(), new Object()));
-		assertTrue(Objects.equal(1, 1));
-		assertFalse(Objects.equal("1", 1));
-		assertFalse(Objects.equal(1, "1"));
-		assertTrue(Objects.equal("1", Integer.toString(1)));
-		assertTrue(Objects.equal(Integer.toString(1), "1"));
+		assertFalse(Objects.areEquals(new Object(), new Object()));
+		assertTrue(Objects.areEquals(1, 1));
+		assertFalse(Objects.areEquals("1", 1));
+		assertFalse(Objects.areEquals(1, "1"));
+		assertTrue(Objects.areEquals("1", Integer.toString(1)));
+		assertTrue(Objects.areEquals(Integer.toString(1), "1"));
 	}
 }

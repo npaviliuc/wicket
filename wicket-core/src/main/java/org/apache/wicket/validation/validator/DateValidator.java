@@ -176,48 +176,58 @@ public class DateValidator extends RangeValidator<Date>
 	}
 
 	@Override
-	protected IValidationError decorate(IValidationError error, IValidatable<Date> validatable)
-	{
+	protected IValidationError decorate(IValidationError error, IValidatable<Date> validatable) {
 		error = super.decorate(error, validatable);
 
-		if (error instanceof ValidationError)
-		{
+		if (error instanceof ValidationError) {
 			ValidationError ve = (ValidationError) error;
-			ve.setVariable("inputdate", validatable.getValue());
-
-			// format variables if format has been specified
-			if (format != null)
-			{
-				Locale locale;
-				
-				if (Session.exists()) 
-				{
-					Session session = Session.get();
-					locale = session.getLocale();
-					
-					if (locale == null)
-					{
-						locale = Locale.getDefault(Locale.Category.FORMAT);
-					}
-				}
-				else
-				{
-					locale = Locale.getDefault(Locale.Category.FORMAT);
-				}
-
-				SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
-				if (getMinimum() != null)
-				{
-					ve.setVariable("minimum", sdf.format(getMinimum()));
-				}
-				if (getMaximum() != null)
-				{
-					ve.setVariable("maximum", sdf.format(getMaximum()));
-				}
-				ve.setVariable("inputdate", sdf.format(validatable.getValue()));
-			}
+			setVariableInputDate(ve, validatable.getValue());
+			formatVariables(ve);
 		}
 
 		return error;
 	}
+
+	private void setVariableInputDate(ValidationError ve, Date inputDate) {
+		ve.setVariable("inputdate", inputDate);
+
+		if (format != null) {
+			Locale locale = getLocale();
+			SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
+			ve.setVariable("inputdate", sdf.format(inputDate));
+		}
+	}
+
+	private void formatVariables(ValidationError ve) {
+		if (format != null) {
+			Locale locale = getLocale();
+			SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
+
+			if (getMinimum() != null) {
+				ve.setVariable("minimum", sdf.format(getMinimum()));
+			}
+
+			if (getMaximum() != null) {
+				ve.setVariable("maximum", sdf.format(getMaximum()));
+			}
+		}
+	}
+
+	private Locale getLocale() {
+		Locale locale;
+
+		if (Session.exists()) {
+			Session session = Session.get();
+			locale = session.getLocale();
+
+			if (locale == null) {
+				locale = Locale.getDefault(Locale.Category.FORMAT);
+			}
+		} else {
+			locale = Locale.getDefault(Locale.Category.FORMAT);
+		}
+
+		return locale;
+	}
+
 }

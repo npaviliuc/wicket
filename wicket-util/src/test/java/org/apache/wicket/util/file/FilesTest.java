@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link Files}
  */
-public class FilesTest
+class FilesTest
 {
 	/**
 	 * Tests for {@link Files#remove(java.io.File)}
@@ -91,7 +91,7 @@ public class FilesTest
 	 * delete a file
 	 */
 	@Test
-	public void dontWaitTooMuchIfCantDelete()
+	void dontWaitTooMuchIfCantDelete()
 	{
 		java.io.File f = new java.io.File("dummy/path")
 		{

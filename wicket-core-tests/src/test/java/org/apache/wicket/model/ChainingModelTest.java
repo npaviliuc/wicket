@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.Serializable;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -40,7 +42,9 @@ class ChainingModelTest
 	
 	@Test
 	void testNonSerializable() {
-		new ChainingModel<>(Thread.currentThread());
+		ChainingModel<Thread> model = new ChainingModel<>(new SerializableTestClass());
+
+		assertTrue(model.getTarget() instanceof Serializable, "ChainingModel target should be Serializable");
 	}
 	
 	@Test
@@ -105,4 +109,8 @@ class ChainingModelTest
 		model.detach();
 		assertTrue(test.detached);
 	}
+
+	// SerializableTestClass is a simple class that implements Serializable for testing
+    private static class SerializableTestClass implements Serializable {
+    }
 }

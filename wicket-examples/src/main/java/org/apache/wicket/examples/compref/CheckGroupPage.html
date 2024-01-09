@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
 <head>
 	<title>Wicket Examples - component reference</title>
@@ -20,18 +21,23 @@
 		<p>
 		<form wicket:id="form">
 			<span wicket:id="group">
+				<!-- table with a checkbox to select/unselect all persons, a nested table for displaying a list of persons 
+					with their first and last names, and a submit button at the bottom -->
 				<table class="dotted-box">
+
 					<th></th>
-					<caption>Checkgroupe validation</caption>
+					<caption>Checkgroup validation</caption>
 					<tr>
 						<td valign="top">Select persons</td>
 						<td>
 							<input type="checkbox" wicket:id="groupselector">check/uncheck all</input><br />
+							<!-- this table is designed to display a list of persons, and each person has a corresponding row with a checkbox for selection, 
+								a field for the first name, and a field for the last name -->
 							<table cellspacing="0" cellpadding="2">
 								<tr>
-									<td><b>Select</b></td>
-									<td><b>First Name</b></td>
-									<td><b>Last Name</b></td>
+									<th><b>Select</b></th>
+									<th><b>First Name</b></th>
+									<th><b>Last Name</b></th>
 								</tr>
 								<tr wicket:id="persons">
 									<td><input type="checkbox" wicket:id="checkbox" /></td>
@@ -39,8 +45,7 @@
 									<td><span wicket:id="lastName">[this is where lastname will be]</span></td>
 								</tr>
 							</table>
-							<span valign="top">
-							</span>
+							<span valign="top"></span>
 						</td>
 					</tr>
 					<tr>

@@ -22,14 +22,14 @@ import org.junit.jupiter.api.Test;
 /**
  * jWebUnit test for Hello World.
  */
-public class ImagesTest
+class ImagesTest
 {
 	/**
 	 * Test page.
 	 *
      */
 	@Test
-	public void testImages() {
+	void testImages() {
 		WicketTester tester = new WicketTester(new ImagesApplication());
 		try
 		{

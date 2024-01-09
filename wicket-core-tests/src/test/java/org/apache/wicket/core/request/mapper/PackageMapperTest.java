@@ -329,14 +329,16 @@ class PackageMapperTest extends AbstractMapperTest
 	@Test
 	void decode9()
 	{
-		assertThrows(StalePageException.class, () -> {
-			Url url = Url.parse(MOUNT_PATH + '/' + PAGE_CLASS_NAME + "/i1/i2?15-5.-foo-bar&a=b&b=c");
+		assertThrows(StalePageException.class, () -> returnDecode9());
+	}
 
-			context.setNextPageRenderCount(6);
+	void returnDecode9() {
+		Url url = Url.parse(MOUNT_PATH + '/' + PAGE_CLASS_NAME + "/i1/i2?15-5.-foo-bar&a=b&b=c");
 
-			IRequestHandler handler = encoder.mapRequest(getRequest(url));
-			((IPageRequestHandler)handler).getPage();
-		});
+		context.setNextPageRenderCount(6);
+
+		IRequestHandler handler = encoder.mapRequest(getRequest(url));
+		((IPageRequestHandler)handler).getPage();
 	}
 
 	/**

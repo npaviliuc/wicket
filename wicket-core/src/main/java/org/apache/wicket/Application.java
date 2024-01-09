@@ -42,7 +42,6 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSink;
 import org.apache.wicket.javascript.DefaultJavaScriptCompressor;
 import org.apache.wicket.markup.MarkupFactory;
-import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.ResourceAggregator;
 import org.apache.wicket.markup.html.HeaderResponseDecoratorCollection;
@@ -169,7 +168,7 @@ public abstract class Application implements UnboundListener, IEventSink, IMetad
 	private IRequestLogger requestLogger;
 
 	/** The session facade. */
-	private volatile ISessionStore sessionStore;
+	private ISessionStore sessionStore;
 
 	/** page renderer provider */
 	private IPageRendererProvider pageRendererProvider;
@@ -246,7 +245,7 @@ public abstract class Application implements UnboundListener, IEventSink, IMetad
 	 * Constructor. <strong>Use {@link #init()} for any configuration of your application instead of
 	 * overriding the constructor.</strong>
 	 */
-	public Application()
+	protected Application()
 	{
 		// Install default component instantiation listener that uses
 		// authorization strategy to check component instantiations.
@@ -1326,7 +1325,7 @@ public abstract class Application implements UnboundListener, IEventSink, IMetad
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	private volatile IPageManager pageManager;
+	private IPageManager pageManager;
 	private IPageManagerProvider pageManagerProvider;
 
 	/**
@@ -1583,10 +1582,10 @@ public abstract class Application implements UnboundListener, IEventSink, IMetad
 			{
 				internalGetPageManager().detach();
 
-				IRequestLogger requestLogger = getRequestLogger();
-				if (requestLogger != null)
+				IRequestLogger requestLoggerVar = getRequestLogger();
+				if (requestLoggerVar != null)
 				{
-					requestLogger.requestTime((System.currentTimeMillis() - requestCycle.getStartTime()));
+					requestLoggerVar.requestTime((System.currentTimeMillis() - requestCycle.getStartTime()));
 				}
 			}
 		});

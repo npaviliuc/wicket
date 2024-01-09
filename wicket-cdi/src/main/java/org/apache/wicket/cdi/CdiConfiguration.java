@@ -44,6 +44,8 @@ public class CdiConfiguration
 	 */
 	public CdiConfiguration()
 	{
+		//This default constructor is intentionally left empty and throws UnsupportedOperationException
+		// to signal that subclasses must provide their own implementation of this constructor.
 	}
 
 	public IConversationPropagation getPropagation()

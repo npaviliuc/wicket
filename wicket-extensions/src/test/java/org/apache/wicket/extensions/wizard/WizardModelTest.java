@@ -58,7 +58,7 @@ public class WizardModelTest extends WicketTestCase
 	}
 	
 	@Test
-	public void testWizard()
+	void testWizard()
 	{
 		WizardModel model = new WizardModel();
 		

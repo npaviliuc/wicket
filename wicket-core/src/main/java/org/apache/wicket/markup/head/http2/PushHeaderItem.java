@@ -322,83 +322,76 @@ public class PushHeaderItem extends HeaderItem implements Serializable
 	 * @return the current push header item
 	 */
 	@SuppressWarnings("unchecked")
-	public PushHeaderItem push(List<PushItem> pushItems)
-	{
+	public PushHeaderItem push(List<PushItem> pushItems) {
 		RequestCycle requestCycle = RequestCycle.get();
-		if (isHttp2(getContainerRequest(requestCycle.getRequest())))
-			for (PushItem pushItem : pushItems)
-			{
-				Object object = pushItem.getObject();
-				PageParameters parameters = pushItem.getPageParameters();
-
-				if (object == null)
-				{
-					throw new WicketRuntimeException(
-						"Please provide an object to the items to be pushed, so that the url can be created for the given resource.");
-				}
-
-				CharSequence url;
-				if (object instanceof ResourceReference)
-				{
-					url = requestCycle.urlFor((ResourceReference)object, parameters);
-				}
-				else if (Page.class.isAssignableFrom(object.getClass()))
-				{
-					url = requestCycle.urlFor((Class<? extends Page>)object, parameters);
-				}
-				else if (object instanceof IRequestHandler)
-				{
-					url = requestCycle.urlFor((IRequestHandler)object);
-				}
-				else if (pushItem.getUrl() != null)
-				{
-					url = pushItem.getUrl();
-				}
-				else
-				{
-					Url encoded = new PageParametersEncoder().encodePageParameters(parameters);
-					String queryString = encoded.getQueryString();
-					url = object.toString() + (queryString != null ? "?" + queryString : "");
-				}
-
-				if (url.toString().equals("."))
-				{
-					url = "/";
-				}
-				else if (url.toString().startsWith("."))
-				{
-					url = url.toString().substring(1);
-				}
-
-				// The context path and the filter have to be applied to the URL, because otherwise
-				// the resource is not pushed correctly
-				StringBuilder partialUrl = new StringBuilder();
-				String contextPath = WebApplication.get().getServletContext().getContextPath();
-				partialUrl.append(contextPath);
-				if (!"/".equals(contextPath))
-				{
-					partialUrl.append('/');
-				}
-				String filterPath = WebApplication.get().getWicketFilter().getFilterPath();
-				if ("/".equals(filterPath))
-				{
-					filterPath = "";
-				}
-				else if (filterPath.endsWith("/"))
-				{
-					filterPath = filterPath.substring(0, filterPath.length() - 1);
-				}
-				partialUrl.append(filterPath);
-				partialUrl.append(url);
-
-				// Set the url the resource is going to be pushed with
-				pushItem.setUrl(partialUrl.toString());
-
-				// Apply the push item to be used during the push process
-				this.pushItems.add(pushItem);
+		if (isHttp2(getContainerRequest(requestCycle.getRequest()))) {
+			for (PushItem pushItem : pushItems) {
+				processPushItem(requestCycle, pushItem);
 			}
+		}
 		return this;
 	}
+
+	private void processPushItem(RequestCycle requestCycle, PushItem pushItem) {
+		Object object = pushItem.getObject();
+		PageParameters parameters = pushItem.getPageParameters();
+
+		if (object == null) {
+			throw new WicketRuntimeException("Please provide an object to the items to be pushed, so that the url can be created for the given resource.");
+		}
+
+		CharSequence url = getUrlForObject(requestCycle, object, parameters, pushItem);
+
+		normalizeUrl(pushItem, url);
+
+		String partialUrl = buildPartialUrl(requestCycle, url);
+
+		pushItem.setUrl(partialUrl);
+		this.pushItems.add(pushItem);
+	}
+
+	private CharSequence getUrlForObject(RequestCycle requestCycle, Object object, PageParameters parameters, PushItem pushItem) {
+		if (object instanceof ResourceReference) {
+			return requestCycle.urlFor((ResourceReference) object, parameters);
+		} else if (Page.class.isAssignableFrom(object.getClass())) {
+			return requestCycle.urlFor((Class<? extends Page>) object, parameters);
+		} else if (object instanceof IRequestHandler) {
+			return requestCycle.urlFor((IRequestHandler) object);
+		} else if (pushItem.getUrl() != null) {
+			return pushItem.getUrl();
+		} else {
+			Url encoded = new PageParametersEncoder().encodePageParameters(parameters);
+			String queryString = encoded.getQueryString();
+			return object.toString() + (queryString != null ? "?" + queryString : "");
+		}
+	}
+
+	private void normalizeUrl(PushItem pushItem, CharSequence url) {
+		if (url.toString().equals(".")) {
+			pushItem.setUrl("/");
+		} else if (url.toString().startsWith(".")) {
+			pushItem.setUrl(url.toString().substring(1));
+		}
+	}
+
+	private String buildPartialUrl(RequestCycle requestCycle, CharSequence url) {
+		StringBuilder partialUrl = new StringBuilder();
+		String contextPath = WebApplication.get().getServletContext().getContextPath();
+		partialUrl.append(contextPath);
+		if (!"/".equals(contextPath)) {
+			partialUrl.append('/');
+		}
+		String filterPath = WebApplication.get().getWicketFilter().getFilterPath();
+		if ("/".equals(filterPath)) {
+			filterPath = "";
+		} else if (filterPath.endsWith("/")) {
+			filterPath = filterPath.substring(0, filterPath.length() - 1);
+		}
+		partialUrl.append(filterPath);
+		partialUrl.append(url);
+		return partialUrl.toString();
+	}
+
 
 	/**
 	 * Gets the container request

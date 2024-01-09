@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @see org.apache.wicket.velocity.markup.html.VelocityPanel
  */
-public class VelocityPanelTest
+class VelocityPanelTest
 {
 	WicketTester tester;
 

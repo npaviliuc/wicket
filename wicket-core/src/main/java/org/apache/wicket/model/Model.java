@@ -211,7 +211,7 @@ public class Model<T extends Serializable> implements IObjectClassAwareModel<T>
 			return false;
 		}
 		Model<?> that = (Model<?>)obj;
-		return Objects.equal(object, that.object);
+		return Objects.areEquals(object, that.object);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -235,7 +235,7 @@ public class MarkupParser extends AbstractMarkupParser
 				final int size = size();
 				for (int index = 0; index < size; index++) {
 					Class<? extends IMarkupFilter> currentFilterClass = get(index).getClass();
-					if (Objects.equal(filterClass, currentFilterClass))
+					if (Objects.areEquals(filterClass, currentFilterClass))
 					{
 						result = index;
 						break;

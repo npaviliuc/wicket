@@ -310,7 +310,7 @@ public class CaptchaImageResource extends DynamicImageResource
 			text = new TextLayout(cf.getChar() + "", getFont(cf.getName()),
 				gfx.getFontRenderContext());
 			textAt = new AffineTransform();
-			textAt.translate(curWidth, height - cf.getRise());
+			textAt.translate(curWidth, (double) height - cf.getRise());
 			textAt.rotate(cf.getRotation());
 			textAt.shear(cf.getShearX(), cf.getShearY());
 			shape = text.getOutline(textAt);

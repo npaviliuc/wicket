@@ -40,7 +40,7 @@ public class PushItem implements Serializable
 
 	private String url;
 
-	private Map<String, PushItemHeaderValue> headers = new HashMap<>();
+	private transient Map<String, PushItemHeaderValue> headers = new HashMap<>();
 
 	/**
 	 * Creates a push item

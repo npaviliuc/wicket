@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("javadoc")
-public class BigIntegerConverterTest
+class BigIntegerConverterTest
 {
 	@Test
 	public void positiveInteger()
@@ -81,10 +81,7 @@ public class BigIntegerConverterTest
 	@Test
 	public void nan()
 	{
-		assertThrows(ConversionException.class, () -> {
-			BigIntegerConverter converter = new BigIntegerConverter();
-			converter.convertToObject("a12345a", Locale.GERMAN);
-		});
-
+		BigIntegerConverter converter = new BigIntegerConverter();
+		assertThrows(ConversionException.class, () -> converter.convertToObject("a12345a", Locale.GERMAN));
 	}
 }

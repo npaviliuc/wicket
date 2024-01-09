@@ -228,9 +228,9 @@ public class ResourceAggregator extends DecoratingHeaderResponse
 	public boolean wasRendered(Object object)
 	{
 		boolean ret = super.wasRendered(object);
-		if (!ret && object instanceof Component)
+		if (!ret && object instanceof Component objectComponent)
 		{
-			renderBase = (Component)object;
+			renderBase = objectComponent;
 		}
 		return ret;
 	}

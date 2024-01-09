@@ -84,90 +84,97 @@ public class DefaultPageLockManager implements IPageLockManager {
 	}
 
 	@Override
-	public void lockPage(int pageId) throws CouldNotLockPageException
-	{
+	public void lockPage(int pageId) throws CouldNotLockPageException {
 		final Thread thread = Thread.currentThread();
 		final PageAccessSynchronizer.PageLock lock = new PageAccessSynchronizer.PageLock(pageId, thread);
 		final Instant start = Instant.now();
 
-		boolean locked = false;
-
-		final boolean isDebugEnabled = logger.isDebugEnabled();
-
-		PageAccessSynchronizer.PageLock previous = null;
-
 		Duration pageTimeout = getTimeout(pageId);
 
-		while (!locked && Durations.elapsedSince(start).compareTo(pageTimeout) < 0)
-		{
-			if (isDebugEnabled)
-			{
-				logger.debug("'{}' attempting to acquire lock to page with id '{}'",
-						thread.getName(), pageId);
+		tryAcquireLock(pageId, lock, start, pageTimeout);
+	}
+
+	private void tryAcquireLock(int pageId, PageAccessSynchronizer.PageLock lock, Instant start, Duration pageTimeout) throws CouldNotLockPageException {
+		boolean locked = false;
+		final boolean isDebugEnabled = logger.isDebugEnabled();
+		PageAccessSynchronizer.PageLock previous = null;
+
+		while (!locked && Durations.elapsedSince(start).compareTo(pageTimeout) < 0) {
+			if (isDebugEnabled) {
+				logger.debug("'{}' attempting to acquire lock to page with id '{}'", Thread.currentThread().getName(), pageId);
 			}
 
-			previous = locks.get().putIfAbsent(pageId, lock);
+			previous = tryLock(pageId, lock);
 
-			if (previous == null || previous.getThread() == thread)
-			{
-				// first thread to acquire lock or lock is already owned by this thread
+			if (previous == null || previous.getThread() == Thread.currentThread()) {
 				locked = true;
-			}
-			else
-			{
+			} else {
 				// wait for a lock to become available
 				long remaining = remaining(start, pageTimeout);
-				if (remaining > 0)
-				{
+				if (remaining > 0) {
 					previous.waitForRelease(remaining, isDebugEnabled);
 				}
 			}
 		}
 
-		if (locked)
-		{
-			if (isDebugEnabled)
-			{
-				logger.debug("{} acquired lock to page {}", thread.getName(), pageId);
+		handleLockResult(locked, pageId, lock, start, pageTimeout, previous);
+	}
+
+	private PageAccessSynchronizer.PageLock tryLock(int pageId, PageAccessSynchronizer.PageLock lock) {
+		return locks.get().putIfAbsent(pageId, lock);
+	}
+
+	private void handleLockResult(boolean locked, int pageId, PageAccessSynchronizer.PageLock lock, Instant start, Duration pageTimeout, PageAccessSynchronizer.PageLock previous) throws CouldNotLockPageException {
+		if (locked) {
+			handleSuccessfulLock(pageId);
+		} else {
+			handleFailedLock(pageId, start, pageTimeout, previous);
+			throw new CouldNotLockPageException(pageId, Thread.currentThread().getName(), pageTimeout);
+		}
+	}
+
+	private void handleSuccessfulLock(int pageId) {
+		logger.debug("{} acquired lock to page {}", Thread.currentThread().getName(), pageId);
+	}
+
+	private void handleFailedLock(int pageId, Instant start, Duration pageTimeout, PageAccessSynchronizer.PageLock previous) {
+		if (logger.isWarnEnabled()) {
+			logFailedLockAttempt(pageId, start, pageTimeout, previous);
+			dumpThreadInformation(previous);
+		}
+	}
+
+	private void logFailedLockAttempt(int pageId, Instant start, Duration pageTimeout, PageAccessSynchronizer.PageLock previous) {
+		final String previousThreadName = previous != null ? previous.getThread().getName() : "N/A";
+		logger.warn(
+				"Thread '{}' failed to acquire lock to page with id '{}', attempted for {} out of allowed {}." +
+						" The thread that holds the lock has name '{}'.",
+				Thread.currentThread().getName(), pageId, Duration.between(start, Instant.now()), pageTimeout, previousThreadName);
+	}
+
+	private void dumpThreadInformation(PageAccessSynchronizer.PageLock previous) {
+		if (Application.exists()) {
+			ExceptionSettings.ThreadDumpStrategy strategy = Application.get().getExceptionSettings().getThreadDumpStrategy();
+			switch (strategy) {
+				case ALL_THREADS:
+					Threads.dumpAllThreads(logger);
+					break;
+				case THREAD_HOLDING_LOCK:
+					dumpSingleThread(previous);
+					break;
+				case NO_THREADS:
+				default:
+					// do nothing
 			}
 		}
-		else
-		{
-			if (logger.isWarnEnabled())
-			{
-				final String previousThreadName = previous != null ? previous.getThread().getName() : "N/A";
-				logger.warn(
-						"Thread '{}' failed to acquire lock to page with id '{}', attempted for {} out of allowed {}." +
-								" The thread that holds the lock has name '{}'.",
-						thread.getName(), pageId, Duration.between(start, Instant.now()), pageTimeout, previousThreadName);
-				if (Application.exists())
-				{
-					ExceptionSettings.ThreadDumpStrategy strategy = Application.get()
-							.getExceptionSettings()
-							.getThreadDumpStrategy();
-					switch (strategy)
-					{
-						case ALL_THREADS :
-							Threads.dumpAllThreads(logger);
-							break;
-						case THREAD_HOLDING_LOCK :
-							final Thread previousThread = previous != null ? previous.getThread() : null;
-							if (previousThread != null)
-							{
-								Threads.dumpSingleThread(logger, previousThread);
-							}
-							else
-							{
-								logger.warn("Cannot dump the stack of the previous thread because it is not available.");
-							}
-							break;
-						case NO_THREADS :
-						default :
-							// do nothing
-					}
-				}
-			}
-			throw new CouldNotLockPageException(pageId, thread.getName(), pageTimeout);
+	}
+
+	private void dumpSingleThread(PageAccessSynchronizer.PageLock previous) {
+		final Thread previousThread = previous != null ? previous.getThread() : null;
+		if (previousThread != null) {
+			Threads.dumpSingleThread(logger, previousThread);
+		} else {
+			logger.warn("Cannot dump the stack of the previous thread because it is not available.");
 		}
 	}
 

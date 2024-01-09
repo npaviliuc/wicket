@@ -146,7 +146,9 @@ public class MultiUploadPage extends WicketExamplePage
 				try
 				{
 					// Save to new file
-					newFile.createNewFile();
+					if (newFile.createNewFile()) {
+						MultiUploadPage.this.info("New file created.");
+					}
 					upload.writeTo(newFile);
 
 					MultiUploadPage.this.info("saved file: " + upload.getClientFileName());

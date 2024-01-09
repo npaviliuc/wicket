@@ -190,7 +190,7 @@ public class DiskPageStore extends AbstractPersistentPageStore implements IPersi
 	@Override
 	protected void addPersistedPage(String sessionIdentifier, IManageablePage page)
 	{
-		if (page instanceof SerializedPage == false)
+		if (!(page instanceof SerializedPage))
 		{
 			throw new WicketRuntimeException("DiskPageStore works with serialized pages only");
 		}
@@ -386,7 +386,7 @@ public class DiskPageStore extends AbstractPersistentPageStore implements IPersi
 		 * @param pageType
 		 * @param data
 		 */
-		public synchronized void savePage(int pageId, String pageType, byte data[])
+		public synchronized void savePage(int pageId, String pageType, byte[] data)
 		{
 			if (sessionIdentifier == null)
 			{

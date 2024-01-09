@@ -70,7 +70,7 @@ class FileSystemResourceReferenceTest extends WicketTestCase
 				}
 			};
 			// Size
-			assertEquals(fileSystemResource.getSize(), 39);
+			assertEquals(39, fileSystemResource.getSize());
 
 			// Content
 			inputStream = fileSystemResource.getInputStream();
@@ -114,7 +114,7 @@ class FileSystemResourceReferenceTest extends WicketTestCase
 				}
 			};
 			// Size
-			assertEquals(fileSystemResource.getSize(), 54);
+			assertEquals(54, fileSystemResource.getSize());
 
 			// Content
 			inputStream = fileSystemResource.getInputStream();
@@ -232,7 +232,7 @@ class FileSystemResourceReferenceTest extends WicketTestCase
 			final FileSystemResource fileSystemResource = new FileSystemResource(path);
 			final FileSystemResource cloned = WicketObjects.cloneObject(fileSystemResource);
 
-			assertEquals(cloned.getSize(), 54);
+			assertEquals(54, cloned.getSize());
 
 			// Content
 			inputStream = cloned.getInputStream();

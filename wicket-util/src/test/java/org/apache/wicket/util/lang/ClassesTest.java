@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.5.8
  */
 @SuppressWarnings({"javadoc", "serial"})
-public class ClassesTest
+class ClassesTest
 {
 	@Test
 	public void simpleName() throws Exception

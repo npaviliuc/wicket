@@ -90,7 +90,7 @@ public class FormComponentFeedbackIndicator extends Panel implements IFeedback
 	{
 		super.onConfigure();
 		// Get the messages for the current page
-		setVisible(new FeedbackCollector(getPage()).collect(getFeedbackMessageFilter()).size() > 0);
+		setVisible(!new FeedbackCollector(getPage()).collect(getFeedbackMessageFilter()).isEmpty());
 	}
 
 	/**

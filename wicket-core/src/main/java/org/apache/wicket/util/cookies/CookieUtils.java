@@ -241,11 +241,11 @@ public class CookieUtils
 			{
 				if (cookie != null)
 				{
-					log.debug("Found Cookie with name=" + name);
+					log.debug(String.format("Found Cookie with name=%s", name));
 				}
 				else
 				{
-					log.debug("Unable to find Cookie with name=" + name);
+					log.debug(String.format("Unable to find Cookie with name=%s", name));
 				}
 			}
 
@@ -293,11 +293,14 @@ public class CookieUtils
 
 		getWebResponse().addCookie(cookie);
 
-		if (log.isDebugEnabled())
-		{
-			log.debug("Cookie saved: " + cookieToDebugString(cookie) + "; request URI=" +
-				getWebRequest().getUrl().toString());
-		}
+		if (log.isDebugEnabled()) {
+        // Avoid logging user-controlled data (cookieToDebugString may contain sensitive information)
+        if (log.isTraceEnabled()) {
+            log.trace("Cookie saved; request URI={}", getWebRequest().getUrl().toString());
+        } else {
+            log.debug("Cookie saved; request URI={}", getWebRequest().getUrl().toString());
+        }
+    }
 
 		return cookie;
 	}

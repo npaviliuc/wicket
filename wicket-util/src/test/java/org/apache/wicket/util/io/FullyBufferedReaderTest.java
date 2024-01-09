@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link FullyBufferedReader}
  */
-public class FullyBufferedReaderTest
+class FullyBufferedReaderTest
 {
 
 	/**
@@ -82,7 +82,7 @@ public class FullyBufferedReaderTest
 	 */
 
 	@Test
-	public void missingClosingQuote()
+	void missingClosingQuote()
 	{
 		String testTag = "<a href='blabla>";
 		FullyBufferedReader fullyBufferedReader = new FullyBufferedReader(testTag);
@@ -104,7 +104,7 @@ public class FullyBufferedReaderTest
 	 */
 
 	@Test
-	public void missingOpeningQuote()
+	void missingOpeningQuote()
 	{
 		String testTag = "<a href=blabla'>";
 		FullyBufferedReader fullyBufferedReader = new FullyBufferedReader(testTag);
@@ -125,7 +125,7 @@ public class FullyBufferedReaderTest
 	 */
 
 	@Test
-	public void missingClosingDoubleQuote()
+	void missingClosingDoubleQuote()
 	{
 		String testTag = "<a href=\"blabla>";
 		FullyBufferedReader fullyBufferedReader = new FullyBufferedReader(testTag);
@@ -147,7 +147,7 @@ public class FullyBufferedReaderTest
 	 */
 
 	@Test
-	public void missingOpeningDoubleQuote()
+	void missingOpeningDoubleQuote()
 	{
 		String testTag = "<a href=blabla\">";
 		FullyBufferedReader fullyBufferedReader = new FullyBufferedReader(testTag);

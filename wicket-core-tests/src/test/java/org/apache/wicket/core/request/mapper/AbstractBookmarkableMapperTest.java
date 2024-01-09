@@ -75,13 +75,13 @@ class AbstractBookmarkableMapperTest extends WicketTestCase
 	@Test
 	void itFailsToProcessAnExpiredPageIfShouldNotRecreateMountedPagesAfterExpiry()
 	{
-		assertThrows(PageExpiredException.class, () -> {
-			tester.getApplication().getPageSettings().setRecreateBookmarkablePagesAfterExpiry(
-				false);
-			AbstractBookmarkableMapperStub mapper = new AbstractBookmarkableMapperStub();
-			mapper.processHybrid(new PageInfo(EXPIRED_ID), MockPage.class, null,
-				NOT_RENDERED_COUNT);
-		});
+		assertThrows(PageExpiredException.class, () -> returnToUpperMethod());
+	}
+
+	void returnToUpperMethod() {
+		tester.getApplication().getPageSettings().setRecreateBookmarkablePagesAfterExpiry(false);
+		AbstractBookmarkableMapperStub mapper = new AbstractBookmarkableMapperStub();
+		mapper.processHybrid(new PageInfo(EXPIRED_ID), MockPage.class, null, NOT_RENDERED_COUNT);
 	}
 
 	/**

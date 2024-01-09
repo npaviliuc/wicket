@@ -17,6 +17,7 @@
 package org.apache.wicket.core.util.resource.locator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Iterate over all possible combinations of style and variation
@@ -64,6 +65,10 @@ public class StyleAndVariationResourceNameIterator implements Iterator<String>
 	@Override
 	public String next()
 	{
+		if (!hasNext()) {
+            throw new NoSuchElementException("No more elements in the collection");
+			}
+			
 		if (state == 0)
 		{
 			state++;

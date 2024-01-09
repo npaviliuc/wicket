@@ -29,11 +29,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link NestedFolders}.
  */
-public class NestedFoldersTest
+class NestedFoldersTest
 {
 
 	@Test
-	public void escapedName() throws IOException
+	void escapedName() throws IOException
 	{
 		NestedFolders folders = new NestedFolders(Files.createTempDirectory(null).toFile());
 		
@@ -51,7 +51,7 @@ public class NestedFoldersTest
 	 * @throws IOException
 	 */
 	@Test
-	public void parentFoldersAreRemovedIfEmpty() throws IOException
+	void parentFoldersAreRemovedIfEmpty() throws IOException
 	{
 		NestedFolders folders = new NestedFolders(Files.createTempDirectory(null).toFile());
 
@@ -70,7 +70,7 @@ public class NestedFoldersTest
 	}
 
 	@Test
-	public void parentFoldersAreKeptWhenNotEmpty() throws IOException
+	void parentFoldersAreKeptWhenNotEmpty() throws IOException
 	{
 		NestedFolders folders = new NestedFolders(Files.createTempDirectory(null).toFile());
 

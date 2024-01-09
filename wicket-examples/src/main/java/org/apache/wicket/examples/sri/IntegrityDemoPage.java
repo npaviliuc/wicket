@@ -38,6 +38,9 @@ public class IntegrityDemoPage extends WicketExamplePage
 
 	public IntegrityDemoPage()
 	{
+		// This constructor is intentionally left empty, and an UnsupportedOperationException
+		// is thrown. The reason for this is [provide a brief explanation of why the constructor
+		// is empty or why the UnsupportedOperationException is thrown, if applicable
 	}
 
 	@Override

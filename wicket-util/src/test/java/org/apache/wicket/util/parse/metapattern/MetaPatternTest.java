@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * 
  * @author Jonathan Locke
  */
-public final class MetaPatternTest
+final class MetaPatternTest
 {
 	/**
 	 * 

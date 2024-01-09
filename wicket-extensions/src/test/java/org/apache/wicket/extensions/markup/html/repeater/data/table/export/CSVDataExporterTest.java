@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link CSVDataExporter}.
  */
-public class CSVDataExporterTest extends WicketTestCase
+class CSVDataExporterTest extends WicketTestCase
 {
 
 	private List<Contact> contacts;
@@ -51,7 +51,7 @@ public class CSVDataExporterTest extends WicketTestCase
 	}
 	
 	@Test
-	public void test() throws IOException
+	void test() throws IOException
 	{
 		CSVDataExporter exporter = new CSVDataExporter();
 

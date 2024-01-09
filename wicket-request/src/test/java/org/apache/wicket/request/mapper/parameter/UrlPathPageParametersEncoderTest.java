@@ -68,14 +68,13 @@ class UrlPathPageParametersEncoderTest
 	@Test
 	void encodeIndexedParameters()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			PageParameters params = new PageParameters();
-			params.set(0, "value1");
-			params.set(1, "value2");
+		PageParameters params = new PageParameters();
+		params.set(0, "value1");
+		params.set(1, "value2");
+		
+		UrlPathPageParametersEncoder encoder = new UrlPathPageParametersEncoder();
 
-			UrlPathPageParametersEncoder encoder = new UrlPathPageParametersEncoder();
-			encoder.encodePageParameters(params);
-		});
+		assertThrows(IllegalArgumentException.class, () -> encoder.encodePageParameters(params));
 	}
 
 	/**

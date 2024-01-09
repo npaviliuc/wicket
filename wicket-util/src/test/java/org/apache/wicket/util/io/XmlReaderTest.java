@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SuppressWarnings("javadoc")
-public class XmlReaderTest
+class XmlReaderTest
 {
 	@Test
 	public void readHtmlFileWithoutAnyTags() throws Exception

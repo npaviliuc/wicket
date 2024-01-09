@@ -195,7 +195,7 @@ public abstract class FileUploadToResourceField extends FileUploadField
         protected abstract List<UploadInfo> getFileUploadInfos();
     }
 
-    private final AbstractDefaultAjaxBehavior ajaxBehavior;
+    private AbstractDefaultAjaxBehavior ajaxBehavior;
 
     private transient List<UploadInfo> fileUploadInfos;
 
@@ -216,12 +216,20 @@ public abstract class FileUploadToResourceField extends FileUploadField
      */
     private Bytes maxSize = null;
 
-    protected FileUploadToResourceField(String id)
-    {
+    protected FileUploadToResourceField(String id) {
         super(id);
+        initializeComponents();
+        configureFileModel();
+        createAjaxBehavior();
+        addAjaxBehavior();
+    }
+
+    private void initializeComponents() {
         setOutputMarkupId(true);
-        // generate a unique ID
         setMarkupId(generateAUniqueApplicationWiseId());
+    }
+
+    private void configureFileModel() {
         setDefaultModel(new FileModel() {
             @Override
             protected IUploadsFileManager fileManager() {
@@ -229,62 +237,77 @@ public abstract class FileUploadToResourceField extends FileUploadField
             }
 
             @Override
-            protected String getUploadFieldId()
-            {
+            protected String getUploadFieldId() {
                 return FileUploadToResourceField.this.getMarkupId();
             }
 
             @Override
-            protected List<UploadInfo> getFileUploadInfos()
-            {
+            protected List<UploadInfo> getFileUploadInfos() {
                 return fileUploadInfos;
             }
         });
-        ajaxBehavior = new AbstractDefaultAjaxBehavior()
-        {
+    }
+
+    private void createAjaxBehavior() {
+        ajaxBehavior = new AbstractDefaultAjaxBehavior() {
             @Override
-            protected void respond(AjaxRequestTarget target)
-            {
-                Request request = RequestCycle.get().getRequest();
-                boolean error = request.getRequestParameters().getParameterValue("error").toBoolean(true);
-                if (!error) {
-                    String filesIfo = request.getRequestParameters().getParameterValue("filesInfo").toString();
-                    fileUploadInfos = UploadInfo.fromJson(filesIfo);
-                    onUploadSuccess(target, getFileUploadInfos());
-                }
-                else
-                {
-                    String errorMessage = request.getRequestParameters().getParameterValue("errorMessage").toString(null);
-                    if (UPLOAD_CANCELED.equals(errorMessage))
-                    {
-                        onUploadCanceled(target);
-                    }
-                    else
-                    {
-                        if (AbstractFileUploadResource.NO_FILE_SELECTED.equals(errorMessage))
-                        {
-                            errorMessage = getString(AbstractFileUploadResource.NO_FILE_SELECTED);
-                        }
-                        else
-                        {
-                            final Map<String, Object> model = new HashMap<>();
-                            if (Strings.isEmpty(errorMessage)) {
-                                errorMessage = "uploadTooLarge";
-                            }
-                            model.put("exception", errorMessage);
-                            model.put("maxSize", getMaxSize());
-                            model.put("fileMaxSize", getFileMaxSize());
-                            model.put("fileCountMax", getFileCountMax());
-                            errorMessage = getString(errorMessage, Model.ofMap(model));
-                        }
-                        error(errorMessage);
-                        onUploadFailure(target, errorMessage);
-                    }
-                }
+            protected void respond(AjaxRequestTarget target) {
+                handleAjaxResponse(target);
             }
         };
+    }
+
+    private void handleAjaxResponse(AjaxRequestTarget target) {
+        Request request = RequestCycle.get().getRequest();
+        boolean error = request.getRequestParameters().getParameterValue("error").toBoolean(true);
+
+        if (!error) {
+            handleUploadSuccess(target, request.getRequestParameters().getParameterValue("filesInfo").toString());
+        } else {
+            handleUploadFailure(target, request.getRequestParameters().getParameterValue("errorMessage").toString(null));
+        }
+    }
+
+    private void handleUploadSuccess(AjaxRequestTarget target, String filesInfo) {
+        fileUploadInfos = UploadInfo.fromJson(filesInfo);
+        onUploadSuccess(target, getFileUploadInfos());
+    }
+
+    private void handleUploadFailure(AjaxRequestTarget target, String errorMessage) {
+        if (UPLOAD_CANCELED.equals(errorMessage)) {
+            onUploadCanceled(target);
+        } else {
+            handleErrorMessage(target, errorMessage);
+        }
+    }
+
+    private void handleErrorMessage(AjaxRequestTarget target, String errorMessage) {
+        if (AbstractFileUploadResource.NO_FILE_SELECTED.equals(errorMessage)) {
+            errorMessage = getString(AbstractFileUploadResource.NO_FILE_SELECTED);
+        } else {
+            handleCustomErrorMessage(target, errorMessage);
+        }
+
+        error(errorMessage);
+        onUploadFailure(target, errorMessage);
+    }
+
+    private void handleCustomErrorMessage(AjaxRequestTarget target, String errorMessage) {
+        final Map<String, Object> model = new HashMap<>();
+        if (Strings.isEmpty(errorMessage)) {
+            errorMessage = "uploadTooLarge";
+        }
+        model.put("exception", errorMessage);
+        model.put("maxSize", getMaxSize());
+        model.put("fileMaxSize", getFileMaxSize());
+        model.put("fileCountMax", getFileCountMax());
+        errorMessage = getString(errorMessage, Model.ofMap(model));
+    }
+
+    private void addAjaxBehavior() {
         add(ajaxBehavior);
     }
+
 
     private List<UploadInfo> getFileUploadInfos()
     {

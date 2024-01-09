@@ -174,15 +174,15 @@ public class CompoundRequestMapper implements ICompoundRequestMapper
 		}
 		if (compatibleMappers.size() == 0)
 		{
-			LOG.debug("No compatible mapper found for URL '{}'", url);
+			LOG.debug("No compatible mapper found for URL...");
 		}
 		else if (compatibleMappers.size() == 1)
 		{
-			LOG.debug("One compatible mapper found for URL '{}' -> '{}'", url, compatibleMappers.get(0));
+			LOG.debug("One compatible mapper found for URL... -> '{}'", compatibleMappers.get(0));
 		}
 		else
 		{
-			LOG.debug("Multiple compatible mappers found for URL '{}'", url);
+			LOG.debug("Multiple compatible mappers found for URL...");
 			for (MapperWithScore compatibleMapper : compatibleMappers)
 			{
 		        LOG.debug(" * {}", compatibleMapper);

@@ -88,6 +88,7 @@ public final class PropertyResolver
 	private static final String GET = "get";
 	private static final String IS = "is";
 	private static final String SET = "set";
+	private static final String DEBUG_CONST = " for setting it on ";
 
 	/**
 	 * Looks up the value from the object with the given expression. If the expression, the object
@@ -784,7 +785,7 @@ public final class PropertyResolver
 				if (converted == null && value != null)
 				{
 					throw new ConversionException("Can't convert value: " + value + " to class: " +
-						getMethod.getReturnType() + " for setting it on " + object);
+						getMethod.getReturnType() + DEBUG_CONST + object);
 				}
 				try
 				{
@@ -902,13 +903,13 @@ public final class PropertyResolver
 					{
 						throw new ConversionException("Method [" + getMethod +
 							"]. Can't convert value: " + value + " to class: " +
-							type + " for setting it on " + object);
+							type + DEBUG_CONST + object);
 					}
 					else if (setMethod != null && type.isPrimitive())
 					{
 						throw new ConversionException("Method [" + setMethod +
 							"]. Can't convert null value to a primitive class: " +
-							type + " for setting it on " + object);
+							type + DEBUG_CONST + object);
 					}
 				}
 			}

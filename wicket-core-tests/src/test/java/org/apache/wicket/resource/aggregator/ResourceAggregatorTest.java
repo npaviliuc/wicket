@@ -225,16 +225,18 @@ class ResourceAggregatorTest extends WicketTestCase
 	@Test
 	void testTwoBundlesProvidingSameResource()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Application.get()
+		assertThrows(IllegalArgumentException.class, () -> returnHeaderItem());
+	}
+
+	HeaderItem returnHeaderItem() {
+		Application.get()
 					.getResourceBundles()
 					.addJavaScriptBundle(Application.class, "ab.js", new ResourceReferenceA(),
 										 new ResourceReferenceB());
-			Application.get()
+		return Application.get()
 					.getResourceBundles()
 					.addJavaScriptBundle(Application.class, "ac.js", new ResourceReferenceA(),
 										 new ResourceReferenceC());
-		});
 	}
 
 	/**
@@ -243,9 +245,8 @@ class ResourceAggregatorTest extends WicketTestCase
 	@Test
 	void testCircularDependency()
 	{
-		assertThrows(CircularDependencyException.class, () -> {
-			aggregator.render(forReference(new ResourceReferenceCirc1()));
-		});
+		HeaderItem rs = forReference(new ResourceReferenceCirc1());
+		assertThrows(CircularDependencyException.class, () -> aggregator.render(rs));
 	}
 
 	/**

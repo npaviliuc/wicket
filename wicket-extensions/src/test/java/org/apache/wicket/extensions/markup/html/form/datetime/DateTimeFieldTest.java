@@ -39,11 +39,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link LocalDateTimeField}.
  */
-public class DateTimeFieldTest extends WicketTestCase
+class DateTimeFieldTest extends WicketTestCase
 {
 
 	@Test
-	public void dateTimeNull()
+	void dateTimeNull()
 	{
 		TestPage page = new TestPage(null);
 		tester.startPage(page);
@@ -54,7 +54,7 @@ public class DateTimeFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void timeEmpty()
+	void timeEmpty()
 	{
 		LocalDate date = LocalDate.of(2017, 02, 13);
 		TestPage page = new TestPage(null);
@@ -68,7 +68,7 @@ public class DateTimeFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void dateEmpty()
+	void dateEmpty()
 	{
 		TestPage page = new TestPage(null);
 		tester.startPage(page);
@@ -81,7 +81,7 @@ public class DateTimeFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void dateTimeNotEmpty()
+	void dateTimeNotEmpty()
 	{
 		LocalDate date = LocalDate.of(2017, 02, 13);
 		TestPage page = new TestPage(null);

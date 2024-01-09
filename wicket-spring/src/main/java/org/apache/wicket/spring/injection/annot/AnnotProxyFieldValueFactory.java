@@ -191,7 +191,7 @@ public class AnnotProxyFieldValueFactory implements IFieldValueFactory
 		{
 			Class<?> fieldType = field.getType();
 			
-			SimpleEntry<Class<?>, Class<?>> key = new SimpleEntry<Class<?>, Class<?>>(fieldType, generic);
+			SimpleEntry<Class<?>, Class<?>> key = new SimpleEntry<>(fieldType, generic);
 			name = beanNameCache.get(key);
 			if (name == null)
 			{

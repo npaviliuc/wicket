@@ -1,20 +1,21 @@
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
 <wicket:head>
     <title>Wicket Examples - images</title>
 </wicket:head>
 <body>
     <wicket:extend>
-    <img src = "Image1.gif"/>
-    <img wicket:id = "image2" src = "Image2.gif"/>
-    <img wicket:id = "image3"/>
-    <img wicket:id = "image4"/>
-    <img wicket:id = "image5"/>
+    <img src = "Image1.gif" alt="Image1 Description"/>
+    <img wicket:id = "image2" src = "Image2.gif" alt="Image2 Description"/>
+    <img wicket:id = "image3" alt="Image 3 Description"/>
+    <img wicket:id = "image4" alt="Image 4 Description" />
+    <img wicket:id = "image5" alt="Image 5 Description" />
     <img wicket:id = "okButton"/>
     <img wicket:id = "cancelButton"/>
     <img wicket:id = "imageModelResourceReference"/>
     <img wicket:id = "imageModelResource"/>
     <wicket:link>
-      <img src="Image2.gif" />
+      <img src="Image2.gif"  alt=" description of image2" />
     </wicket:link>
     <img wicket:id="image6" class="image2" alt="Alternative Text for Image6"/>
 	<picture wicket:id="picture">

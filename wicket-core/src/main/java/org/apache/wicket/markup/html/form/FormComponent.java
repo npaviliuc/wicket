@@ -677,7 +677,7 @@ public abstract class FormComponent<T> extends LabeledWebMarkupContainer impleme
 			}
 			buffer.append('.');
 			message = buffer.toString();
-			logger.warn(message.toString());
+			logger.warn("The following warn message has been substitute to avoid a print of user-controlled data...");
 		}
 		error(message);
 	}
@@ -1601,8 +1601,8 @@ public abstract class FormComponent<T> extends LabeledWebMarkupContainer impleme
 		if (collection == null)
 		{
 			Class<?> hint = null;
-			if (formComponent.getModel() instanceof IObjectClassAwareModel) {
-				hint = ((IObjectClassAwareModel)formComponent.getModel()).getObjectClass();
+			if (formComponent.getModel() instanceof IObjectClassAwareModel objectClassAwareModelVar) {
+				hint = (objectClassAwareModelVar).getObjectClass();
 			}
 			if (hint == null) {
 				hint = List.class;

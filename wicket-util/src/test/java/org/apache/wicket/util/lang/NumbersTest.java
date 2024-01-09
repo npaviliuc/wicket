@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.5.8
  */
 @SuppressWarnings("javadoc")
-public class NumbersTest
+class NumbersTest
 {
 	/**
 	 * See WICKET-4696 for Float and Double minimum value

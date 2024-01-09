@@ -33,7 +33,7 @@ public class SelectTest extends WicketTestCase
 	 * WICKET-4276
      */
 	@Test
-	public void rawInputKeepsSelectionOnError() {
+	void rawInputKeepsSelectionOnError() {
 		SelectTestPage page = new SelectTestPage();
 
 		tester.startPage(page);
@@ -79,7 +79,7 @@ public class SelectTest extends WicketTestCase
 	 * WICKET-6553 option text
 	 */
 	@Test
-	public void optionText()
+	void optionText()
 	{
 		SelectTestPage3 page = new SelectTestPage3();
 

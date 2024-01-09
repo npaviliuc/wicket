@@ -43,10 +43,11 @@ class AjaxFallbackLinkTest extends WicketTestCase
 	@Test
 	void onlyAnchorAreaAndLink()
 	{
-		assertThrows(MarkupException.class, () -> {
-			tester.startPage(new OnlyAnchorAreaAndLinkPage());
+		assertThrows(MarkupException.class, () -> returOnlyAnchorAreaAndLink());
+	}
 
-		});
+	void returOnlyAnchorAreaAndLink() {
+		tester.startPage(new OnlyAnchorAreaAndLinkPage());
 	}
 
 	private static class OnlyAnchorAreaAndLinkPage extends WebPage

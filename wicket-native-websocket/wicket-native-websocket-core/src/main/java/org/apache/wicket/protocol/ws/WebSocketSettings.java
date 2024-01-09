@@ -46,7 +46,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.IntFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Web Socket related settings.
@@ -143,7 +145,7 @@ public class WebSocketSettings
 	 * A {@link org.apache.wicket.protocol.ws.api.IWebSocketSessionConfigurer} that allows to configure
 	 * {@link org.apache.wicket.protocol.ws.api.IWebSocketSession}s.
 	 */
-	private IWebSocketSessionConfigurer socketSessionConfigurer = WebSocketSession -> {
+	private IWebSocketSessionConfigurer socketSessionConfigurer = webSocketSession -> {
 		// does nothing by default
 	};
 
@@ -153,7 +155,7 @@ public class WebSocketSettings
 	 * The page notification leads to deserialization of the page instance from
 	 * the page store and sometimes this is not wanted.
 	 */
-	private Function<Integer, Boolean> notifyOnCloseEvent = (code) -> true;
+	private IntFunction<Boolean> notifyOnCloseEvent = code -> true;
 
 	/**
 	 * Flag that allows to use asynchronous push. By default, it is set to <code>false</code>.
@@ -171,7 +173,7 @@ public class WebSocketSettings
 		return notifyOnCloseEvent == null || notifyOnCloseEvent.apply(closeCode);
 	}
 
-	public void setNotifyOnCloseEvent(Function<Integer, Boolean> notifyOnCloseEvent)
+	public void setNotifyOnCloseEvent(IntFunction<Boolean> notifyOnCloseEvent)
 	{
 		this.notifyOnCloseEvent = notifyOnCloseEvent;
 	}
@@ -182,14 +184,14 @@ public class WebSocketSettings
 	 * The page notification leads to deserialization of the page instance from
 	 * the page store and sometimes this is not wanted.
 	 */
-	private Function<Throwable, Boolean> notifyOnErrorEvent = (throwable) -> true;
+	private Predicate<Throwable> notifyOnErrorEvent = throwable -> true;
 
 	public boolean shouldNotifyOnErrorEvent(Throwable throwable)
 	{
-		return notifyOnErrorEvent == null || notifyOnErrorEvent.apply(throwable);
+		return notifyOnErrorEvent == null || notifyOnErrorEvent.test(throwable);
 	}
 
-	public void setNotifyOnErrorEvent(Function<Throwable, Boolean> notifyOnErrorEvent)
+	public void setNotifyOnErrorEvent(Predicate<Throwable> notifyOnErrorEvent)
 	{
 		this.notifyOnErrorEvent = notifyOnErrorEvent;
 	}

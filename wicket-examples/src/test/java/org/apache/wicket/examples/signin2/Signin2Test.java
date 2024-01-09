@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 /**
  * jWebUnit test for Hello World.
  */
-public class Signin2Test
+class Signin2Test
 {
 	/**
 	 * Test page.

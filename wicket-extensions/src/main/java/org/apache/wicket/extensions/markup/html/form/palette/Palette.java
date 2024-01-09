@@ -85,6 +85,8 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 
 	private static final String AVAILABLE_HEADER_ID = "availableHeader";
 
+	private static final String CLICK_CONST = "click";
+
 	private static final long serialVersionUID = 1L;
 
 	/** collection containing all available choices */
@@ -317,7 +319,7 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 			{
 				super.renderHead(response);
 				response.render(
-					OnEventHeaderItem.forComponent(this, "click", Palette.this.getDownOnClickJS()));
+					OnEventHeaderItem.forComponent(this, CLICK_CONST, Palette.this.getDownOnClickJS()));
 			}
 		};
 	}
@@ -338,7 +340,7 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 			{
 				super.renderHead(response);
 				response.render(
-					OnEventHeaderItem.forComponent(this, "click", Palette.this.getUpOnClickJS()));
+					OnEventHeaderItem.forComponent(this, CLICK_CONST, Palette.this.getUpOnClickJS()));
 			}
 		};
 	}
@@ -358,7 +360,7 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 			public void renderHead(IHeaderResponse response)
 			{
 				super.renderHead(response);
-				response.render(OnEventHeaderItem.forComponent(this, "click",
+				response.render(OnEventHeaderItem.forComponent(this, CLICK_CONST,
 					Palette.this.getRemoveOnClickJS()));
 			}
 		};
@@ -380,7 +382,7 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 			{
 				super.renderHead(response);
 				response.render(
-					OnEventHeaderItem.forComponent(this, "click", Palette.this.getAddOnClickJS()));
+					OnEventHeaderItem.forComponent(this, CLICK_CONST, Palette.this.getAddOnClickJS()));
 			}
 		};
 	}
@@ -425,7 +427,7 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 			public void renderHead(IHeaderResponse response)
 			{
 				super.renderHead(response);
-				response.render(OnEventHeaderItem.forComponent(this, "click",
+				response.render(OnEventHeaderItem.forComponent(this, CLICK_CONST,
 					Palette.this.getAddAllOnClickJS()));
 			}
 		};
@@ -447,7 +449,7 @@ public class Palette<T> extends FormComponentPanel<Collection<T>>
 			public void renderHead(IHeaderResponse response)
 			{
 				super.renderHead(response);
-				response.render(OnEventHeaderItem.forComponent(this, "click",
+				response.render(OnEventHeaderItem.forComponent(this, CLICK_CONST,
 					Palette.this.getRemoveAllOnClickJS()));
 			}
 		};

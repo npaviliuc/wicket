@@ -141,8 +141,7 @@ class BasicResourceReferenceMapperTest extends AbstractResourceReferenceMapperTe
 	{
 		Url url = Url.parse("wicket/resource/" + CLASS_NAME + "/reference2/name2?en_EN");
 		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertThat(handler).isInstanceOf(ResourceReferenceRequestHandler.class);
-		assertThat(handler).isInstanceOf(ResourceReferenceRequestHandler.class);
+		assertThat(handler).isInstanceOf(ResourceReferenceRequestHandler.class).isInstanceOf(ResourceReferenceRequestHandler.class);
 		ResourceReferenceRequestHandler h = (ResourceReferenceRequestHandler)handler;
 		assertEquals(resource2, h.getResource());
 		assertEquals(new Locale("en", "en"), h.getLocale());

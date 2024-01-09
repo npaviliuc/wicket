@@ -101,12 +101,12 @@ public abstract class AbstractNumberConverter<N extends Number> extends Abstract
 		{
 			return null;
 		}
-		else if (value instanceof String)
+		else if (value instanceof String stringVar)
 		{
 			char groupingSeparator = DecimalFormatSymbols.getInstance(locale).getGroupingSeparator();
 			// Convert spaces to no-break space (groupingSeparator) as required by Java formats:
 			// http://bugs.sun.com/view_bug.do?bug_id=4510618
-			value = ((String)value).replaceAll("(\\d+)\\s(?=\\d)", "$1" + groupingSeparator);
+			value = (stringVar).replaceAll("(\\d+)\\s(?=\\d)", "$1" + groupingSeparator);
 		}
 
 		final NumberFormat numberFormat = getNumberFormat(locale);

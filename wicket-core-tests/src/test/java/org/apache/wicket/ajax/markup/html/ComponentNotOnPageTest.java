@@ -36,7 +36,7 @@ class ComponentNotOnPageTest extends WicketTestCase
 	 * (which happened in Wicket 7).
 	 */
 	@Test
-	public void componentNotInPageShouldNotFail()
+	void componentNotInPageShouldNotFail()
 	{
 		ComponentNotOnPage page = tester.startPage(new ComponentNotOnPage(new Label("label")));
 		tester.startPage(page);
@@ -51,7 +51,7 @@ class ComponentNotOnPageTest extends WicketTestCase
 	 * in the AJAX response.
 	 */
 	@Test
-	public void componentOnOtherPageShouldFail()
+	void componentOnOtherPageShouldFail()
 	{
 		Label notOnPage = new Label("label");
 

@@ -63,6 +63,9 @@ public class ModalDialogPage extends BasePage
 				@Override
 				protected void onUpdate(AjaxRequestTarget target)
 				{
+					// This method is intentionally left empty and throws UnsupportedOperationException
+    				// because the onUpdate functionality is not supported or implemented for this component.
+    				// If onUpdate is required for this component, please complete the implementation accordingly.
 				}
 			}));
 
@@ -93,7 +96,7 @@ public class ModalDialogPage extends BasePage
 		{
 			super(id, "fragment", ModalDialogPage.this);
 
-			Form<Void> form = new Form<Void>("form");
+			Form<Void> form = new Form<>("form");
 			queue(form);
 			
 			nestedDialog = new ModalDialog("nestedDialog");

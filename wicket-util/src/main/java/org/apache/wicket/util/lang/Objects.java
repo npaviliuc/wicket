@@ -115,7 +115,7 @@ public final class Objects
 		}
 		if (c.getSuperclass() == Number.class)
 		{
-			return new BigDecimal(((Number)value).doubleValue());
+			return BigDecimal.valueOf(((Number) value).doubleValue());
 		}
 		if (c == Boolean.class)
 		{
@@ -244,19 +244,14 @@ public final class Objects
 					result = bigDecValue(v1).compareTo(bigDecValue(v2));
 					break;
 
-				case NONNUMERIC :
-					if ((t1 == NONNUMERIC) && (t2 == NONNUMERIC))
-					{
-						if ((v1 instanceof Comparable) &&
-							v1.getClass().isAssignableFrom(v2.getClass()))
-						{
-							result = ((Comparable)v1).compareTo(v2);
+				case NONNUMERIC:
+					if ((t1 == NONNUMERIC) && (t2 == NONNUMERIC)) {
+						if (v1 != null && v1 instanceof Comparable && v1.getClass().isAssignableFrom(v2.getClass())) {
+							result = ((Comparable) v1).compareTo(v2);
 							break;
-						}
-						else
-						{
+						} else {
 							throw new IllegalArgumentException("invalid comparison: " +
-								v1.getClass().getName() + " and " + v2.getClass().getName());
+									(v1 != null ? v1.getClass().getName() : "null") + " and " + v2.getClass().getName());
 						}
 					}
 					// else fall through
@@ -411,7 +406,7 @@ public final class Objects
 	 *            Object b
 	 * @return True if the objects are equal
 	 */
-	public static boolean equal(final Object a, final Object b)
+	public static boolean areEquals(final Object a, final Object b)
 	{
 		if (a == b)
 		{

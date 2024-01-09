@@ -19,6 +19,7 @@ package org.apache.wicket.pageStore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
@@ -35,7 +36,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class GroupingPageStoreTest
+class GroupingPageStoreTest
 {
 
 	private static MetaDataKey<Serializable> KEY = new MetaDataKey<Serializable>()
@@ -84,7 +85,7 @@ public class GroupingPageStoreTest
 			@Override
 			public <T extends Serializable> T getSessionData(MetaDataKey<T> key, Supplier<T> defaultValue)
 			{
-				assertFalse(defaultValue.get() == VALUE, "group session data not set directly in session");
+				assertNotSame(VALUE, defaultValue.get(), "group session data not set directly in session");
 				
 				return super.getSessionData(key, defaultValue);
 			}

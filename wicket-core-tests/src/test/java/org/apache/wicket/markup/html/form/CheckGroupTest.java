@@ -18,6 +18,7 @@ package org.apache.wicket.markup.html.form;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ class CheckGroupTest extends WicketTestCase
 
 		tester.submitForm(page.form);
 
-		assertTrue(list.size() == 0, "running with nothing selected - model must be empty");
+		assertEquals(0, list.size(), "running with nothing selected - model must be empty");
 
 		tester.getRequest().getPostParameters().setParameterValue(page.group.getInputName(),
 			page.check1.getValue());

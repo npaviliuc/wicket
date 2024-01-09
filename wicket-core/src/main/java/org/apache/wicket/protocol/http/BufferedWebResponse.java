@@ -123,17 +123,17 @@ public class BufferedWebResponse extends WebResponse implements IMetaDataBufferi
 	private static final class Action implements Comparable<Action>
 	{
 		private final ActionType type;
-		private final Consumer<WebResponse> action;
+		private final Consumer<WebResponse> responseConsumer;
 
-		private Action(ActionType type, Consumer<WebResponse> action)
+		private Action(ActionType type, Consumer<WebResponse> responseConsumer)
 		{
 			this.type = type;
-			this.action = action;
+			this.responseConsumer = responseConsumer;
 		}
 
 		protected final void invoke(WebResponse response)
 		{
-			action.accept(response);
+			responseConsumer.accept(response);
 		}
 
 		protected final ActionType getType()
@@ -146,9 +146,18 @@ public class BufferedWebResponse extends WebResponse implements IMetaDataBufferi
 		{
 			return getType().ordinal() - o.getType().ordinal();
 		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if(o != null && o instanceof Action)
+				return getType().ordinal() == ((Action) o).getType().ordinal();
+			else
+				return false;
+		}
 	}
 
-	private final List<Action> actions = new ArrayList<Action>();
+	private final List<Action> actions = new ArrayList<>();
 	private StringBuilder charSequenceBuilder;
 	private ByteArrayOutputStream dataStream;
 

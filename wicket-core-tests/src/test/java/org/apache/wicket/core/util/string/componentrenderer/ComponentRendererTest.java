@@ -17,6 +17,7 @@
 package org.apache.wicket.core.util.string.componentrenderer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.apache.wicket.core.util.string.ComponentRenderer;
 import org.apache.wicket.util.tester.WicketTestCase;
@@ -37,7 +38,11 @@ class ComponentRendererTest extends WicketTestCase
 	@Test
 	void componentsAreInitialized()
 	{
-		ComponentRenderer.renderComponent(new EnclosurePanel("anyId"));
+		EnclosurePanel enclosurePanel = new EnclosurePanel("anyId");
+        ComponentRenderer.renderComponent(enclosurePanel);
+
+        // Assertion to check if components are initialized
+        assertNotNull(enclosurePanel.get("externalLink"));
 	}
 
 	/**

@@ -133,7 +133,9 @@ public class UploadPage extends WicketExamplePage
 					try
 					{
 						// Save to new file
-						newFile.createNewFile();
+						if (newFile.createNewFile()) {
+							UploadPage.this.info("New file created.");
+						}
 						upload.writeTo(newFile);
 
 						UploadPage.this.info("saved file: " + upload.getClientFileName());

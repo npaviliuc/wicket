@@ -74,7 +74,7 @@ abstract class AbstractDateTimeField<T extends Temporal> extends FormComponentPa
 	 * 
 	 * @param id
 	 */
-	public AbstractDateTimeField(final String id)
+	protected AbstractDateTimeField(final String id)
 	{
 		this(id, null);
 	}
@@ -85,7 +85,7 @@ abstract class AbstractDateTimeField<T extends Temporal> extends FormComponentPa
 	 * @param id
 	 * @param model
 	 */
-	public AbstractDateTimeField(final String id, final IModel<T> model)
+	protected AbstractDateTimeField(final String id, final IModel<T> model)
 	{
 		super(id, model);
 
@@ -109,9 +109,12 @@ abstract class AbstractDateTimeField<T extends Temporal> extends FormComponentPa
 	protected void onInitialize()
 	{
 		super.onInitialize();
+
+		localDateField = newDateField("date", new DateModel());
+		timeField = newTimeField("time", new TimeModel());
 		
-		add(localDateField = newDateField("date", new DateModel()));
-		add(timeField = newTimeField("time", new TimeModel()));
+		add(localDateField);
+		add(timeField);
 	}
 
 	/**

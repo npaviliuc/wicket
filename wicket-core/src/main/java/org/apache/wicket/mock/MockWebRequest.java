@@ -149,7 +149,7 @@ public class MockWebRequest extends WebRequest
 
 		Object date = dates.get(0);
 
-		if (date instanceof Instant == false)
+		if (!(date instanceof Instant))
 		{
 			throw new WicketRuntimeException("Date header with name '" + name +
 				"' is not a valid Instant.");

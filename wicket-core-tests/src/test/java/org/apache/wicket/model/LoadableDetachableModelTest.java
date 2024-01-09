@@ -121,9 +121,11 @@ class LoadableDetachableModelTest extends WicketTestCase
 		ExceptionalLoad ldm = new ExceptionalLoad();
 
 		assertEquals(false, ldm.isAttached());
+		int number;
 		try
 		{
-			assertThat(ldm.getObject()).isEqualTo(1);
+			number = ldm.getObject();
+			assertEquals(1, number);
 			fail("shouldn't get here");
 		}
 		catch (RuntimeException e)

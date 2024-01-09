@@ -66,11 +66,30 @@ public class ReverseListIterator<E> implements Iterator<E>, Iterable<E>
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public Iterator<E> iterator()
-	{
-		resetIterator();
-		return this;
-	}
+	/**
+     * Reset the iterator to the start of the list
+     */
+    public void reset() {
+        resetIterator();
+    }
 
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            @Override
+            public boolean hasNext() {
+                return ReverseListIterator.this.hasNext();
+            }
+
+            @Override
+            public E next() {
+                return ReverseListIterator.this.next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+	}
 }

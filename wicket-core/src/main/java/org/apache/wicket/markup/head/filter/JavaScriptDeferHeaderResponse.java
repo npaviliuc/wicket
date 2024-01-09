@@ -62,18 +62,18 @@ public class JavaScriptDeferHeaderResponse extends DecoratingHeaderResponse
 	public void render(HeaderItem item)
 	{
 		if (RequestCycle.get().find(AjaxRequestTarget.class).isEmpty()) {
-			while (item instanceof IWrappedHeaderItem) {
-				item = ((IWrappedHeaderItem)item).getWrapped();
+			while (item instanceof IWrappedHeaderItem wrappedHeaderItemVar) {
+				item = (wrappedHeaderItemVar).getWrapped();
 			}
 
-			if (item instanceof AbstractJavaScriptReferenceHeaderItem) {
-				((AbstractJavaScriptReferenceHeaderItem)item).setDefer(true);
-			} else if (item instanceof JavaScriptContentHeaderItem) {
-				item = new NativeOnDomContentLoadedHeaderItem(((JavaScriptContentHeaderItem)item).getJavaScript());
-			} else if (item instanceof OnDomReadyHeaderItem) {
-				item = new NativeOnDomContentLoadedHeaderItem(((OnDomReadyHeaderItem)item).getJavaScript());
-			} else if (item instanceof OnLoadHeaderItem) {
-				item = new NativeOnLoadHeaderItem(((OnLoadHeaderItem)item).getJavaScript());
+			if (item instanceof AbstractJavaScriptReferenceHeaderItem abstractJavaScriptReferenceHeaderItemVar) {
+				(abstractJavaScriptReferenceHeaderItemVar).setDefer(true);
+			} else if (item instanceof JavaScriptContentHeaderItem javaScriptContentHeaderItemVar) {
+				item = new NativeOnDomContentLoadedHeaderItem((javaScriptContentHeaderItemVar).getJavaScript());
+			} else if (item instanceof OnDomReadyHeaderItem onDomReadyHeaderItemVar) {
+				item = new NativeOnDomContentLoadedHeaderItem((onDomReadyHeaderItemVar).getJavaScript());
+			} else if (item instanceof OnLoadHeaderItem onLoadHeaderItemVar) {
+				item = new NativeOnLoadHeaderItem((onLoadHeaderItemVar).getJavaScript());
 			}
 		}
 		
@@ -104,7 +104,7 @@ public class JavaScriptDeferHeaderResponse extends DecoratingHeaderResponse
 		public void render(Response response)
 		{
 			CharSequence js = getJavaScript();
-			if (Strings.isEmpty(js) == false)
+			if (!(Strings.isEmpty(js)))
 			{
 				JavaScriptUtils.writeJavaScript(response, "document.addEventListener('DOMContentLoaded', function() { " + js + "; });");
 			}
@@ -135,7 +135,7 @@ public class JavaScriptDeferHeaderResponse extends DecoratingHeaderResponse
 		public void render(Response response)
 		{
 			CharSequence js = getJavaScript();
-			if (Strings.isEmpty(js) == false)
+			if (!(Strings.isEmpty(js)))
 			{
 				JavaScriptUtils.writeJavaScript(response, "window.addEventListener('load', function() { " + js + "; });");
 			}

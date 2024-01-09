@@ -215,16 +215,7 @@ public class WebPageRenderer extends PageRenderer
 		{
 			if (isRedirectToBuffer() == false && logger.isDebugEnabled())
 			{
-				String details = String
-					.format(
-						"redirect strategy: '%s', isAjax: '%s', redirect policy: '%s', "
-							+ "current url: '%s', target url: '%s', is new: '%s', is stateless: '%s', is temporary: '%s'",
-						Application.get().getRequestCycleSettings().getRenderStrategy(),
-						isAjax(requestCycle), getRedirectPolicy(), currentUrl, targetUrl,
-						isNewPageInstance(), isPageStateless(), isSessionTemporary());
-				logger
-					.debug("Falling back to Redirect_To_Buffer render strategy because none of the conditions "
-						+ "matched. Details: " + details);
+				logger.debug("Falling back to Redirect_To_Buffer render strategy because none of the conditions...");
 			}
 
 			// force creation of possible stateful page to get the final target url
@@ -362,7 +353,7 @@ public class WebPageRenderer extends PageRenderer
 	{
 		if (p1 != null && p2 != null)
 		{
-			return Objects.equal(p1, p2);
+			return Objects.areEquals(p1, p2);
 		}
 
 		return true;

@@ -551,7 +551,7 @@ public class Url implements Serializable
 		for (Iterator<QueryParameter> i = getQueryParameters().iterator(); i.hasNext();)
 		{
 			QueryParameter param = i.next();
-			if (Objects.equal(name, param.getName()))
+			if (Objects.areEquals(name, param.getName()))
 			{
 				i.remove();
 			}
@@ -622,7 +622,7 @@ public class Url implements Serializable
 	{
 		for (QueryParameter parameter : parameters)
 		{
-			if (Objects.equal(name, parameter.getName()))
+			if (Objects.areEquals(name, parameter.getName()))
 			{
 				return parameter;
 			}
@@ -748,15 +748,15 @@ public class Url implements Serializable
 	public String toString(StringMode mode, Charset charset) {
 		final CharSequence path = getPathInternal(charset);
 		final String queryString = getQueryString(charset);
-		String fragment = getFragment();
+		String fragmentVar = getFragment();
 
 		// short circuit all the processing in the most common cases
-		if (shouldUseShortCircuit(mode, fragment, queryString)) {
+		if (shouldUseShortCircuit(mode, fragmentVar, queryString)) {
 			return buildShortCircuitResult(path, queryString);
 		}
 
 		// fall through into the traditional code path
-		StringBuilder result = buildResult(mode, path, queryString, fragment);
+		StringBuilder result = buildResult(mode, path, queryString, fragmentVar);
 		return result.toString();
 	}
 
@@ -1012,8 +1012,8 @@ public class Url implements Serializable
 				return false;
 			}
 			QueryParameter rhs = (QueryParameter)obj;
-			return Objects.equal(getName(), rhs.getName()) &&
-				Objects.equal(getValue(), rhs.getValue());
+			return Objects.areEquals(getName(), rhs.getName()) &&
+				Objects.areEquals(getValue(), rhs.getValue());
 		}
 
 		/**

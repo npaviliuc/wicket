@@ -17,6 +17,7 @@
 package org.apache.wicket.markup;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * 
@@ -84,7 +85,9 @@ public class MarkupIterator implements Iterator<MarkupElement>
 	@Override
 	public MarkupElement next()
 	{
-		return markup.get(index);
+		
+        throw new NoSuchElementException("No more elements in the collection");
+
 	}
 
 	/**

@@ -44,7 +44,7 @@ public final class HtmlHandler extends AbstractMarkupFilter
 	private static final Logger log = LoggerFactory.getLogger(HtmlHandler.class);
 
 	/** Tag stack to find balancing tags */
-	final private ArrayDeque<ComponentTag> stack = new ArrayDeque<ComponentTag>();
+	private final ArrayDeque<ComponentTag> stack = new ArrayDeque<>();
 
 	/** Map of simple tags. */
 	private static final Map<String, Boolean> doesNotRequireCloseTag = new HashMap<String, Boolean>();

@@ -39,7 +39,7 @@ public class FooExpansion implements Set<Foo>, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private static MetaDataKey<FooExpansion> KEY = new MetaDataKey<>()
+	private static MetaDataKey<FooExpansion> aKey = new MetaDataKey<>()
 	{
 		private static final long serialVersionUID = 1L;
 	};
@@ -172,12 +172,12 @@ public class FooExpansion implements Set<Foo>, Serializable
 	 */
 	public static FooExpansion get()
 	{
-		FooExpansion expansion = Session.get().getMetaData(KEY);
+		FooExpansion expansion = Session.get().getMetaData(aKey);
 		if (expansion == null)
 		{
 			expansion = new FooExpansion();
 
-			Session.get().setMetaData(KEY, expansion);
+			Session.get().setMetaData(aKey, expansion);
 		}
 		return expansion;
 	}

@@ -102,9 +102,9 @@ public class ReportCSPViolationMapper extends AbstractMapper
 
 	private boolean requestMatches(Request request)
 	{
-		if (request instanceof ServletWebRequest)
+		if (request instanceof ServletWebRequest servletWebRequestVar)
 		{
-			if (!((ServletWebRequest) request).getContainerRequest().getMethod().equals("POST"))
+			if (!(servletWebRequestVar).getContainerRequest().getMethod().equals("POST"))
 			{
 				return false;
 			}

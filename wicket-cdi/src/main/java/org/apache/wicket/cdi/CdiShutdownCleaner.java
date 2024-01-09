@@ -28,6 +28,8 @@ class CdiShutdownCleaner implements IApplicationListener
 {
 	public CdiShutdownCleaner()
 	{
+		// This constructor is intentionally left empty and throws UnsupportedOperationException
+		// to signal that subclasses must provide their own implementation of this constructor.
 	}
 
 	@Override

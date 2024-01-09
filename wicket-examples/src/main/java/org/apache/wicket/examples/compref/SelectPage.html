@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <head>
     <title>Wicket Examples - component reference</title>
 </head>
@@ -14,7 +15,7 @@
 	</p>
 	<p>
 	 <form wicket:id="form">
-
+		<!-- This HTML table defines a form for selecting favorite sites and choices. -->
 		<table class="dotted-box">
 			<th></th>
 		<caption>Select choice validation</caption>
@@ -38,9 +39,7 @@
 		  <td>
 		    <select wicket:id="choices" multiple="multiple" size="5">
 		        <option wicket:id="manychoices"></option>
-				<!-- the pre Wicket 9 solution required a nested option tag with a fixed "option" id
 			        <span wicket:id="manychoices"><option wicket:id="option"></option></span>
-				-->
 		    </select>
 		  </td>
 		 </tr>

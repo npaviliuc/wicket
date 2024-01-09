@@ -65,8 +65,6 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AjaxEventBehavior extends AbstractDefaultAjaxBehavior
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AjaxEventBehavior.class);
-
 	private static final long serialVersionUID = 1L;
 
 	private static final char EVENT_NAME_SEPARATOR = ' ';

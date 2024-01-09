@@ -82,71 +82,84 @@ public class BasicResourceReferenceMapper extends AbstractResourceReferenceMappe
 	}
 
 	@Override
-	public IRequestHandler mapRequest(Request request)
-	{
+	public IRequestHandler mapRequest(Request request) {
 		Url url = request.getUrl();
 
-		if (canBeHandled(url))
-		{
-			final int segmentsSize = url.getSegments().size();
+		if (!canBeHandled(url)) {
+			return null;
+		}
 
-			// extract the PageParameters from URL if there are any
-			PageParameters pageParameters = extractPageParameters(request, segmentsSize,
-					pageParametersEncoder);
-			if (pageParameters != null)
-			{
-				pageParameters.setLocale(resolveLocale());
-			}
+		PageParameters pageParameters = extractPageParameters(request);
+		String className = extractClassName(url);
+		String resourceName = extractResourceName(url, pageParameters);
 
-			String className = url.getSegments().get(2);
-			StringBuilder name = new StringBuilder(segmentsSize * 2);
+		ResourceReference.UrlAttributes attributes = ResourceUtil.decodeResourceReferenceAttributes(url);
 
-			for (int i = 3; i < segmentsSize; ++i)
-			{
-				String segment = url.getSegments().get(i);
+		Class<?> scope = resolveClass(className);
 
-				// ignore invalid segments
-				if (segment.indexOf('/') > -1)
-				{
-					return null;
-				}
+		if (scope != null && scope.getPackage() != null) {
+			ResourceReference res = getResourceReference(scope, resourceName, attributes);
 
-				// remove caching information
-				if (i + 1 == segmentsSize && Strings.isEmpty(segment) == false)
-				{
-					// The filename + parameters eventually contain caching
-					// related information which needs to be removed
-					ResourceUrl resourceUrl = new ResourceUrl(segment, pageParameters);
-					getCachingStrategy().undecorateUrl(resourceUrl);
-					segment = resourceUrl.getFileName();
-
-					Checks.notEmpty(segment, "Caching strategy returned empty name for '%s'", resourceUrl);
-				}
-				if (name.length() > 0)
-				{
-					name.append('/');
-				}
-				name.append(segment);
-			}
-
-			ResourceReference.UrlAttributes attributes = ResourceUtil.decodeResourceReferenceAttributes(url);
-
-			Class<?> scope = resolveClass(className);
-
-			if (scope != null && scope.getPackage() != null)
-			{
-				ResourceReference res = getContext().getResourceReferenceRegistry()
-					.getResourceReference(scope, name.toString(), attributes.getLocale(),
-						attributes.getStyle(), attributes.getVariation(), true, true);
-
-				if (res != null)
-				{
-					return new ResourceReferenceRequestHandler(res, pageParameters);
-				}
+			if (res != null) {
+				return new ResourceReferenceRequestHandler(res, pageParameters);
 			}
 		}
+
 		return null;
 	}
+
+	private PageParameters extractPageParameters(Request request) {
+		int segmentsSize = request.getUrl().getSegments().size();
+		PageParameters pageParameters = extractPageParameters(request, segmentsSize, pageParametersEncoder);
+
+		if (pageParameters != null) {
+			pageParameters.setLocale(resolveLocale());
+		}
+
+		return pageParameters;
+	}
+
+	private String extractClassName(Url url) {
+		return url.getSegments().get(2);
+	}
+
+	private String extractResourceName(Url url, PageParameters pageParameters) {
+		int segmentsSize = url.getSegments().size();
+		StringBuilder name = new StringBuilder(segmentsSize * 2);
+
+		for (int i = 3; i < segmentsSize; ++i) {
+			String segment = url.getSegments().get(i);
+
+			// ignore invalid segments
+			if (segment.indexOf('/') > -1) {
+				return "";
+			}
+
+			if (i + 1 == segmentsSize && !Strings.isEmpty(segment)) {
+				// Remove caching information
+				ResourceUrl resourceUrl = new ResourceUrl(segment, pageParameters);
+				getCachingStrategy().undecorateUrl(resourceUrl);
+				segment = resourceUrl.getFileName();
+
+				Checks.notEmpty(segment, "Caching strategy returned empty name for '%s'", resourceUrl);
+			}
+
+			if (name.length() > 0) {
+				name.append('/');
+			}
+			name.append(segment);
+		}
+
+		return name.toString();
+	}
+
+	private ResourceReference getResourceReference(Class<?> scope, String resourceName,
+												ResourceReference.UrlAttributes attributes) {
+		return getContext().getResourceReferenceRegistry()
+			.getResourceReference(scope, resourceName, attributes.getLocale(),
+					attributes.getStyle(), attributes.getVariation(), true, true);
+	}
+
 
 	protected final IResourceCachingStrategy getCachingStrategy()
 	{

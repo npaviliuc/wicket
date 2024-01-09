@@ -146,10 +146,10 @@ class GuiceProxyTargetLocator implements IProxyTargetLocator
 		if (!(o instanceof GuiceProxyTargetLocator))
 			return false;
 		GuiceProxyTargetLocator that = (GuiceProxyTargetLocator) o;
-		return Objects.equal(optional, that.optional) &&
-				Objects.equal(bindingAnnotation, that.bindingAnnotation) &&
-				Objects.equal(className, that.className) &&
-				Objects.equal(fieldName, that.fieldName);
+		return Objects.areEquals(optional, that.optional) &&
+				Objects.areEquals(bindingAnnotation, that.bindingAnnotation) &&
+				Objects.areEquals(className, that.className) &&
+				Objects.areEquals(fieldName, that.fieldName);
 	}
 
 	@Override

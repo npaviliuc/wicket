@@ -25,7 +25,6 @@ import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.page.IManageablePage;
-import org.apache.wicket.pageStore.crypt.DefaultCrypter;
 import org.apache.wicket.pageStore.crypt.ICrypter;
 import org.apache.wicket.util.lang.Args;
 
@@ -106,7 +105,7 @@ public class CryptingPageStore extends DelegatingPageStore
 
 		if (page != null)
 		{
-			if (page instanceof SerializedPage == false)
+			if (!(page instanceof SerializedPage))
 			{
 				throw new WicketRuntimeException("CryptingPageStore expects serialized pages");
 			}
@@ -124,7 +123,7 @@ public class CryptingPageStore extends DelegatingPageStore
 	@Override
 	public void addPage(IPageContext context, IManageablePage page)
 	{
-		if (page instanceof SerializedPage == false)
+		if (!(page instanceof SerializedPage))
 		{
 			throw new WicketRuntimeException("CryptingPageStore works with serialized pages only");
 		}

@@ -87,9 +87,9 @@ public class CSPRequestCycleListener implements IRequestCycleListener
 	 */
 	protected boolean mustProtect(IRequestHandler handler)
 	{
-		if (handler instanceof IRequestHandlerDelegate)
+		if (handler instanceof IRequestHandlerDelegate requestHandlerDelegateVar)
 		{
-			return mustProtect(((IRequestHandlerDelegate)handler).getDelegateHandler());
+			return mustProtect((requestHandlerDelegateVar).getDelegateHandler());
 		}
 		
 		return settings.mustProtectRequest(handler);

@@ -563,8 +563,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		 * tracking of changes to the list of children.
 		 */
 
-		MarkupChildIterator iter = new MarkupChildIterator();
-		return iter;
+		 return new MarkupChildIterator();
 	}
 
 
@@ -635,39 +634,39 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 				}
 			}
 
-			private Component findLastExistingChildAlreadyReturned(Component current)
-			{
+			private Component findLastExistingChildAlreadyReturned(Component current) {
 				if (current == null) {
 					indexInRemovalsSinceLastUpdate = 0;
 				} else {
 					LinkedList<RemovedChild> removals = removals_get();
 					if (removals != null) {
-						check_removed:
-						while (current != null)
-						{
-							for (int i = indexInRemovalsSinceLastUpdate; i < removals.size(); i++)
-							{
-								RemovedChild removal = removals.get(i);
-								if (removal.removedChild == current ||
-									removal.removedChild == null)
-								{
-									current = removal.previousSibling;
-									
-									// current was removed, use its sibling instead
-									continue check_removed;
-								}
-							}
-							
-							// current wasn't removed, keep it
-							break;
-						}
-						
-						indexInRemovalsSinceLastUpdate = removals.size();
+						current = findLastExistingChild(current, removals);
 					}
 				}
-				
 				return current;
 			}
+
+			private Component findLastExistingChild(Component current, LinkedList<RemovedChild> removals) {
+				check_removed:
+				while (current != null) {
+					for (int i = indexInRemovalsSinceLastUpdate; i < removals.size(); i++) {
+						RemovedChild removal = removals.get(i);
+						if (isRemovedChild(removal, current)) {
+							current = removal.previousSibling;
+							continue check_removed;
+						}
+					}
+					break;
+				}
+
+			indexInRemovalsSinceLastUpdate = removals.size();
+			return current;
+		}
+
+		private boolean isRemovedChild(RemovedChild removal, Component current) {
+			return removal.removedChild == current || removal.removedChild == null;
+		}
+
 		};
 
 	/**

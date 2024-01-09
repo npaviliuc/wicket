@@ -46,7 +46,7 @@ public class ListMultipleChoice<T> extends AbstractChoice<Collection<T>, T>
 	private static final long serialVersionUID = 1L;
 
 	/** Meta key for the retain disabled flag */
-	static MetaDataKey<Boolean> RETAIN_DISABLED_META_KEY = new MetaDataKey<>()
+	static MetaDataKey<Boolean> retainDisabledMetaKey = new MetaDataKey<>()
 	{
 		private static final long serialVersionUID = 1L;
 	};
@@ -389,7 +389,7 @@ public class ListMultipleChoice<T> extends AbstractChoice<Collection<T>, T>
 	 */
 	public boolean isRetainDisabledSelected()
 	{
-		Boolean flag = getMetaData(RETAIN_DISABLED_META_KEY);
+		Boolean flag = getMetaData(retainDisabledMetaKey);
 		return (flag != null && flag);
 	}
 
@@ -401,7 +401,7 @@ public class ListMultipleChoice<T> extends AbstractChoice<Collection<T>, T>
 	 */
 	public ListMultipleChoice<T> setRetainDisabledSelected(boolean retain)
 	{
-		setMetaData(RETAIN_DISABLED_META_KEY, (retain) ? true : null);
+		setMetaData(retainDisabledMetaKey, (retain) ? true : null);
 		return this;
 	}
 }

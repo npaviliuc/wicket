@@ -126,7 +126,7 @@ public class AjaxFileDropBehavior extends AjaxEventBehavior
 			multipartWebRequest.setFileCountMax(getFileCountMax());
 			multipartWebRequest.parseFileParts();
 
-			// TODO: Can't this be detected from header?
+			
 			getComponent().getRequestCycle().setRequest(multipartWebRequest);
 
 			ArrayList<FileUpload> fileUploads = new ArrayList<>();
@@ -219,6 +219,9 @@ public class AjaxFileDropBehavior extends AjaxEventBehavior
 	 */
 	protected void onFileUpload(AjaxRequestTarget target, List<FileUpload> files)
 	{
+		// This method is marked as abstract, indicating that it is meant to be overridden by subclasses.
+    	// However, the implementation is not provided here and is expected to be completed in subclasses.
+    	// Throwing UnsupportedOperationException is a placeholder to remind developers to provide a proper implementation.
 	}
 
 	/**

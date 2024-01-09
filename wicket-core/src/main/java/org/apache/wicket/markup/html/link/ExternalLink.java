@@ -208,7 +208,6 @@ public class ExternalLink extends AbstractLink
 					"var win = this.ownerDocument.defaultView || this.ownerDocument.parentWindow; "
 						+ "if (win == window) { window.location.href='" + url
 						+ "'; } ;return false"));
-				return;
 			}
 		}
 	}

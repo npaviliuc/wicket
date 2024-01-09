@@ -11,26 +11,31 @@
 		<table>
 			<th></th>
             <caption>Form validation</caption>
+			<!-- Name Field -->
 			<tr>
 				<td><label wicket:for="name"><wicket:label>Name</wicket:label></label></td>
 				<td><input wicket:id="name" type="text" size="30"/></td>
 				<td><pre class="note">@NotNull @Size(min = 2, max = 30)</pre></td>
 			</tr>
+			<!-- Email Field -->
 			<tr>
 				<td><label wicket:for="email"><wicket:label>Email</wicket:label></label></td>
 				<td><input wicket:id="email" type="text" size="30"/></td>
 				<td><pre class="note">@NotNull @Email</pre></td>
 			</tr>
+			<!-- Phone Field -->
 			<tr>
 				<td><label wicket:for="phone"><wicket:label>Phone</wicket:label></label></td>
 				<td><input wicket:id="phone" type="text" size="20"/></td>
 				<td><pre class="note">@Pattern(regexp = "[0-9]{3}-[0-9]{4}")</pre></td>
 			</tr>
+			 <!-- Birthdate Field -->
 			<tr>
 				<td><label wicket:for="birthdate"><wicket:label>Birthdate</wicket:label></label></td>
 				<td><input wicket:id="birthdate" type="text" size="10"/></td>
 				<td><pre class="note"><span wicket:id="pattern" /> field with @Past</pre></td>
 			</tr>
+			<!-- Password Field -->
 			<tr>
 				<td><label wicket:for="password"><wicket:label>Password</wicket:label></label></td>
 				<td><input wicket:id="password" type="text" size="10"/></td>
@@ -38,6 +43,7 @@
 					<pre class="note">Custom constraint @ValidPassword with custom message bundles.<br/>A valid password must contain only alphanumeric chars and at least two digits.</pre>
 				</td>
 			</tr>
+			<!-- Submit Button -->
 			<tr>
 				<td></td>
 				<td>

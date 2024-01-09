@@ -359,7 +359,7 @@ public class PageProvider implements IPageProvider, IClusterable
 	 */
 	private class Provision
 	{
-		transient IRequestablePage page;
+		IRequestablePage page;
 		boolean failedToFindStoredPage;
 
 		IRequestablePage getPage()

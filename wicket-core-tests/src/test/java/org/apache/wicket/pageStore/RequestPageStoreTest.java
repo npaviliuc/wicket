@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class RequestPageStoreTest
+class RequestPageStoreTest
 {
 
 	@Test

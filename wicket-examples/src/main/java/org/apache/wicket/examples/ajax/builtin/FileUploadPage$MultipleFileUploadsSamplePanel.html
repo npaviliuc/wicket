@@ -4,6 +4,7 @@
 <head>
     <title>File Upload Page with Multiple files</title>
     <wicket:head>
+        <title>File Upload Page with Multiple files</title>
         <script type="text/css">
             table.files {
                 width: 1000px;
@@ -28,6 +29,8 @@
         Text field: <input wicket:id="text" type="text"/><br/>
         File field (can select multiple files): <input wicket:id="file" type="file" multiple="multiple"/> (<span wicket:id="max"></span> max)<br/><br/>
         <br/>
+        <!--  This attribute suggests the use of the Wicket framework for dynamic web applications. 
+              It associates the table with a Wicket component identified by the specified ID -->
         <table wicket:id="selectedFileInfo" class="files">
             <th></th>
             <caption>Info selected file</caption>

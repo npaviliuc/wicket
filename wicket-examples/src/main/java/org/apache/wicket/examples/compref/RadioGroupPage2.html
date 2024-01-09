@@ -21,18 +21,21 @@
 		<form wicket:id="form">
 			<wicket:container wicket:id="group">
 				<wicket:container wicket:id="group2">
+					<!-- tables to structure a form with radio buttons for person selection and displays their first and last names. 
+						The form includes a submit button for user interaction-->
 					<table class="dotted-box">
 						<th></th>
 						<caption>Radio group choice validation</caption>
 						<tr>
 							<td valign="top">Select a person</td>
 							<td>
+								<!-- Table structure for displaying a list of persons with selection options -->
 								<table cellspacing="0" cellpadding="2">
 									<tr>
-										<td><b>Select1</b></td>
-										<td><b>Select2</b></td>
-										<td><b>First Name</b></td>
-										<td><b>Last Name</b></td>
+										<th><b>Select1</b></th>
+										<th><b>Select2</b></th>
+										<th><b>First Name</b></th>
+										<th><b>Last Name</b></th>
 									</tr>
 									<tr wicket:id="persons">
 										<td><input type="radio" wicket:id="radio" /></td>

@@ -217,7 +217,7 @@ public class UrlResourceStream extends AbstractResourceStream
 			final Instant time = Connections.getLastModified(url);
 
 			// if timestamp changed: update content length and last modified date
-			if (Objects.equal(time, lastModified) == false)
+			if (Objects.areEquals(time, lastModified) == false)
 			{
 				lastModified = time;
 				updateContentLength();

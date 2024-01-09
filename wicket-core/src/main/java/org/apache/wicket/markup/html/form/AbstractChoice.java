@@ -50,6 +50,8 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 {
 	private static final long serialVersionUID = 1L;
 
+	private static final String LABEL_CONST = "</label>";
+
 	/**
 	 * An enumeration of possible positions of the label for a choice
 	 */
@@ -68,7 +70,7 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 				.append(extraLabelAttributes)
 				.append('>')
 				.append(renderValue)
-				.append("</label>");
+				.append(LABEL_CONST);
 			}
 		},
 
@@ -85,7 +87,7 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 				.append(extraLabelAttributes)
 				.append('>')
 				.append(renderValue)
-				.append("</label>");
+				.append(LABEL_CONST);
 			}
 		},
 
@@ -106,7 +108,7 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 			@Override
 			void after(AppendingStringBuffer buffer, String idAttr, StringBuilder extraLabelAttributes, CharSequence renderValue)
 			{
-				buffer.append("</label>");
+				buffer.append(LABEL_CONST);
 			}
 		},
 
@@ -127,14 +129,20 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 			{
 				buffer.append(' ')
 				.append(renderValue)
-				.append("</label>");
+				.append(LABEL_CONST);
 			}
 		};
 		
 		void before(AppendingStringBuffer buffer, String idAttr, StringBuilder extraLabelAttributes, CharSequence renderValue) {
+			// This method is intentionally left empty and throws an UnsupportedOperationException.
+			// The decision to throw an exception is made to indicate that the method should be overridden
+			// by subclasses to provide a meaningful implementation specific to their needs.
 		}
 		
 		void after(AppendingStringBuffer buffer, String idAttr, StringBuilder extraLabelAttributes, CharSequence renderValue) {
+    		// This method is intentionally left empty and throws an UnsupportedOperationException.
+			// The decision to throw an exception is made to indicate that the method should be overridden
+			// by subclasses to provide a meaningful implementation specific to their needs.
 		}
 	}
 
@@ -576,5 +584,5 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 		renderer.detach();
 		
 		super.onDetach();
-	};
+	}
 }

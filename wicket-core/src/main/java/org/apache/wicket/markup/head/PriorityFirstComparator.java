@@ -33,7 +33,7 @@ import org.apache.wicket.markup.head.ResourceAggregator.RecordedHeaderItemLocati
  */
 public class PriorityFirstComparator implements Comparator<RecordedHeaderItem>, Serializable
 {
-	protected static enum HeaderItemType
+	protected enum HeaderItemType
 	{
 		PRIORITY, PAGE, COMPONENT;
 	}
@@ -66,17 +66,15 @@ public class PriorityFirstComparator implements Comparator<RecordedHeaderItem>, 
 		{
 			return inversedComponentOrder(o1, o2);
 		}
-		return compareWithinGroup(o1, o2);
+		return compareWithinGroup();
 	}
 
 	/**
 	 * Compares two header items that belong in the same group.
 	 * 
-	 * @param item1
-	 * @param item2
 	 * @return 0 by default to preserve the order
 	 */
-	protected int compareWithinGroup(RecordedHeaderItem item1, RecordedHeaderItem item2)
+	protected int compareWithinGroup()
 	{
 		return 0;
 	}

@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author igor.vaynberg
  */
-public class EnumChoiceRendererTest
+class EnumChoiceRendererTest
 {
 
 	/**

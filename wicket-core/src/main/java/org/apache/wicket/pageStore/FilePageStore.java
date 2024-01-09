@@ -103,7 +103,7 @@ public class FilePageStore extends AbstractPersistentPageStore implements IPersi
 	protected IManageablePage getPersistedPage(String sessionIdentifier, int id)
 	{
 		File file = getPageFile(sessionIdentifier, id, false);
-		if (file.exists() == false)
+		if (!(file.exists()))
 		{
 			return null;
 		}
@@ -155,12 +155,9 @@ public class FilePageStore extends AbstractPersistentPageStore implements IPersi
 	protected void removePersistedPage(String sessionIdentifier, IManageablePage page)
 	{
 		File file = getPageFile(sessionIdentifier, page.getPageId(), false);
-		if (file.exists())
+		if (file.exists() && !file.delete())
 		{
-			if (!file.delete())
-			{
-				log.warn("cannot remove page data for session {} page {}", sessionIdentifier, page.getPageId());
-			}
+			log.warn("cannot remove page data for session {} page {}", sessionIdentifier, page.getPageId());
 		}
 	}
 
@@ -173,7 +170,7 @@ public class FilePageStore extends AbstractPersistentPageStore implements IPersi
 	@Override
 	protected void addPersistedPage(String sessionIdentifier, IManageablePage page)
 	{
-		if (page instanceof SerializedPage == false)
+		if (!(page instanceof SerializedPage))
 		{
 			throw new WicketRuntimeException("FilePageStore works with serialized pages only");
 		}
@@ -237,12 +234,9 @@ public class FilePageStore extends AbstractPersistentPageStore implements IPersi
 		{
 			total += candidate.length();
 
-			if (total > maxSizePerSession.bytes())
+			if (total > maxSizePerSession.bytes() && !Files.remove(candidate))
 			{
-				if (!Files.remove(candidate))
-				{
-					log.warn("cannot remove page data for session {} page {}", sessionIdentifier, candidate.getName());
-				}
+				log.warn("cannot remove page data for session {} page {}", sessionIdentifier, candidate.getName());
 			}
 		}
 	}

@@ -17,7 +17,9 @@
 package org.apache.wicket.markup.html.list;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,10 +90,14 @@ class ListViewTest extends WicketTestCase
 		}
 		;
 
-		IModel<List<Integer>> integers = new ListModel<>(new ArrayList<Integer>());
+		// Create a model with a list of integers
+   		List<Integer> integerList = Arrays.asList(1, 2, 3);
+		IModel<List<Integer>> integers = new ListModel<>(integerList);
 
-		// pass list of integers to the number listView
-		new NumberListView<>("integers", integers);
+		NumberListView<Integer> numberListView = new NumberListView<>("integers", integers);
+
+		// Assert that the NumberListView is not null
+		assertNotNull(numberListView);
 	}
 
 	/**

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * @author Igor Vaynberg (ivaynberg)
  * 
  */
-public class NoopFieldValueFactoryTest
+class NoopFieldValueFactoryTest
 {
 	private Field field;
 

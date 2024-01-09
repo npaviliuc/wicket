@@ -18,6 +18,9 @@ package org.apache.wicket.util.lang;
 
 public class Comparators
 {
+	private Comparators() {
+        throw new IllegalStateException("Utility class");
+    }
 
 	public static <T extends Comparable<? super T>> T min(T firstComp, T secondComp)
 	{

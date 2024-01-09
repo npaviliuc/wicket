@@ -63,12 +63,12 @@ public class PageStorePage extends DevUtilsPage
 		try {
 			IPageStore store = Session.get().getPageManager().getPageStore();
 			while (true) {
-				if (store instanceof IPersistentPageStore) {
-					return (IPersistentPageStore)store;
+				if (store instanceof IPersistentPageStore persistentPageStoreVar) {
+					return persistentPageStoreVar;
 				}
 				
-				if (store instanceof DelegatingPageStore) {
-					store = ((DelegatingPageStore)store).getDelegate();
+				if (store instanceof DelegatingPageStore delegatingPageStoreVar) {
+					store = (delegatingPageStoreVar).getDelegate();
 				} else {
 					break;
 				}

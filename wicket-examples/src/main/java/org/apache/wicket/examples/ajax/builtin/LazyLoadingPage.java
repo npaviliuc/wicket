@@ -107,7 +107,7 @@ public class LazyLoadingPage extends BasePage
 				}
 				
 				@Override
-				protected Duration getUpdateInterval()
+				public Duration getUpdateInterval()
 				{
 					return Duration.ofMillis(seconds * 1000 / 10);
 				}

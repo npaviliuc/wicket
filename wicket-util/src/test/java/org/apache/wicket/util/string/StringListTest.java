@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the <code>StringList</code> class.
  */
-public class StringListTest
+class StringListTest
 {
 
 	/**

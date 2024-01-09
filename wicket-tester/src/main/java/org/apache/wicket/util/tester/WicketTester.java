@@ -404,7 +404,7 @@ public class WicketTester extends BaseWicketTester
 
 		if (markup != null) {
 			String actualVariation = markup.getMarkupResourceStream().getVariation();
-			if (Objects.equal(expectedVariation, actualVariation) == false)
+			if (Objects.areEquals(expectedVariation, actualVariation) == false)
 			{
 				result = Result.fail(
 					String.format("Wrong variation for component '%s'. Actual: '%s', expected: '%s'",
@@ -430,7 +430,7 @@ public class WicketTester extends BaseWicketTester
 		IMarkupFragment markup = getMarkupFragment(component);
 		if (markup != null) {
 			String actualStyle = markup.getMarkupResourceStream().getStyle();
-			if (Objects.equal(expectedStyle, actualStyle) == false)
+			if (Objects.areEquals(expectedStyle, actualStyle) == false)
 			{
 				result = Result
 					.fail(String.format("Wrong style for component '%s'. Actual: '%s', expected: '%s'",
@@ -456,7 +456,7 @@ public class WicketTester extends BaseWicketTester
 		IMarkupFragment markup = getMarkupFragment(component);
 		if (markup != null) {
 			Locale actualLocale = markup.getMarkupResourceStream().getLocale();
-			if (Objects.equal(expectedLocale, actualLocale) == false)
+			if (Objects.areEquals(expectedLocale, actualLocale) == false)
 			{
 				result = Result
 					.fail(String.format("Wrong locale for component '%s'. Actual: '%s', expected: '%s'",
@@ -469,9 +469,9 @@ public class WicketTester extends BaseWicketTester
 	private IMarkupFragment getMarkupFragment(Component component)
 	{
 		IMarkupFragment markup = null;
-		if (component instanceof MarkupContainer)
+		if (component instanceof MarkupContainer markupContainerVar)
 		{
-			markup = ((MarkupContainer)component).getAssociatedMarkup();
+			markup = (markupContainerVar).getAssociatedMarkup();
 		}
 
 		if (markup == null)
@@ -604,28 +604,32 @@ public class WicketTester extends BaseWicketTester
 			fail(String.format("feedback panel at path [%s] returned null messages", path));
 		}
 
-		if (messages.length != renderedMessages.size())
+		if (messages.length != (renderedMessages != null ? renderedMessages.size() : 0))
 		{
 			fail(String.format(
 				"you expected '%d' messages for the feedback panel [%s], but there were actually '%d'",
-				messages.length, path, renderedMessages.size()));
+				messages.length, path, renderedMessages != null ? renderedMessages.size() : 0));
 		}
 
-		for (int i = 0; i < messages.length && i < renderedMessages.size(); i++)
-		{
-			final Serializable expected = messages[i];
-			boolean found = false;
-			for (FeedbackMessage actual : renderedMessages)
+		if (renderedMessages != null)
+    	{
+
+			for (int i = 0; i < messages.length && i < renderedMessages.size(); i++)
 			{
-				if (Objects.equal(expected, actual.getMessage()))
+				final Serializable expected = messages[i];
+				boolean found = false;
+				for (FeedbackMessage actual : renderedMessages)
 				{
-					found = true;
-					break;
+					if (Objects.areEquals(expected, actual.getMessage()))
+					{
+						found = true;
+						break;
+					}
 				}
-			}
-			if (!found)
-			{
-				assertResult(Result.fail("Missing expected feedback message: " + expected));
+				if (!found)
+				{
+					assertResult(Result.fail("Missing expected feedback message: " + expected));
+				}
 			}
 		}
 	}

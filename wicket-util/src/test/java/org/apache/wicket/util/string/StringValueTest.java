@@ -31,7 +31,7 @@ import java.util.Locale;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("javadoc")
-public class StringValueTest
+class StringValueTest
 {
 	/**
 	 * WICKET-5359 equals
@@ -146,20 +146,16 @@ public class StringValueTest
 	@Test
 	public void failingEnum() throws Exception
 	{
-
-		assertThrows(StringValueConversionException.class, () -> {
-			new StringValue("camelot").toEnum(TestEnum.class);
-		});
+		StringValue value = new StringValue("camelot");
+		assertThrows(StringValueConversionException.class, () -> value.toEnum(TestEnum.class));
 
 	}
 
 	@Test
 	public void failingEnum2() throws Exception
 	{
-		assertThrows(StringValueConversionException.class, () -> {
-			new StringValue("camelot").toOptionalEnum(TestEnum.class);
-		});
-
+		StringValue value = new StringValue("camelot");
+		assertThrows(StringValueConversionException.class, () -> value.toOptionalEnum(TestEnum.class));
 	}
 
 	static enum TestEnum {

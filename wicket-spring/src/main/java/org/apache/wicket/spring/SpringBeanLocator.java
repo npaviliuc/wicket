@@ -391,7 +391,7 @@ public class SpringBeanLocator implements IProxyTargetLocator
 		{
 			SpringBeanLocator other = (SpringBeanLocator)obj;
 			return beanTypeName.equals(other.beanTypeName) &&
-				Objects.equal(beanName, other.beanName);
+				Objects.areEquals(beanName, other.beanName);
 		}
 		return false;
 	}

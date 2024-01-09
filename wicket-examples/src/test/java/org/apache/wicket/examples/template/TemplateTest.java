@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for Template application
  */
-public class TemplateTest
+class TemplateTest
 {
 	/**
 	 * Test page.

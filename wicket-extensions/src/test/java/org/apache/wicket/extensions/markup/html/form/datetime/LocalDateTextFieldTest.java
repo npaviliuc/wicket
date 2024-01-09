@@ -35,11 +35,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link LocalDateTextField}.
  */
-public class LocalDateTextFieldTest extends WicketTestCase
+class LocalDateTextFieldTest extends WicketTestCase
 {
 
 	@Test
-	public void dateNullTest()
+	void dateNullTest()
 	{
 		TestPage page = new TestPage(null);
 		tester.startPage(page);
@@ -50,7 +50,7 @@ public class LocalDateTextFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void dateNotNullTest()
+	void dateNotNullTest()
 	{
 		LocalDate date = LocalDate.of(2017, 02, 03);
 		TestPage page = new TestPage(null);
@@ -64,7 +64,7 @@ public class LocalDateTextFieldTest extends WicketTestCase
 	}
 
 	@Test
-	public void dateParsePatternTest()
+	void dateParsePatternTest()
 	{
 		LocalDate date = LocalDate.of(2017, 02, 03);
 		TestPage page = new TestPage(null);

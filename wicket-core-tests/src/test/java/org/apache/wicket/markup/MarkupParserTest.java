@@ -532,6 +532,11 @@ final class MarkupParserTest extends WicketTestCase
 		tag = markup.get(2);
 		assertEquals("</script>", tag.toString());
 
+		scriptTest1(markup, tag);
+
+	}
+
+	private void scriptTest1(IMarkupFragment markup, MarkupElement tag) throws IOException, ResourceStreamNotFoundException {
 		markup = new MarkupParser("<style><![CDATA[ text ]]></style>").parse();
 		assertEquals(3, markup.size());
 		tag = markup.get(0);

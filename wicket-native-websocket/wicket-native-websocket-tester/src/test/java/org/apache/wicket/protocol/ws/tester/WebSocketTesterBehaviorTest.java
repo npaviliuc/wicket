@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @since 6.0
  */
-public class WebSocketTesterBehaviorTest
+class WebSocketTesterBehaviorTest
 {
 	WicketTester tester;
 

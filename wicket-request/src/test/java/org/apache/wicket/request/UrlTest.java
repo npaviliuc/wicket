@@ -685,7 +685,21 @@ class UrlTest
 	@Test
 	void parseAbsoluteUrl()
 	{
-		Url url = Url.parse("ftp://myhost:8081");
+		Url url = null;
+
+		parseAbsoluteUrl1(url);
+		parseAbsoluteUrl2(url);
+		parseAbsoluteUrl3(url);
+		parseAbsoluteUrl4(url);
+
+		url = Url.parse("unknown://myhost/foo");
+		checkUrl(url, "unknown", "myhost", null, "", "foo");
+		assertTrue(url.isFull());
+		assertEquals("unknown://myhost/foo", url.toString(StringMode.FULL));
+	}
+
+	private void parseAbsoluteUrl1(Url url) {
+		url = Url.parse("ftp://myhost:8081");
 		checkUrl(url, "ftp", "myhost", 8081, "", "");
 		assertTrue(url.isFull());
 		assertEquals("ftp://myhost:8081/", url.toString(StringMode.FULL));
@@ -700,6 +714,9 @@ class UrlTest
 		assertTrue(url.isFull());
 		assertEquals("http://myhost/foo", url.toString(StringMode.FULL));
 
+	}
+
+	private void parseAbsoluteUrl2(Url url) {
 		url = Url.parse("http://myhost:81/foo");
 		checkUrl(url, "http", "myhost", 81, "", "foo");
 		assertTrue(url.isFull());
@@ -714,7 +731,9 @@ class UrlTest
 		checkUrl(url, "https", "myhost", 443, "", "foo");
 		assertTrue(url.isFull());
 		assertEquals("https://myhost/foo", url.toString(StringMode.FULL));
+	}
 
+	private void parseAbsoluteUrl3(Url url) {
 		url = Url.parse("HTTPS://myhost/foo:123");
 		checkUrl(url, "https", "myhost", 443, "", "foo:123");
 		assertTrue(url.isFull());
@@ -729,7 +748,9 @@ class UrlTest
 		checkUrl(url, "ftp", "myhost", 21, "", "foo");
 		assertTrue(url.isFull());
 		assertEquals("ftp://myhost/foo", url.toString(StringMode.FULL));
+	}
 
+	private void parseAbsoluteUrl4(Url url) {
 		url = Url.parse("ftp://user:pass@myhost:21/foo");
 		checkUrl(url, "ftp", "user:pass@myhost", 21, "", "foo");
 		assertTrue(url.isFull());
@@ -739,11 +760,6 @@ class UrlTest
 		checkUrl(url, "ftp", "myhost", 21, "", "foo");
 		assertTrue(url.isFull());
 		assertEquals("ftp://myhost/foo", url.toString(StringMode.FULL));
-
-		url = Url.parse("unknown://myhost/foo");
-		checkUrl(url, "unknown", "myhost", null, "", "foo");
-		assertTrue(url.isFull());
-		assertEquals("unknown://myhost/foo", url.toString(StringMode.FULL));
 	}
 
 	private void checkUrl(Url url, String protocol, String host, Integer port, String... segments)
@@ -886,11 +902,8 @@ class UrlTest
 	@Test
 	void removeLeadingSegments3()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Url url = Url.parse("a/b");
-
-			url.removeLeadingSegments(3);
-		});
+		Url url = Url.parse("a/b");
+		assertThrows(IllegalArgumentException.class, () -> url.removeLeadingSegments(3));
 	}
 
 	@Test
@@ -904,11 +917,9 @@ class UrlTest
 	@Test
 	void wicket_5114_throwExceptionWhenToStringFullContainsRelativePathSegment()
 	{
-		assertThrows(IllegalStateException.class, () -> {
-			Url url = Url.parse("/mountPoint/../whatever/");
-			url.setHost("wicketHost");
-			url.toString(StringMode.FULL);
-		});
+		Url url = Url.parse("/mountPoint/../whatever/");
+		url.setHost("wicketHost");
+		assertThrows(IllegalStateException.class, () -> url.toString(StringMode.FULL));
 	}
 
 	@Test

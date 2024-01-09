@@ -69,6 +69,37 @@ class CookieUtilsTest extends WicketTestCase
 		// Create a persister for the test
 		final CookieUtils persister = new CookieUtils();
 
+		cookieTest1(persister, textField);
+
+		// Simulate loading a textfield. Initialize textfield with a new (default) value, copy the
+		// cookie from response to request (simulating a browser), than load the textfield from
+		// cookie and voala the textfield's value should change.
+		// save means: add it to the response
+		// load means: take it from request
+		assertEquals("test", textField.getDefaultModelObjectAsString());
+		textField.setDefaultModelObject("new text");
+		assertEquals("new text", textField.getDefaultModelObjectAsString());
+		copyCookieFromResponseToRequest();
+		assertEquals(1, getRequestCookies().size());
+		assertEquals(1, getResponseCookies().size());
+
+		persister.load(textField);
+		assertEquals("test", textField.getDefaultModelObjectAsString());
+		assertEquals(1, getRequestCookies().size());
+		assertEquals(1, getResponseCookies().size());
+
+		// remove all cookies from mock response. Because I'll find the cookie to be removed in the
+		// request, the persister will create a "delete" cookie to remove the cookie on the client
+		// and add it to the response. The already existing Cookie from the previous test gets
+		// removed from response since it is the same.
+		persister.remove(textField);
+		assertEquals(1, getRequestCookies().size());
+		assertEquals(1, getResponseCookies().size());
+		assertEquals("form.input", (getResponseCookies().get(0)).getName());
+		assertEquals(0, (getResponseCookies().get(0)).getMaxAge());
+	}
+
+	private void cookieTest1(CookieUtils persister, TextField<String> textField) throws Exception{
 		// See comment in CookieUtils on how removing a Cookies works. As no cookies in the request,
 		// no "delete" cookie will be added to the response.
 		persister.remove(textField);
@@ -98,33 +129,6 @@ class CookieUtilsTest extends WicketTestCase
 		// value remains unchanged
 		persister.load(textField);
 		assertEquals("test", textField.getDefaultModelObjectAsString());
-
-		// Simulate loading a textfield. Initialize textfield with a new (default) value, copy the
-		// cookie from response to request (simulating a browser), than load the textfield from
-		// cookie and voala the textfield's value should change.
-		// save means: add it to the response
-		// load means: take it from request
-		assertEquals("test", textField.getDefaultModelObjectAsString());
-		textField.setDefaultModelObject("new text");
-		assertEquals("new text", textField.getDefaultModelObjectAsString());
-		copyCookieFromResponseToRequest();
-		assertEquals(1, getRequestCookies().size());
-		assertEquals(1, getResponseCookies().size());
-
-		persister.load(textField);
-		assertEquals("test", textField.getDefaultModelObjectAsString());
-		assertEquals(1, getRequestCookies().size());
-		assertEquals(1, getResponseCookies().size());
-
-		// remove all cookies from mock response. Because I'll find the cookie to be removed in the
-		// request, the persister will create a "delete" cookie to remove the cookie on the client
-		// and add it to the response. The already existing Cookie from the previous test gets
-		// removed from response since it is the same.
-		persister.remove(textField);
-		assertEquals(1, getRequestCookies().size());
-		assertEquals(1, getResponseCookies().size());
-		assertEquals("form.input", (getResponseCookies().get(0)).getName());
-		assertEquals(0, (getResponseCookies().get(0)).getMaxAge());
 	}
 
 	@Test

@@ -40,6 +40,8 @@ public class EffectsPage extends BasePage
 	private int counter2 = 0;
 	private int counter3 = 0;
 
+	private static final String EFFECTS_CONST = "effects";
+
 	/**
 	 * @return Value of counter1
 	 */
@@ -123,7 +125,7 @@ public class EffectsPage extends BasePage
 			@Override
 			protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
 			{
-				attributes.setChannel(new AjaxChannel("effects", Type.DROP));
+				attributes.setChannel(new AjaxChannel(EFFECTS_CONST, Type.DROP));
 
 				super.updateAjaxAttributes(attributes);
 			}
@@ -145,7 +147,7 @@ public class EffectsPage extends BasePage
 			@Override
 			protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
 			{
-				attributes.setChannel(new AjaxChannel("effects", Type.DROP));
+				attributes.setChannel(new AjaxChannel(EFFECTS_CONST, Type.DROP));
 
 				super.updateAjaxAttributes(attributes);
 			}
@@ -167,7 +169,7 @@ public class EffectsPage extends BasePage
 			@Override
 			protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
 			{
-				attributes.setChannel(new AjaxChannel("effects", Type.DROP));
+				attributes.setChannel(new AjaxChannel(EFFECTS_CONST, Type.DROP));
 
 				super.updateAjaxAttributes(attributes);
 			}
@@ -183,7 +185,7 @@ public class EffectsPage extends BasePage
 		// make effects work nicely with inline elements 
 		response.render(CssHeaderItem.forCSS(
 			"div.container { font-size: 14pt; } .ui-effects-wrapper { display:inline; }",
-			"effects"));
+			EFFECTS_CONST));
 	}
 
 }

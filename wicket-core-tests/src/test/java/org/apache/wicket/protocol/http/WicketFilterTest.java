@@ -79,7 +79,7 @@ import org.xml.sax.SAXException;
 
 /**
  */
-public class WicketFilterTest
+class WicketFilterTest
 {
 	private static WebApplication application;
 	private final DateFormat headerDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z",
@@ -222,7 +222,7 @@ public class WicketFilterTest
 	 * @throws ParseException
 	 */
 	@Test
-	public void ioExceptionNotWrapped() throws IOException, ServletException, ParseException
+	void ioExceptionNotWrapped() throws IOException, ServletException, ParseException
 	{
 		assertThrows(IOException.class, this::doIOExceptionNotWrapped);
 	}

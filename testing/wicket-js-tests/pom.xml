@@ -120,7 +120,6 @@
 									<goal>grunt</goal>
 								</goals>
 								<configuration>
-									<!--<arguments> - -verbose </arguments>-->
 								</configuration>
 							</execution>
 						</executions>

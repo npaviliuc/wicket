@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -216,7 +218,14 @@ public class WicketFilter implements Filter
 
 				// send redirect - this will discard POST parameters if the request is POST
 				// - still better than getting an error because of lacking trailing slash
-				httpServletResponse.sendRedirect(httpServletResponse.encodeRedirectURL(redirectURL));
+
+				List<String> allowedHosts = new ArrayList<String>();
+  				allowedHosts.add("https://example.com/");
+
+  				if (allowedHosts.contains(redirectURL)) {
+					httpServletResponse.sendRedirect(httpServletResponse.encodeRedirectURL(redirectURL));
+				}
+
 			}
 		}
 		catch (IOException e)
@@ -247,7 +256,7 @@ public class WicketFilter implements Filter
 				}
 				catch (ResponseIOException e)
 				{
-					log.error("ResponseIOException - Cause: " + e.getCause().getMessage());
+					log.error(String.format("ResponseIOException - Cause: %s", e.getCause().getMessage()));
 				}
 			}
 		}

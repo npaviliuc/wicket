@@ -102,23 +102,28 @@ class XmlPullParserTest
 		tag = parser.nextTag();
 		assertNull(elem);
 
+		basicsTest1(parser, tag);
+		
+	}
+
+	private void basicsTest1(XmlPullParser parser, XmlTag tag) throws Exception {
 		parser.parse("<tag> <tag> <tag>");
 		tag = parser.nextTag();
 		// assertTrue(tag.isOpen("tag"));
 		tag = parser.nextTag();
-// assertTrue(tag.isOpen("tag"));
+		// assertTrue(tag.isOpen("tag"));
 		tag = parser.nextTag();
-// assertTrue(tag.isOpen("tag"));
+		// assertTrue(tag.isOpen("tag"));
 
 		parser.parse("<ns:tag/>");
 		tag = parser.nextTag();
-// assertTrue(tag.isOpenClose("tag"));
+		// assertTrue(tag.isOpenClose("tag"));
 		assertEquals("ns", tag.getNamespace());
 		assertEquals("tag", tag.getName());
 
 		parser.parse("<ns:tag></ns:tag>");
 		tag = parser.nextTag();
-// assertTrue(tag.isOpen("tag"));
+	 	// assertTrue(tag.isOpen("tag"));
 		assertEquals("ns", tag.getNamespace());
 		assertEquals("tag", tag.getName());
 

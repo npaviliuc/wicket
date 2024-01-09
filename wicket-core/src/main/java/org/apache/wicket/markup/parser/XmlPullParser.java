@@ -331,130 +331,93 @@ public final class XmlPullParser implements IXmlPullParser
 	 * @param closeBracketIndex
 	 * @throws ParseException
 	 */
-	protected void specialTagHandling(String tagText, final int openBracketIndex,
-		int closeBracketIndex) throws ParseException
-	{
-		// Handle comments
-		if (tagText.startsWith("!--"))
-		{
-			// downlevel-revealed conditional comments e.g.: <!--[if (gt IE9)|!(IE)]><!-->
-			if (tagText.contains("![endif]--"))
-			{
-				lastType = HttpTagType.CONDITIONAL_COMMENT_ENDIF;
-
-				// Move to position after the tag
-				input.setPosition(closeBracketIndex + 1);
-				return;
-			}
-
-			// Conditional comment? E.g.
-			// "<!--[if IE]><a href='test.html'>my link</a><![endif]-->"
-			if (tagText.startsWith("!--[if ") && tagText.endsWith("]"))
-			{
-				int pos = input.find("]-->", openBracketIndex + 1);
-				if (pos == -1)
-				{
-					throw new ParseException("Unclosed conditional comment beginning at" +
-						getLineAndColumnText(), openBracketIndex);
-				}
-
-				pos += 4;
-				lastText = input.getSubstring(openBracketIndex, pos);
-
-				// Actually it is no longer a comment. It is now
-				// up to the browser to select the section appropriate.
-				input.setPosition(closeBracketIndex + 1);
-				lastType = HttpTagType.CONDITIONAL_COMMENT;
-			}
-			else
-			{
-				// Normal comment section.
-				// Skip ahead to "-->". Note that you can not simply test for
-				// tagText.endsWith("--") as the comment might contain a '>'
-				// inside.
-				int pos = input.find("-->", openBracketIndex + 1);
-				if (pos == -1)
-				{
-					throw new ParseException("Unclosed comment beginning at" +
-						getLineAndColumnText(), openBracketIndex);
-				}
-
-				pos += 3;
-				lastText = input.getSubstring(openBracketIndex, pos);
-				lastType = HttpTagType.COMMENT;
-				input.setPosition(pos);
-			}
-			return;
+	protected void specialTagHandling(String tagText, final int openBracketIndex, int closeBracketIndex) throws ParseException {
+		if (tagText.startsWith("!--")) {
+			handleCommentTag(tagText, openBracketIndex, closeBracketIndex);
+		} else if (tagText.equals("![endif]--")) {
+			handleConditionalCommentEndIfTag(closeBracketIndex);
+		} else if (tagText.startsWith("![CDATA[")) {
+			handleCDataTag(tagText, openBracketIndex, closeBracketIndex);
+		} else if (tagText.charAt(0) == '?') {
+			handleProcessingInstructionTag(closeBracketIndex);
+		} else if (tagText.startsWith("!DOCTYPE")) {
+			handleDoctypeTag(openBracketIndex, closeBracketIndex);
+		} else {
+			handleSpecialTag(closeBracketIndex);
 		}
+	}
 
-		// The closing tag of a conditional comment, e.g.
-		// "<!--[if IE]><a href='test.html'>my link</a><![endif]-->
-		// and also <!--<![endif]-->"
-		if (tagText.equals("![endif]--"))
-		{
+	private void handleCommentTag(String tagText, final int openBracketIndex, int closeBracketIndex) throws ParseException {
+		if (tagText.contains("![endif]--")) {
 			lastType = HttpTagType.CONDITIONAL_COMMENT_ENDIF;
 			input.setPosition(closeBracketIndex + 1);
-			return;
+		} else if (tagText.startsWith("!--[if ") && tagText.endsWith("]")) {
+			handleConditionalCommentTag(tagText, openBracketIndex, closeBracketIndex);
+		} else {
+			handleNormalCommentTag(tagText, openBracketIndex, closeBracketIndex);
+		}
+	}
+
+	private void handleConditionalCommentTag(String tagText, int openBracketIndex, int closeBracketIndex) throws ParseException {
+		int pos = input.find("]-->", openBracketIndex + 1);
+		if (pos == -1) {
+			throw new ParseException("Unclosed conditional comment beginning at" + getLineAndColumnText(), openBracketIndex);
 		}
 
-		// CDATA sections might contain "<" which is not part of an XML tag.
-		// Make sure escaped "<" are treated right
-		if (tagText.startsWith("!["))
-		{
-			final String startText = (tagText.length() <= 8 ? tagText : tagText.substring(0, 8));
-			if (startText.toUpperCase(Locale.ROOT).equals("![CDATA["))
-			{
-				int pos1 = openBracketIndex;
-				do
-				{
-					// Get index of closing tag and advance past the tag
-					closeBracketIndex = findChar('>', pos1);
+		pos += 4;
+		lastText = input.getSubstring(openBracketIndex, pos);
+		input.setPosition(closeBracketIndex + 1);
+		lastType = HttpTagType.CONDITIONAL_COMMENT;
+	}
 
-					if (closeBracketIndex == -1)
-					{
-						throw new ParseException("No matching close bracket at" +
-							getLineAndColumnText(), input.getPosition());
-					}
+	private void handleNormalCommentTag(String tagText, final int openBracketIndex, int closeBracketIndex) throws ParseException {
+		int pos = input.find("-->", openBracketIndex + 1);
+		if (pos == -1) {
+			throw new ParseException("Unclosed comment beginning at" + getLineAndColumnText(), openBracketIndex);
+		}
 
-					// Get the tagtext between open and close brackets
-					tagText = input.getSubstring(openBracketIndex + 1, closeBracketIndex)
-						.toString();
+		pos += 3;
+		lastText = input.getSubstring(openBracketIndex, pos);
+		lastType = HttpTagType.COMMENT;
+		input.setPosition(pos);
+	}
 
-					pos1 = closeBracketIndex + 1;
-				}
-				while (tagText.endsWith("]]") == false);
+	private void handleConditionalCommentEndIfTag(int closeBracketIndex) {
+		lastType = HttpTagType.CONDITIONAL_COMMENT_ENDIF;
+		input.setPosition(closeBracketIndex + 1);
+	}
 
-				// Move to position after the tag
-				input.setPosition(closeBracketIndex + 1);
+	private void handleCDataTag(String tagText, final int openBracketIndex, int closeBracketIndex)throws ParseException {
+		int pos1 = openBracketIndex;
+		do {
+			closeBracketIndex = findChar('>', pos1);
 
-				lastText = tagText;
-				lastType = HttpTagType.CDATA;
-				return;
+			if (closeBracketIndex == -1) {
+				throw new ParseException("No matching close bracket at" + getLineAndColumnText(), input.getPosition());
 			}
-		}
 
-		if (tagText.charAt(0) == '?')
-		{
-			lastType = HttpTagType.PROCESSING_INSTRUCTION;
+			tagText = input.getSubstring(openBracketIndex + 1, closeBracketIndex).toString();
 
-			// Move to position after the tag
-			input.setPosition(closeBracketIndex + 1);
-			return;
-		}
+			pos1 = closeBracketIndex + 1;
+		} while (!tagText.endsWith("]]"));
 
-		if (tagText.startsWith("!DOCTYPE"))
-		{
-			lastType = HttpTagType.DOCTYPE;
+		input.setPosition(closeBracketIndex + 1);
+		lastText = tagText;
+		lastType = HttpTagType.CDATA;
+	}
 
-			// Get the tagtext between open and close brackets
-			doctype = input.getSubstring(openBracketIndex + 1, closeBracketIndex);
+	private void handleProcessingInstructionTag(int closeBracketIndex) {
+		lastType = HttpTagType.PROCESSING_INSTRUCTION;
+		input.setPosition(closeBracketIndex + 1);
+	}
 
-			// Move to position after the tag
-			input.setPosition(closeBracketIndex + 1);
-			return;
-		}
+	private void handleDoctypeTag(int openBracketIndex, int closeBracketIndex) {
+		lastType = HttpTagType.DOCTYPE;
+		doctype = input.getSubstring(openBracketIndex + 1, closeBracketIndex);
+		input.setPosition(closeBracketIndex + 1);
+	}
 
-		// Move to position after the tag
+	private void handleSpecialTag(int closeBracketIndex) {
 		lastType = HttpTagType.SPECIAL_TAG;
 		input.setPosition(closeBracketIndex + 1);
 	}

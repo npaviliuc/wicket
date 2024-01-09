@@ -36,6 +36,8 @@ public class WicketExamplePage extends WebPage
 {
 	private static final long serialVersionUID = 1L;
 
+	private static final String SCREEN_CONST = "screen";
+
 	/**
 	 * Constructor
 	 */
@@ -53,7 +55,7 @@ public class WicketExamplePage extends WebPage
 	{
 		super(pageParameters);
 
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("sources",
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<>("sources",
 			SourcesPage.class, SourcesPage.generatePageParameters(this));
 		add(link);
 		
@@ -101,9 +103,9 @@ public class WicketExamplePage extends WebPage
 	public void renderHead(IHeaderResponse response)
 	{
 		response.render(CssHeaderItem.forReference(
-				new CssResourceReference(WicketExamplePage.class, "fonts/source-code-pro/stylesheet.css"), "screen"));
+				new CssResourceReference(WicketExamplePage.class, "fonts/source-code-pro/stylesheet.css"), SCREEN_CONST));
 		response.render(CssHeaderItem.forReference(
-				new CssResourceReference(WicketExamplePage.class, "fonts/source-sans-pro/stylesheet.css"), "screen"));
-		response.render(CssHeaderItem.forReference(new CssResourceReference(WicketExamplePage.class, "style.css"),"screen"));
+				new CssResourceReference(WicketExamplePage.class, "fonts/source-sans-pro/stylesheet.css"), SCREEN_CONST));
+		response.render(CssHeaderItem.forReference(new CssResourceReference(WicketExamplePage.class, "style.css"),SCREEN_CONST));
 	}
 }

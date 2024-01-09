@@ -89,9 +89,7 @@ public class DefaultCrypter implements ICrypter
 
 			Cipher cipher = getCipher();
 			cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
-			byte[] decrypted = cipher.doFinal(ciphertext);
-
-			return decrypted;
+			return cipher.doFinal(ciphertext);
 		}
 		catch (GeneralSecurityException ex)
 		{

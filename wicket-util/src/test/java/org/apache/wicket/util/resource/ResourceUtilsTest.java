@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /** */
-public class ResourceUtilsTest
+class ResourceUtilsTest
 {
 	/**
 	 * https://issues.apache.org/jira/browse/WICKET-5706

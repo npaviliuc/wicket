@@ -69,12 +69,10 @@ abstract class AbstractLicenseHeaderHandler implements ILicenseHeaderHandler
 	protected String extractLicenseHeader(final File file, final int start, final int length)
 	{
 		StringBuilder header = new StringBuilder();
-		LineNumberReader lineNumberReader = null;
 
-		try
+		try (FileReader fileReader = new FileReader(file);
+		LineNumberReader lineNumberReader = new LineNumberReader(fileReader))
 		{
-			FileReader fileReader = new FileReader(file);
-			lineNumberReader = new LineNumberReader(fileReader);
 
 			for (int i = start; i < length; i++)
 			{
@@ -85,17 +83,6 @@ abstract class AbstractLicenseHeaderHandler implements ILicenseHeaderHandler
 		catch (Exception e)
 		{
 			throw new AssertionError(e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				IOUtils.close(lineNumberReader);
-			}
-			catch (IOException e)
-			{
-				log.error("IOException: " + e.getMessage());
-			}
 		}
 
 		return header.toString().trim();
@@ -126,17 +113,12 @@ abstract class AbstractLicenseHeaderHandler implements ILicenseHeaderHandler
 	{
 		if (Strings.isEmpty(licenseHeader))
 		{
-			LineNumberReader lineNumberReader = null;
-			InputStream inputStream = null;
-			InputStreamReader inputStreamReader = null;
-
-			try
-			{
-				inputStream = ApacheLicenseHeaderTestCase.class
+			InputStream inputStream = ApacheLicenseHeaderTestCase.class
 					.getResourceAsStream(getLicenseHeaderFilename());
-				inputStreamReader = new InputStreamReader(inputStream);
-				lineNumberReader = new LineNumberReader(inputStreamReader);
 
+			try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+				LineNumberReader lineNumberReader = new LineNumberReader(inputStreamReader))
+			{
 				StringBuilder header = new StringBuilder();
 				String line = lineNumberReader.readLine();
 				while (line != null)
@@ -150,13 +132,11 @@ abstract class AbstractLicenseHeaderHandler implements ILicenseHeaderHandler
 			}
 			catch (Exception e)
 			{
-				throw new AssertionError(e.getMessage());
+				throw new AssertionError(e.toString());
 			}
 			finally
 			{
-				IOUtils.closeQuietly(lineNumberReader);
 				IOUtils.closeQuietly(inputStream);
-				IOUtils.closeQuietly(inputStreamReader);
 			}
 		}
 

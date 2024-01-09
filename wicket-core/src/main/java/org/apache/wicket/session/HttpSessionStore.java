@@ -39,6 +39,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.http.WebRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.wicket.WicketRuntimeException;
 
 /**
  * Implementation of {@link ISessionStore} that works with web applications and provides some
@@ -482,7 +483,7 @@ public class HttpSessionStore implements ISessionStore
 		{
 			log.debug("HTTP session {} is no more valid!", sessionId, isx);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new WicketRuntimeException(e);
 		}
 		return null;
 	}

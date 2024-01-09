@@ -17,6 +17,7 @@
 package org.apache.wicket;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -604,7 +605,9 @@ public abstract class Component
 			{
 				System.arraycopy(current, 0, array, 0, position);
 			}
-			array[position] = object;
+			if (array.length > 0) {
+				array[position] = object;
+			}
 			if (after > 0)
 			{
 				System.arraycopy(current, position, array, position + 1, after);
@@ -926,11 +929,11 @@ public abstract class Component
 	 */
 	public final void beforeRender()
 	{
-		if (this instanceof IFeedback)
+		if (this instanceof IFeedback feedbackVar)
 		{
 			Optional<FeedbackDelay> delay = FeedbackDelay.get(getRequestCycle());
 			if (delay.isPresent()) {
-				delay.get().postpone((IFeedback)this);
+				delay.get().postpone(feedbackVar);
 				return;
 			}
 		}
@@ -2218,7 +2221,7 @@ public abstract class Component
 	public final void renderPart() {
 		Page page = getPage();
 
-		page.startComponentRender(this);
+		page.startComponentRender();
 
 		markRendering(true);
 
@@ -2331,11 +2334,11 @@ public abstract class Component
 			}
 		}
 		// elem is null when rendering a page
-		else if ((elem != null) && (elem instanceof ComponentTag))
+		else if ((elem != null) && (elem instanceof ComponentTag componentTagVar))
 		{
 			if (getFlag(FLAG_PLACEHOLDER))
 			{
-				renderPlaceholderTag(((ComponentTag)elem).mutable(), getResponse());
+				renderPlaceholderTag((componentTagVar).mutable(), getResponse());
 			}
 		}
 	}
@@ -4535,4 +4538,12 @@ public abstract class Component
 	{
 		setRequestFlag(RFLAG_ON_RE_ADD_SUPER_CALL_VERIFIED, true);
 	}
+
+    public boolean isLoaded() {
+        return false;
+    }
+
+    public Duration getUpdateInterval() {
+        return null;
+    }
 }

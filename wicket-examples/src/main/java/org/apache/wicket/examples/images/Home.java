@@ -159,11 +159,12 @@ public final class Home extends WicketExamplePage
 	{
 		// Compute random size for circle
 		final Random random = new Random();
+
+		// Use the random instance
 		int dx = Math.abs(10 + random.nextInt(80));
 		int dy = Math.abs(10 + random.nextInt(80));
 		int x = Math.abs(random.nextInt(100 - dx));
 		int y = Math.abs(random.nextInt(100 - dy));
-
 		// Draw circle with thick stroke width
 		graphics.setStroke(new BasicStroke(5));
 		graphics.drawOval(x, y, dx, dy);

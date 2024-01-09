@@ -76,6 +76,10 @@ public class MockPageManager implements IPageManager
 	@Override
 	public void detach()
 	{
+		// This method is marked as unsupported to indicate that the operation of detaching
+   		// is not applicable or not supported for instances of this class. If detachment
+    	// is a meaningful operation for this class, the implementation should be completed
+    	// accordingly.
 	}
 
 	@Override

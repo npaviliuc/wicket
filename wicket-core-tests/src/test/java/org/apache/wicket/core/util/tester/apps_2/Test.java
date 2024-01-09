@@ -24,7 +24,7 @@ import org.apache.wicket.util.tester.WicketTestCase;
  * 
  * @author Juergen Donnerstag
  */
-class Test extends WicketTestCase
+class PageTest extends WicketTestCase
 {
 	/**
 	 * 

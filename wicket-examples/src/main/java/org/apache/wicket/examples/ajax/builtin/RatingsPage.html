@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
 <head>
   <title>Wicket Examples - Ajax - Ratings style</title>
 </head>
@@ -26,18 +27,25 @@
 		what me friends end your do friends, if. From by i what to a i you 
 		i'll the. Not a a friends lend does you.
   	</p>
+	<!-- the table is a structure for displaying two sets of ratings with corresponding reset options -->
   	<table>
-  	<tr>
-  	<td>Rate this:</td>
-  	<td><span wicket:id="rating1"></span></td>
-  	<td><span wicket:id="rating2"></span></td>
-  	</tr>
-  	<tr>
-  		<td>&#160;</td>
-  		<td><a href="#" wicket:id="reset1">Reset rating</a></td>
-  		<td><a href="#" wicket:id="reset2">Reset rating</a></td>
-  	</tr>
-  	</table>
+		<tr>
+		  <th>Rating</th>
+		  <th>Option 1</th>
+		  <th>Option 2</th>
+		</tr>
+		<tr>
+		  <td>Rate this:</td>
+		  <td><span wicket:id="rating1"></span></td>
+		  <td><span wicket:id="rating2"></span></td>
+		</tr>
+		<tr>
+		  <td>&#160;</td>
+		  <td><a href="#" wicket:id="reset1">Reset rating</a></td>
+		  <td><a href="#" wicket:id="reset2">Reset rating</a></td>
+		</tr>
+	  </table>
+	  
   </wicket:extend>
 </body>
 </html>

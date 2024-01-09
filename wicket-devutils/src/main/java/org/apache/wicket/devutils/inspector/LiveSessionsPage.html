@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE html>
 <!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +15,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<html xmlns:wicket="http://wicket.apache.org">
+<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
 <head>
 <wicket:head>
 <title>Live Sessions Page</title>
@@ -29,13 +29,24 @@
     <span wicket:id="application">Application view here</span>
   
   	<h2>Session Information  <a wicket:id="togglelink" href="#"><span wicket:id="toggletext"></span></a></h2>
+	<!-- table with rows and columns to display information about created sessions -->
 	<table>
-		<tr><td>Total created sessions</td><td><span wicket:id="totalSessions"></span></td></tr>
-		<tr><td>Live session count</td><td><span wicket:id="liveSessions"></span></td></tr>
-		<tr><td>Peak session count</td><td><span wicket:id="peakSessions"></span></td></tr>
-	</table>	
-	
+		<tr>
+			<th>Total created sessions</th>
+			<th><span wicket:id="totalSessions"></span></th>
+		</tr>
+		<tr>
+			<td>Live session count</td>
+			<td><span wicket:id="liveSessions"></span></td>
+		</tr>
+		<tr>
+			<td>Peak session count</td>
+			<td><span wicket:id="peakSessions"></span></td>
+		</tr>
+	</table>
+			
 	<p>Live Sessions</p>
+	<!--  table used to display session information. It has five columns with headers describing different aspects of each session -->
 	<table border="1">
 		<tr>
 			<th>Session Id</th>

@@ -74,7 +74,7 @@ public class PersistedPanel extends GenericPanel<IPersistentPageStore>
 		storeLabel.setOutputMarkupId(true);
 		add(storeLabel);
 		
-		final DropDownChoice<String> sessionsSelector = createSessionsSelector("sessions");
+		final DropDownChoice<String> sessionsSelector = createSessionsSelector();
 		sessionsSelector.setOutputMarkupId(true);
 		add(sessionsSelector);
 
@@ -104,7 +104,7 @@ public class PersistedPanel extends GenericPanel<IPersistentPageStore>
 			@Override
 			public boolean isVisible()
 			{
-				return PersistedPanel.this.getSession().isTemporary() == false;
+				return !(PersistedPanel.this.getSession().isTemporary());
 			}
 		};
 		currentSessionLink.setOutputMarkupPlaceholderTag(true);
@@ -132,12 +132,9 @@ public class PersistedPanel extends GenericPanel<IPersistentPageStore>
 		});
 	}
 
-	private DropDownChoice<String> createSessionsSelector(String id)
+	private DropDownChoice<String> createSessionsSelector()
 	{
-		DropDownChoice<String> sessionsSelector = new DropDownChoice<String>("sessions",
-			Model.of(getCurrentSessionIdentifier()), new SessionIdentifiersModel(getModel()));
-
-		return sessionsSelector;
+		return new DropDownChoice<>("sessions", Model.of(getCurrentSessionIdentifier()), new SessionIdentifiersModel(getModel()));
 	}
 
 	private String getCurrentSessionIdentifier()

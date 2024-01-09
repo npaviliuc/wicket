@@ -161,10 +161,10 @@ public class HtmlHeaderContainer extends TransparentWebMarkupContainer
 			final StringResponse response = new StringResponse();
 			getRequestCycle().setResponse(response);
 
-			try (IHeaderResponse headerResponse = getHeaderResponse()) {
-				if (!response.equals(headerResponse.getResponse()))
+			try (IHeaderResponse headerResponseVar = getHeaderResponse()) {
+				if (!response.equals(headerResponseVar.getResponse()))
 				{
-					getRequestCycle().setResponse(headerResponse.getResponse());
+					getRequestCycle().setResponse(headerResponseVar.getResponse());
 				}
 
 				// Render the header sections of all components on the page
@@ -173,7 +173,7 @@ public class HtmlHeaderContainer extends TransparentWebMarkupContainer
 
 				// Header response will be auto-closed before rendering the header container itself
 				// See https://issues.apache.org/jira/browse/WICKET-3728
-			};
+			}
 
 			// Cleanup extraneous CR and LF from the response
 			CharSequence output = getCleanResponse(response);
@@ -240,38 +240,38 @@ public class HtmlHeaderContainer extends TransparentWebMarkupContainer
 	 * @param response
 	 * @return Cleaned up response
 	 */
-	private static CharSequence getCleanResponse(final StringResponse response)
-	{
+	private static CharSequence getCleanResponse(final StringResponse response) {
 		CharSequence output = response.getBuffer();
-		if (output.length() > 0)
-		{
-			if (output.charAt(0) == '\r')
-			{
-				for (int i = 2; i < output.length(); i += 2)
-				{
-					char ch = output.charAt(i);
-					if (ch != '\r')
-					{
-						output = output.subSequence(i - 2, output.length());
-						break;
-					}
-				}
+
+		if (output.length() > 0) {
+			if (output.charAt(0) == '\r') {
+				output = removeLeadingCarriageReturns(output, 2);
+			} else if (output.charAt(0) == '\n') {
+				output = removeLeadingLineFeeds(output, 1);
 			}
-			else if (output.charAt(0) == '\n')
-			{
-				for (int i = 1; i < output.length(); i++)
-				{
-					char ch = output.charAt(i);
-					if (ch != '\n')
-					{
-						output = output.subSequence(i - 1, output.length());
-						break;
-					}
-				}
+		}
+
+		return output;
+	}
+
+	private static CharSequence removeLeadingCarriageReturns(CharSequence output, int startIndex) {
+		return removeLeadingWhitespace(output, startIndex, '\r');
+	}
+
+	private static CharSequence removeLeadingLineFeeds(CharSequence output, int startIndex) {
+		return removeLeadingWhitespace(output, startIndex, '\n');
+	}
+
+	private static CharSequence removeLeadingWhitespace(CharSequence output, int startIndex, char targetChar) {
+		for (int i = startIndex; i < output.length(); i += startIndex) {
+			char ch = output.charAt(i);
+			if (ch != targetChar) {
+				return output.subSequence(i - startIndex, output.length());
 			}
 		}
 		return output;
 	}
+
 
 	/**
 	 *

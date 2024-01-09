@@ -38,16 +38,23 @@ public class NoopPageStore implements IPageStore
 	@Override
 	public void addPage(IPageContext context, IManageablePage page)
 	{
+		// The addPage method is intentionally left empty and throws
+    	// an UnsupportedOperationException to indicate that the
+    	// implementation is not supported or not yet implemented.
 	}
 
 	@Override
 	public void removePage(IPageContext context, IManageablePage page)
 	{
+		// This method is intentionally left empty and UnsupportedOperationException is thrown
+    	// because the removal of pages is not supported in this implementation.
 	}
 
 	@Override
 	public void removeAllPages(IPageContext context)
 	{
+		// This method is intentionally left empty and UnsupportedOperationException is thrown
+    	// because the removal of pages is not supported in this implementation.
 	}
 
 	@Override

@@ -26,6 +26,9 @@ import java.util.Locale;
  */
 public class Instants
 {
+	private Instants() {
+		throw new IllegalStateException("Utility class");
+	  }
 
 	public static final DateTimeFormatter RFC_7231_DATE_FORMATTER = DateTimeFormatter
 		.ofPattern("EEE, dd MMM yyyy HH:mm:ss O", Locale.ENGLISH).withZone(ZoneOffset.UTC);

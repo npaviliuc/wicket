@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.link.Link;
@@ -604,6 +605,9 @@ public abstract class ListView<T> extends AbstractRepeater
 			@Override
 			public Component next()
 			{
+				if (!hasNext()) {
+            throw new NoSuchElementException("No more elements in the collection");
+        }
 				final String id = Integer.toString(firstIndex + index);
 				index++;
 				return get(id);

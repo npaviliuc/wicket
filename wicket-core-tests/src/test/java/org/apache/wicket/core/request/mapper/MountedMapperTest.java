@@ -312,14 +312,16 @@ class MountedMapperTest extends AbstractMapperTest
 	@Test
 	void decode11()
 	{
-		assertThrows(StalePageException.class, () -> {
-			Url url = Url.parse("some/mount/path?15-5.4-foo-bar");
-			context.setNextPageRenderCount(7);
+		assertThrows(StalePageException.class, () -> returnDecode11());
+	}
 
-			IRequestHandler handler = encoder.mapRequest(getRequest(url));
+	void returnDecode11() {
+		Url url = Url.parse("some/mount/path?15-5.4-foo-bar");
+		context.setNextPageRenderCount(7);
 
-			((IPageRequestHandler)handler).getPage();
-		});
+		IRequestHandler handler = encoder.mapRequest(getRequest(url));
+
+		((IPageRequestHandler)handler).getPage();
 	}
 
 	/**

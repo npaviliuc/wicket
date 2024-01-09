@@ -33,7 +33,7 @@ class JavaScriptUtilsTest
 	 * @throws Exception
 	 */
 	@Test
-	public void writeJavaScript() throws Exception
+	void writeJavaScript() throws Exception
 	{
 		AttributeMap attributes = new AttributeMap();
 		attributes.putAttribute(JavaScriptUtils.ATTR_TYPE, "text/javascript");
@@ -53,7 +53,7 @@ class JavaScriptUtilsTest
 	 * https://issues.apache.org/jira/browse/WICKET-5715
 	 */
 	@Test
-	public void writeJavaScriptAsync()
+	void writeJavaScriptAsync()
 	{
 		AttributeMap attributes = new AttributeMap();
 		attributes.putAttribute(JavaScriptUtils.ATTR_TYPE, "text/javascript");
@@ -73,7 +73,7 @@ class JavaScriptUtilsTest
 	/**
 	 */
 	@Test
-	public void writeInlineScript()
+	void writeInlineScript()
 	{
 		StringResponse response = new StringResponse();
 		AttributeMap attributes = new AttributeMap();
@@ -91,7 +91,7 @@ class JavaScriptUtilsTest
 	/**
 	 */
 	@Test
-	public void scriptTag()
+	void scriptTag()
 	{
 		assertEquals("<script type=\"text/javascript\">\n/*<![CDATA[*/\n",
 			JavaScriptUtils.SCRIPT_OPEN_TAG);

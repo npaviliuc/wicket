@@ -104,13 +104,13 @@ public abstract class BaseDataResource<T> extends AbstractResource
 		final ResourceResponse response = new ResourceResponse();
 
 		String contentType = this.contentType;
-		String filename = getFilename();
+		String filenameVar = getFilename();
 
 		if (contentType == null)
 		{
-			if (filename != null)
+			if (filenameVar != null)
 			{
-				contentType = URLConnection.getFileNameMap().getContentTypeFor(filename);
+				contentType = URLConnection.getFileNameMap().getContentTypeFor(filenameVar);
 			}
 
 			if (contentType == null)

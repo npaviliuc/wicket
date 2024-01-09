@@ -34,7 +34,7 @@ public abstract class AbstractCssReferenceHeaderItem extends CssHeaderItem imple
 	private CrossOrigin crossOrigin;
 	private String integrity;
 
-	public AbstractCssReferenceHeaderItem(String media, String rel)
+	protected AbstractCssReferenceHeaderItem(String media, String rel)
 	{
 		this.media = media;
 		this.rel = rel;

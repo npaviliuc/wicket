@@ -162,10 +162,11 @@ public class DeferredFileOutputStream extends ThresholdingOutputStream
 		{
 			outputFile = fileFactory.createFile();
 		}
-		FileOutputStream fos = new FileOutputStream(outputFile);
-		fos.write(data);
-		currentOutputStream = fos;
-		memoryOutputStream = null;
+		try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+			fos.write(data);
+			currentOutputStream = fos;
+			memoryOutputStream = null;
+			}
 	}
 
 	/**

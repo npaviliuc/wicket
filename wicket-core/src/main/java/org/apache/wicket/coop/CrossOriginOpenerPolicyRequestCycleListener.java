@@ -89,12 +89,9 @@ public class CrossOriginOpenerPolicyRequestCycleListener implements IRequestCycl
 				return;
 			}
 
-			if (cycle.getResponse() instanceof WebResponse webResponse)
+			if ((cycle.getResponse() instanceof WebResponse webResponse) && webResponse.isHeaderSupported())
 			{
-				if (webResponse.isHeaderSupported())
-				{
-					webResponse.setHeader(COOP_HEADER, coopConfig.getHeaderValue());
-				}
+				webResponse.setHeader(COOP_HEADER, coopConfig.getHeaderValue());
 			}
 		}
 	}

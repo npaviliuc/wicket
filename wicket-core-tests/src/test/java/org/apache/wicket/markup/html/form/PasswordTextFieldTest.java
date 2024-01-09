@@ -53,8 +53,10 @@ class PasswordTextFieldTest extends WicketTestCase
 
 		// does nothing on null model
 		field.detach();
-	}
 
+		// Add this assertion to check that the model's password is null
+		assertNull(field.getModelObject()); 
+	}
 
 	@Test
 	void nullifyNoReset()

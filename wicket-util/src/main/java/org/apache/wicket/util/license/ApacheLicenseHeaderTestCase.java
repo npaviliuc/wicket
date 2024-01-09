@@ -169,7 +169,9 @@ public abstract class ApacheLicenseHeaderTestCase
 
 
 			Logger logger = LoggerFactory.getLogger(getClass().getName());
-			logger.info(failString.toString());
+
+			if(logger.isInfoEnabled()) logger.info(failString.toString());
+
 			throw new AssertionError(failString.toString());
 		}
 	}

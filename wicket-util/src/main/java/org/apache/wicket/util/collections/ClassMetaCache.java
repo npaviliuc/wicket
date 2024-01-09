@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ClassMetaCache<T>
 {
-	private volatile Map<ClassLoader, ConcurrentHashMap<String, T>> cache = Collections.emptyMap();
+	private Map<ClassLoader, ConcurrentHashMap<String, T>> cache = Collections.emptyMap();
 
 	/**
 	 * Puts value into cache

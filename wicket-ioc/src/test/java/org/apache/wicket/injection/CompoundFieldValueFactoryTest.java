@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
  * @author Igor Vaynberg (ivaynberg)
  * 
  */
-public class CompoundFieldValueFactoryTest
+class CompoundFieldValueFactoryTest
 {
 	private Integer testField;
 

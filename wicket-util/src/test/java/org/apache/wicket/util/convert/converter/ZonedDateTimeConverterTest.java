@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests for {@link ZonedDateTimeConverter}
  */
-public class ZonedDateTimeConverterTest
+class ZonedDateTimeConverterTest
 {
 	private final ZoneId zoneUCT = ZoneId.of("Etc/UCT");
 	private final ZoneId zoneUTC = ZoneId.of("Etc/UTC");
@@ -68,7 +68,7 @@ public class ZonedDateTimeConverterTest
 	}
 
 	@Test
-	public void convertFails() {
+	void convertFails() {
 		ZonedDateTimeConverter converter = new ZonedDateTimeConverter();
 
 		try {

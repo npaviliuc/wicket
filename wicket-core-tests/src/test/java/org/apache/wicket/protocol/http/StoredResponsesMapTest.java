@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import static java.util.concurrent.CompletableFuture.delayedExecutor;
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import org.apache.wicket.util.WicketTestTag;
 import org.junit.jupiter.api.Tag;
@@ -73,7 +76,7 @@ class StoredResponsesMapTest
 		assertEquals(0, map.size());
 		map.put("1", new BufferedWebResponse(null));
 		assertEquals(1, map.size());
-		TimeUnit.MILLISECONDS.sleep(timeout.toMillis() * 2); // sleep for twice longer than the timeout
+		runAsync(() -> {}, delayedExecutor(timeout.toMillis() * 2, MILLISECONDS)).join(); // sleep for twice longer than the timeout
 		Duration elapsedTime = Duration.between(start, Instant.now());
 		elapsedTime = elapsedTime.truncatedTo(ChronoUnit.MILLIS);
 		
@@ -88,10 +91,9 @@ class StoredResponsesMapTest
 	@Test
 	void cannotPutArbitraryValue()
 	{
+		Object obj = new Object();
 		StoredResponsesMap map = new StoredResponsesMap(1000, Duration.ofDays(1));
-		assertThrows(IllegalArgumentException.class, () -> {
-			map.put("1", new Object());
-		});
+		assertThrows(IllegalArgumentException.class, () -> map.put("1", obj));
 
 	}
 

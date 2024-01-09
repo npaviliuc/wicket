@@ -267,7 +267,7 @@ public class InSessionPageStore implements IPageStore
 			{
 				IManageablePage page = pages.get(p);
 
-				if ((page instanceof SerializedPage) == false)
+				if (!(page instanceof SerializedPage))
 				{
 					// remove if not already serialized
 					pages.remove(p);
@@ -275,7 +275,9 @@ public class InSessionPageStore implements IPageStore
 					if (serializer == null)
 					{
 						// cannot be serialized, thus skip
+						while (p > 0) {
 						p--;
+									  }
 					}
 					else
 					{
@@ -337,7 +339,7 @@ public class InSessionPageStore implements IPageStore
 		@Override
 		public synchronized void add(IManageablePage page)
 		{
-			if (page instanceof SerializedPage == false)
+			if (!(page instanceof SerializedPage))
 			{
 				throw new WicketRuntimeException(
 					"InSessionPageStore limited by size works with serialized pages only");

@@ -37,6 +37,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.ResourceStreamResource;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
+import org.apache.wicket.WicketRuntimeException;
 
 /**
  * Ajax download.
@@ -64,11 +65,11 @@ public class AjaxDownloadPage extends BasePage
 
 		initDownload();
 
-		initDownloadInIframe();
+		initDownloadInIFRAME_PATTERN();
 
-		initDownloadInNewWindow();
+		initDownloadInNEW_WINDOW();
 
-		initDownloadInSameWindow();
+		initDownloadInSAME_WINDOW();
 
 		initDynamicDownload();
 
@@ -129,7 +130,7 @@ public class AjaxDownloadPage extends BasePage
 		});
 	}
 
-	private void initDownloadInIframe()
+	private void initDownloadInIFRAME_PATTERN()
 	{
 		IResource resource = new ExampleResource("downloaded via ajax in iframe")
 			.setContentDisposition(ContentDisposition.ATTACHMENT);
@@ -161,7 +162,7 @@ public class AjaxDownloadPage extends BasePage
 				target.appendJavaScript(ALERT);
 			}
 		};
-		download.setLocation(Location.IFrame);
+		download.setLocation(Location.IFRAME_PATTERN);
 		add(download);
 
 		add(new AjaxLink<Void>("downloadIframe")
@@ -230,7 +231,7 @@ public class AjaxDownloadPage extends BasePage
 		});
 	}
 
-	private void initDownloadInNewWindow()
+	private void initDownloadInNEW_WINDOW()
 	{
 		IResource resource = new ExampleResource("downloaded via ajax in a new browser window")
 			.setContentDisposition(ContentDisposition.INLINE);
@@ -262,7 +263,7 @@ public class AjaxDownloadPage extends BasePage
 				target.appendJavaScript(ALERT);
 			}
 		};
-		download.setLocation(AjaxDownloadBehavior.Location.NewWindow);
+		download.setLocation(AjaxDownloadBehavior.Location.NEW_WINDOW);
 		add(download);
 
 		add(new AjaxLink<Void>("downloadInNewWindow")
@@ -277,7 +278,7 @@ public class AjaxDownloadPage extends BasePage
 		});
 	}
 
-	private void initDownloadInSameWindow()
+	private void initDownloadInSAME_WINDOW()
 	{
 		IResource resource = new ExampleResource("downloaded via ajax in same browser window")
 			.setContentDisposition(ContentDisposition.ATTACHMENT);
@@ -310,7 +311,7 @@ public class AjaxDownloadPage extends BasePage
 			}
 
 		};
-		download.setLocation(AjaxDownloadBehavior.Location.SameWindow);
+		download.setLocation(AjaxDownloadBehavior.Location.SAME_WINDOW);
 		add(download);
 
 		add(new AjaxLink<Void>("downloadInSameWindow")
@@ -355,7 +356,7 @@ public class AjaxDownloadPage extends BasePage
 			}
 		};
 		add(download);
-		download.setLocation(Location.Blob);
+		download.setLocation(Location.BLOB_PATTERN);
 		text = Model.of("");
 		Form<Void> form = new Form<>("form");
 		add(form);
@@ -405,7 +406,7 @@ public class AjaxDownloadPage extends BasePage
 				// Re-interrrupt the thread
 				Thread.currentThread().interrupt(); 
 				//OR Rethrow the InterruptedException
-				throw new RuntimeException("Thread interrupted", e);
+				throw new WicketRuntimeException("Thread interrupted", e);
 			}
 
 			return new StringResourceStream("downloaded via ajax with resource reference");
@@ -446,7 +447,7 @@ public class AjaxDownloadPage extends BasePage
 				// Re-interrrupt the thread
 				Thread.currentThread().interrupt(); 
 				//OR Rethrow the InterruptedException
-				throw new RuntimeException("Thread interrupted", e);
+				throw new WicketRuntimeException("Thread interrupted", e);
 			}
 
 			count++;
@@ -485,25 +486,22 @@ public class AjaxDownloadPage extends BasePage
 			return new ExampleResource() {
 				@Override
 				protected String getContent(Attributes attributes) {
-					return """
-						/*
-                     	* Licensed to the Apache Software Foundation (ASF) under one or more
-                    	* contributor license agreements.  See the NOTICE file distributed with
-                    	* this work for additional information regarding copyright ownership.
-                    	* The ASF licenses this file to You under the Apache License, Version 2.0
-                    	* (the "License"); you may not use this file except in compliance with
-                    	* the License.  You may obtain a copy of the License at
-                    	*
-                    	*      http://www.apache.org/licenses/LICENSE-2.0
-                    	*
-                    	* Unless required by applicable law or agreed to in writing, software
-                    	* distributed under the License is distributed on an "AS IS" BASIS,
-                    	* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                    	* See the License for the specific language governing permissions and
-                    	* limitations under the License.
-                    	*/
-                                
-                        """ + attributes.getParameters().get(FILE_CONTENTS).toString("");
+					return "\n\t/*\n" +
+                            "\t* Licensed to the Apache Software Foundation (ASF) under one or more\n" +
+                            "\t* contributor license agreements.  See the NOTICE file distributed with\n" +
+                            "\t* this work for additional information regarding copyright ownership.\n" +
+                            "\t* The ASF licenses this file to You under the Apache License, Version 2.0\n" +
+                            "\t* (the 'License'); you may not use this file except in compliance with\n" +
+                            "\t* the License.  You may obtain a copy of the License at\n" +
+                            "\t*\n" +
+                            "\t*      http://www.apache.org/licenses/LICENSE-2.0\n"+
+                            "\t*\n"+
+                            "\t* Unless required by applicable law or agreed to in writing, software\n" +
+                            "\t* distributed under the License is distributed on an 'AS IS' BASIS,\n" +
+                            "\t* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                            "\t* See the License for the specific language governing permissions and\n" +
+                            "\t* limitations under the License.\n" +
+                            "\t*/" + attributes.getParameters().get(FILE_CONTENTS).toString("");
         		}
     		};
 		}

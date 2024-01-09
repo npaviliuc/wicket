@@ -27,6 +27,8 @@ import org.apache.wicket.util.resource.StringResourceStream;
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  *
  */
@@ -57,7 +59,8 @@ class GlobalUpdateAjaxAttributesTest extends WicketTestCase
 	{
 		tester.startPage(new GlobalUpdateAjaxAttributesPage());
 //		System.err.println(tester.getLastResponseAsString());
-		tester.getLastResponseAsString().contains("\"ch\":\"globalAjaxChannel|a\"");
+		assertTrue(tester.getLastResponseAsString().contains("\"ch\":\"globalAjaxChannel|a\""), 
+		"Last response must contain globalAjaxChannel");
 	}
 
 	private static class GlobalUpdateAjaxAttributesPage extends WebPage implements IMarkupResourceStreamProvider

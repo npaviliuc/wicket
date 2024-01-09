@@ -38,9 +38,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class IntHashMap<V> implements Cloneable, Serializable
 {
-	transient volatile Set<Integer> keySet = null;
+	transient Set<Integer> keySet = null;
 
-	transient volatile Collection<V> values = null;
+	transient Collection<V> values = null;
 
 	/**
 	 * The default initial capacity - MUST be a power of two.

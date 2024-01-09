@@ -92,8 +92,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void beforeRender(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).beforeRender(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).beforeRender(component);
 			}
 		}
 	}
@@ -102,8 +102,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void afterRender(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).afterRender(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).afterRender(component);
 			}
 		}
 	}
@@ -112,8 +112,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void bind(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).bind(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).bind(component);
 			}
 		}
 	}
@@ -122,8 +122,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void unbind(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).unbind(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).unbind(component);
 			}
 		}
 	}
@@ -132,8 +132,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void detach(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).detach(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).detach(component);
 			}
 		}
 	}
@@ -142,8 +142,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void onException(Component component, RuntimeException exception)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).onException(component, exception);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).onException(component, exception);
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public boolean getStatelessHint(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior && ((Behavior)validator).getStatelessHint(component) == false) {
+			if (validator instanceof Behavior behaviorVar && !((behaviorVar).getStatelessHint(component))) {
 				return false;
 			}
 		}
@@ -163,8 +163,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void onComponentTag(Component component, ComponentTag tag)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).onComponentTag(component, tag);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).onComponentTag(component, tag);
 			}
 		}
 	}
@@ -173,8 +173,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void renderHead(Component component, IHeaderResponse response)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).renderHead(component, response);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).renderHead(component, response);
 			}
 		}
 	}
@@ -183,8 +183,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void onConfigure(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).onConfigure(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).onConfigure(component);
 			}
 		}
 	}
@@ -193,8 +193,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void onEvent(Component component, IEvent<?> event)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).onEvent(component, event);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).onEvent(component, event);
 			}
 		}
 	}
@@ -203,8 +203,8 @@ public class CompoundValidator<T> extends Behavior implements IValidator<T>
 	public void onRemove(Component component)
 	{
 		for (IValidator<T> validator : validators) {
-			if (validator instanceof Behavior) {
-				((Behavior)validator).onRemove(component);
+			if (validator instanceof Behavior behaviorVar) {
+				(behaviorVar).onRemove(component);
 			}
 		}
 	}

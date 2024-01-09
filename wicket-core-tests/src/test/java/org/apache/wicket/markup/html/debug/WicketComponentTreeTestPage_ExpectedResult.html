@@ -20,9 +20,12 @@
 <span wicket:id="componentList"><wicket:panel>
   	<h2>Page</h2>
     <p><span wicket:id="info">[Page class = org.apache.wicket.markup.html.debug.WicketComponentTreeTestPage, id = 0, render count = 0]</span> | render time: | <span wicket:id="pageRenderDuration">n/a</span>:</p>
+    <!-- This table likely displays information related to resource paths, rendering times, -->
+    <!-- sizes, types, and model objects for a web application. -->
     <table class="tablestyle">
       <thead>
         <tr>
+          <!-- Column headers with left alignment -->
           <th align="left">#</th>
           <th align="left">Path</th>
           <th align="left" nowrap="nowrap">Render time (ms)</th>
@@ -33,6 +36,7 @@
 	  </thead>
       <tbody>
 		<tr wicket:id="components">
+      <!-- Each cell contains a span with a corresponding Wicket ID -->
 		  <td valign="top" align="left"><span wicket:id="row">1</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="left"><span wicket:id="path">label1</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="center"><span wicket:id="renderDuration">n/a</span>&#160;&#160;&#160;</td>
@@ -40,6 +44,7 @@
 		  <td valign="top" align="left"><span wicket:id="type">org.apache.wicket.markup.html.basic.Label</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="left"><span wicket:id="model">test1</span>&#160;&#160;&#160;</td>
 		</tr><tr wicket:id="components">
+      <!-- Each cell contains a span with a corresponding Wicket ID -->
 		  <td valign="top" align="left"><span wicket:id="row">2</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="left"><span wicket:id="path">label2</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="center"><span wicket:id="renderDuration">n/a</span>&#160;&#160;&#160;</td>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <head>
     <title>Wicket Examples - unicodeconverter</title>
 </head>
@@ -7,25 +8,26 @@
     <wicket:extend>
 
 	<form wicket:id="form">
+		<!-- table designed for testing Unicode characters and translation functionalities -->
 		<table>
 		 <tr>
-		  <td colspan="3">
+		  <th colspan="3">
 		   Paste in some unicode to test. For instance,
 		   <a href="http://babelfish.altavista.com/tr" target="new">translate something to chinese</a>
-		  </td>
+		  </th>
 		 </tr>
 		 <tr>
-		  <td> 
+		  <th> 
 		    <textarea wicket:id="source" rows="10" cols="40">input</textarea>
-		  </td>
-		  <td align="middle">
+		  </th>
+		  <th align="middle">
 		    <select wicket:id="translationType"></select>
 		    <br />
 		    <input type="submit" value="translate" />
-		  </td>
-		  <td valign="top">
+		  </th>
+		  <th valign="top">
 			<textarea wicket:id="target" rows="10" cols="40">input</textarea>
-		  </td>
+		  </th>
 		 </tr>
 		</table>
 	</form>

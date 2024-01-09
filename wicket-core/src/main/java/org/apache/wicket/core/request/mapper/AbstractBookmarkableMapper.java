@@ -298,13 +298,13 @@ public abstract class AbstractBookmarkableMapper extends AbstractComponentMapper
 		}
 
 		PageAndComponentProvider provider = new PageAndComponentProvider(pageInfo.getPageId(),
-			pageClass, pageParameters, renderCount, componentInfo.getComponentPath());
+			pageClass, pageParameters, renderCount, (componentInfo != null) ? componentInfo.getComponentPath() : null);
 
 		provider.setPageSource(getContext());
 
 		checkExpiration(provider, pageInfo);
 
-		return new ListenerRequestHandler(provider, componentInfo.getBehaviorId());
+		return new ListenerRequestHandler(provider, (componentInfo != null) ? componentInfo.getBehaviorId() : null);
 	}
 
 	private void checkExpiration(PageProvider provider, PageInfo pageInfo)
@@ -365,101 +365,87 @@ public abstract class AbstractBookmarkableMapper extends AbstractComponentMapper
 	}
 
 	@Override
-	public Url mapHandler(IRequestHandler requestHandler)
-	{
-		// TODO see if we can refactor this to remove dependency on instanceof checks below and
-		// eliminate the need for IRequestHandlerDelegate
-		while (requestHandler instanceof IRequestHandlerDelegate)
-		{
-			requestHandler = ((IRequestHandlerDelegate)requestHandler).getDelegateHandler();
-		}
+	public Url mapHandler(IRequestHandler requestHandler) {
+		requestHandler = unwrapRequestHandlerDelegate(requestHandler);
 
-		if (requestHandler instanceof BookmarkablePageRequestHandler)
-		{
-			// simple bookmarkable URL with no page instance information
-			BookmarkablePageRequestHandler handler = (BookmarkablePageRequestHandler)requestHandler;
-
-			if (!checkPageClass(handler.getPageClass()))
-			{
-				return null;
-			}
-
-			PageInfo info = new PageInfo();
-			UrlInfo urlInfo = new UrlInfo(new PageComponentInfo(info, null),
-				handler.getPageClass(), handler.getPageParameters());
-
-			return buildUrl(urlInfo);
-		}
-		else if (requestHandler instanceof RenderPageRequestHandler)
-		{
-			// possibly hybrid URL - bookmarkable URL with page instance information
-			// but only allowed if the page was created by bookmarkable URL
-
-			RenderPageRequestHandler handler = (RenderPageRequestHandler)requestHandler;
-
-			if (!checkPageClass(handler.getPageClass()))
-			{
-				return null;
-			}
-
-			if (!handler.getPageProvider().hasPageInstance())
-			{
-				// no existing page instance available, don't bother creating new page instance
-				PageInfo info = new PageInfo();
-				UrlInfo urlInfo = new UrlInfo(new PageComponentInfo(info, null),
-					handler.getPageClass(), handler.getPageParameters());
-
-				return buildUrl(urlInfo);
-			}
-
-			IRequestablePage page = handler.getPage();
-
-			if (checkPageInstance(page) &&
-				(!pageMustHaveBeenCreatedBookmarkable() || page.wasCreatedBookmarkable()))
-			{
-				PageInfo info = getPageInfo(handler);
-				PageComponentInfo pageComponentInfo = new PageComponentInfo(info, null);
-
-				UrlInfo urlInfo = new UrlInfo(pageComponentInfo, page.getClass(),
-					handler.getPageParameters());
-				return buildUrl(urlInfo);
-			}
-			else
-			{
-				return null;
-			}
-
-		}
-		else if (requestHandler instanceof BookmarkableListenerRequestHandler)
-		{
-			// request listener URL with page class information
-			BookmarkableListenerRequestHandler handler = (BookmarkableListenerRequestHandler)requestHandler;
-			Class<? extends IRequestablePage> pageClass = handler.getPageClass();
-
-			if (!checkPageClass(pageClass))
-			{
-				return null;
-			}
-
-			Integer renderCount = null;
-			if (handler.includeRenderCount())
-			{
-				renderCount = handler.getRenderCount();
-			}
-
-			PageInfo pageInfo = getPageInfo(handler);
-			ComponentInfo componentInfo = new ComponentInfo(renderCount, handler.getComponentPath(), handler.getBehaviorIndex());
-
-			PageParameters parameters = getRecreateMountedPagesAfterExpiry() ? new PageParameters(
-				handler.getPage().getPageParameters()).mergeWith(handler.getPageParameters())
-				: handler.getPageParameters();
-			UrlInfo urlInfo = new UrlInfo(new PageComponentInfo(pageInfo, componentInfo),
-				pageClass, parameters);
-			return buildUrl(urlInfo);
+		if (requestHandler instanceof BookmarkablePageRequestHandler) {
+			return handleBookmarkablePageRequestHandler((BookmarkablePageRequestHandler) requestHandler);
+		} else if (requestHandler instanceof RenderPageRequestHandler) {
+			return handleRenderPageRequestHandler((RenderPageRequestHandler) requestHandler);
+		} else if (requestHandler instanceof BookmarkableListenerRequestHandler) {
+			return handleBookmarkableListenerRequestHandler((BookmarkableListenerRequestHandler) requestHandler);
 		}
 
 		return null;
 	}
+
+	private IRequestHandler unwrapRequestHandlerDelegate(IRequestHandler requestHandler) {
+		while (requestHandler instanceof IRequestHandlerDelegate) {
+			requestHandler = ((IRequestHandlerDelegate) requestHandler).getDelegateHandler();
+		}
+		return requestHandler;
+	}
+
+	private Url handleBookmarkablePageRequestHandler(BookmarkablePageRequestHandler handler) {
+		if (!checkPageClass(handler.getPageClass())) {
+			return null;
+		}
+
+		PageInfo info = new PageInfo();
+		UrlInfo urlInfo = new UrlInfo(new PageComponentInfo(info, null),
+				handler.getPageClass(), handler.getPageParameters());
+
+		return buildUrl(urlInfo);
+	}
+
+	private Url handleRenderPageRequestHandler(RenderPageRequestHandler handler) {
+		if (!checkPageClass(handler.getPageClass())) {
+			return null;
+		}
+
+		if (!handler.getPageProvider().hasPageInstance()) {
+			PageInfo info = new PageInfo();
+			UrlInfo urlInfo = new UrlInfo(new PageComponentInfo(info, null),
+					handler.getPageClass(), handler.getPageParameters());
+
+			return buildUrl(urlInfo);
+		}
+
+		IRequestablePage page = handler.getPage();
+
+		if (checkPageInstance(page) &&
+				(!pageMustHaveBeenCreatedBookmarkable() || page.wasCreatedBookmarkable())) {
+			PageInfo info = getPageInfo(handler);
+			PageComponentInfo pageComponentInfo = new PageComponentInfo(info, null);
+
+			UrlInfo urlInfo = new UrlInfo(pageComponentInfo, page.getClass(),
+					handler.getPageParameters());
+			return buildUrl(urlInfo);
+		} else {
+			return null;
+		}
+	}
+
+	private Url handleBookmarkableListenerRequestHandler(BookmarkableListenerRequestHandler handler) {
+		Class<? extends IRequestablePage> pageClass = handler.getPageClass();
+
+		if (!checkPageClass(pageClass)) {
+			return null;
+		}
+
+		Integer renderCount = handler.includeRenderCount() ? handler.getRenderCount() : null;
+		PageInfo pageInfo = getPageInfo(handler);
+		ComponentInfo componentInfo = new ComponentInfo(renderCount, handler.getComponentPath(), handler.getBehaviorIndex());
+
+		PageParameters parameters = getRecreateMountedPagesAfterExpiry() ? new PageParameters(
+				handler.getPage().getPageParameters()).mergeWith(handler.getPageParameters())
+				: handler.getPageParameters();
+		UrlInfo urlInfo = new UrlInfo(new PageComponentInfo(pageInfo, componentInfo),
+				pageClass, parameters);
+
+		return buildUrl(urlInfo);
+	}
+
 
 	protected final PageInfo getPageInfo(IPageRequestHandler handler)
 	{

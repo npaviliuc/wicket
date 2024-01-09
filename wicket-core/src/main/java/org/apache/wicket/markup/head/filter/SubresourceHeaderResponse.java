@@ -38,7 +38,7 @@ import org.apache.wicket.markup.html.DecoratingHeaderResponse;
 public abstract class SubresourceHeaderResponse extends DecoratingHeaderResponse
 {
 
-	public SubresourceHeaderResponse(IHeaderResponse real)
+	protected SubresourceHeaderResponse(IHeaderResponse real)
 	{
 		super(real);
 	}
@@ -46,14 +46,14 @@ public abstract class SubresourceHeaderResponse extends DecoratingHeaderResponse
 	@Override
 	public void render(HeaderItem item)
 	{
-		while (item instanceof IWrappedHeaderItem)
+		while (item instanceof IWrappedHeaderItem wrappedHeaderItemVar)
 		{
-			item = ((IWrappedHeaderItem)item).getWrapped();
+			item = (wrappedHeaderItemVar).getWrapped();
 		}
 
-		if (item instanceof ISubresourceHeaderItem)
+		if (item instanceof ISubresourceHeaderItem subresourceHeaderItemVar)
 		{
-			configure((ISubresourceHeaderItem)item);
+			configure(subresourceHeaderItemVar);
 		}
 		
 		super.render(item);

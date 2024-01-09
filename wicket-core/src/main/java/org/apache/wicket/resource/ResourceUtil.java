@@ -193,7 +193,7 @@ public class ResourceUtil
 		}
 		else
 		{
-			String parts[] = locale.toLowerCase(Locale.ROOT).split("_", 3);
+			String[] parts = locale.toLowerCase(Locale.ROOT).split("_", 3);
 			if (parts.length == 1)
 			{
 				return new Locale(parts[0]);

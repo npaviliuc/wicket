@@ -52,7 +52,7 @@ public class TagStack
 	}
 
 	/** Tag stack to find balancing tags */
-	final private ArrayDeque<ComponentTag> stack = new ArrayDeque<ComponentTag>();
+	private final ArrayDeque<ComponentTag> stack = new ArrayDeque<>();
 	private boolean debug;
 
 	/**

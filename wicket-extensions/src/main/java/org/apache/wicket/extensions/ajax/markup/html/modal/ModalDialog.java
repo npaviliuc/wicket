@@ -227,7 +227,8 @@ public class ModalDialog extends Panel
 	public ModalDialog closeOnEscape()
 	{
 		overlay.add(new CloseBehavior("keydown")
-		{
+		{ 
+			@Override
 			protected CharSequence getPrecondition()
 			{
 				return "return Wicket.Event.keyCode(attrs.event) == 27";
@@ -245,6 +246,7 @@ public class ModalDialog extends Panel
 	{
 		overlay.add(new CloseBehavior("click")
 		{
+			@Override
 			protected CharSequence getPrecondition()
 			{
 				return String.format("return attrs.event.target.id === '%s';", overlay.getMarkupId());

@@ -180,7 +180,7 @@ class ServletWebResponseTest
 		when(requestCycle.getUrlRenderer()).thenReturn(renderer);
 
 		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
-		when(httpServletResponse.encodeURL(ArgumentMatchers.eq(url))).thenReturn(url + ";foo");
+		when(httpServletResponse.encodeURL(url)).thenReturn(url + ";foo");
 
 		ServletWebResponse webResponse = new ServletWebResponse(webRequest, httpServletResponse);
 		assertEquals(url + ";foo", webResponse.encodeURL(url));
@@ -209,7 +209,7 @@ class ServletWebResponseTest
 		when(requestCycle.getUrlRenderer()).thenReturn(renderer);
 
 		HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
-		when(httpServletResponse.encodeRedirectURL(ArgumentMatchers.eq(url))).thenReturn(url + ";foo");
+		when(httpServletResponse.encodeRedirectURL(url)).thenReturn(url + ";foo");
 
 		ServletWebResponse webResponse = new ServletWebResponse(webRequest, httpServletResponse);
 		assertEquals(url + ";foo", webResponse.encodeRedirectURL(url));

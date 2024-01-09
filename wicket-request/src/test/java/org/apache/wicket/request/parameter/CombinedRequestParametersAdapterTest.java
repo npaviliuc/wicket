@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @since 1.5.5
  */
-public class CombinedRequestParametersAdapterTest
+class CombinedRequestParametersAdapterTest
 {
 	/**
 	 * Tests that org.apache.wicket.request.parameter.CombinedRequestParametersAdapter#getParameterValues(java.lang.String)

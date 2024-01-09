@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE html>
 <!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -15,14 +15,20 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<html xmlns:wicket="http://wicket.apache.org">
+<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
+<head>
+  <title>Page View</title>
+</head>
 <body>
   <wicket:panel>
   	<h2>Page</h2>
     <p><span wicket:id="info">Page</span> | render time: | <span wicket:id="pageRenderDuration">n/a</span>:</p>
+    <!-- This table likely displays information related to resource paths, rendering times, -->
+    <!-- sizes, types, and model objects for a web application. -->
     <table class="tablestyle">
       <thead>
         <tr>
+          <!-- Column headers with left alignment -->
           <th align="left">#</th>
           <th align="left">Path</th>
           <th align="left" nowrap="nowrap">Render time (ms)</th>
@@ -33,6 +39,7 @@
 	  </thead>
       <tbody>
 		<tr wicket:id="components">
+      <!-- Each cell contains a span with a corresponding Wicket ID -->
 		  <td valign="top" align="left"><span wicket:id="row">99</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="left"><span wicket:id="path">0.test.murx</span>&#160;&#160;&#160;</td>
 		  <td valign="top" align="center"><span wicket:id="renderDuration">n/a</span>&#160;&#160;&#160;</td>

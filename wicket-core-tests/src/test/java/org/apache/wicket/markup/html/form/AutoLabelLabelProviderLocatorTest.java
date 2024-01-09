@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
  * Tests {@code wicket:for} attribute functionality using {@link ILabelProviderLocator}
  */
 @SuppressWarnings({ "rawtypes", "serial" })
-public class AutoLabelLabelProviderLocatorTest extends WicketTestCase
+class AutoLabelLabelProviderLocatorTest extends WicketTestCase
 {
 	static class ILabelProviderLocatorPanel1 extends Panel implements ILabelProviderLocator
 	{
@@ -135,7 +135,7 @@ public class AutoLabelLabelProviderLocatorTest extends WicketTestCase
 	}
 
 	@Test
-	public void testILabelProviderLocator()
+	void testILabelProviderLocator()
 	{
 		List<IEditPanelProvider> providers = new ArrayList<>();
 
@@ -177,7 +177,7 @@ public class AutoLabelLabelProviderLocatorTest extends WicketTestCase
 	}
 
 	@Test
-	public void testFailingILabelProviderLocator()
+	void testFailingILabelProviderLocator()
 	{
 		List<IEditPanelProvider> providers = new ArrayList<>();
 
@@ -211,9 +211,9 @@ public class AutoLabelLabelProviderLocatorTest extends WicketTestCase
 			}
 		});
 
+		EditPage editPage = new EditPage(providers);
 		try
 		{
-			EditPage editPage = new EditPage(providers);
 			tester.startPage(editPage);
 			Assertions.fail("Page rendering should produce a WicketRuntimeException");
 		}

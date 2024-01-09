@@ -147,7 +147,7 @@ public class MailTemplate extends WicketExamplePage
 				}
 				catch (IOException e)
 				{
-					return;
+					e.printStackTrace();
 				}
 			}
 

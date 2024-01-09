@@ -60,6 +60,8 @@ public class StringValue implements IClusterable
 	/** The underlying string. */
 	private final String text;
 
+	private static final String DEBUG_CONST = "Unable to convert '";
+
 	/**
 	 * @param times
 	 *            Number of times to repeat character
@@ -499,7 +501,7 @@ public class StringValue implements IClusterable
 		catch (ParseException e)
 		{
 			throw new StringValueConversionException(
-				"Unable to convert '" + text + "' to a double value", e);
+				DEBUG_CONST + text + "' to a double value", e);
 		}
 	}
 
@@ -558,7 +560,7 @@ public class StringValue implements IClusterable
 		}
 		catch (Exception e)
 		{
-			throw new StringValueConversionException("Unable to convert '" + text + "' to a Duration value", e);
+			throw new StringValueConversionException(DEBUG_CONST + text + "' to a Duration value", e);
 		}
 	}
 
@@ -608,7 +610,7 @@ public class StringValue implements IClusterable
 		catch (NumberFormatException e)
 		{
 			throw new StringValueConversionException(
-				"Unable to convert '" + text + "' to an int value", e);
+				DEBUG_CONST + text + "' to an int value", e);
 		}
 	}
 
@@ -656,7 +658,7 @@ public class StringValue implements IClusterable
 		catch (NumberFormatException e)
 		{
 			throw new StringValueConversionException(
-				"Unable to convert '" + text + "' to an Integer value", e);
+				DEBUG_CONST + text + "' to an Integer value", e);
 		}
 	}
 
@@ -675,7 +677,7 @@ public class StringValue implements IClusterable
 		catch (NumberFormatException e)
 		{
 			throw new StringValueConversionException(
-				"Unable to convert '" + text + "' to a long value", e);
+				DEBUG_CONST + text + "' to a long value", e);
 		}
 	}
 
@@ -722,7 +724,7 @@ public class StringValue implements IClusterable
 		catch (NumberFormatException e)
 		{
 			throw new StringValueConversionException(
-				"Unable to convert '" + text + "' to a Long value", e);
+				DEBUG_CONST + text + "' to a Long value", e);
 		}
 	}
 
@@ -849,7 +851,7 @@ public class StringValue implements IClusterable
 		catch (DateTimeParseException e)
 		{
 			throw new StringValueConversionException(
-				"Unable to convert '" + text + "' to a Instant value", e);
+				DEBUG_CONST + text + "' to a Instant value", e);
 		}
 	}
 

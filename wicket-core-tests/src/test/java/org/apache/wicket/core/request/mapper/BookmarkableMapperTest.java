@@ -262,14 +262,16 @@ class BookmarkableMapperTest extends AbstractMapperTest
 	@Test
 	void decode9()
 	{
-		assertThrows(StalePageException.class, () -> {
-			Url url = Url.parse("wicket/bookmarkable/" + PAGE_CLASS_NAME
-										+ "/i1/i2?15-5.ILinkListener-foo-bar&a=b&b=c");
+		assertThrows(StalePageException.class, () -> returnDecode9());
+	}
 
-			context.setNextPageRenderCount(6);
-			IRequestHandler handler = encoder.mapRequest(getRequest(url));
-			((IPageRequestHandler)handler).getPage();
-		});
+	void returnDecode9() {
+		Url url = Url.parse("wicket/bookmarkable/" + PAGE_CLASS_NAME
+							+ "/i1/i2?15-5.ILinkListener-foo-bar&a=b&b=c");
+
+		context.setNextPageRenderCount(6);
+		IRequestHandler handler = encoder.mapRequest(getRequest(url));
+		((IPageRequestHandler)handler).getPage();
 	}
 
 	/**

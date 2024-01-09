@@ -19,6 +19,7 @@ package org.apache.wicket.markup.html.form;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.model.Model;
@@ -49,7 +50,7 @@ class RadioGroupTest extends WicketTestCase
 		tester.startPage(page);
 
 		tester.submitForm(page.form);
-		assertTrue(model.getObject() == null, "group: running with nothing selected - model must be set to null");
+		assertNull(model.getObject(), "group: running with nothing selected - model must be set to null");
 
 		tester.getRequest()
 			.getPostParameters()

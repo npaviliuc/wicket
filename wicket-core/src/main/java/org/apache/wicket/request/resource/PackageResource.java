@@ -445,24 +445,23 @@ public class PackageResource extends AbstractResource implements IStaticCacheabl
 				Charset charset = getProcessingEncoding();
 				String nonCompressed = new String(original, charset);
 				String output;
-				if (compressor instanceof IScopeAwareTextResourceProcessor)
+				if (compressor instanceof IScopeAwareTextResourceProcessor scopeAwareProcessor)
 				{
-					IScopeAwareTextResourceProcessor scopeAwareProcessor = (IScopeAwareTextResourceProcessor)compressor;
 					output = scopeAwareProcessor.process(nonCompressed, getScope(), name);
 				}
 				else
 				{
 					output = compressor.compress(nonCompressed);
 				}
-				final String textEncoding = getTextEncoding();
+				final String textEncodingVar = getTextEncoding();
 				final Charset outputCharset;
-				if (Strings.isEmpty(textEncoding))
+				if (Strings.isEmpty(textEncodingVar))
 				{
 					outputCharset = charset;
 				}
 				else
 				{
-					outputCharset = Charset.forName(textEncoding);
+					outputCharset = Charset.forName(textEncodingVar);
 				}
 				return output.getBytes(outputCharset);
 			}

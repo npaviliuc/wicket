@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
 <head>
 	<title>Template Border</title>
 </head>
 
 <wicket:head>
+	<title>Template Border</title>
 	<link rel="stylesheet" type="text/css" href="template/style.css" />
 </wicket:head>
 
@@ -14,7 +16,12 @@
 	<wicket:border>
 
 		<div id="header" class="borderedBlock">
+			<!-- table structure with headers for "Advertisement" and "Change Ad -->
 			<table width="100%">
+				<tr>
+					<th>Advertisement</th>
+					<th>Change Ad</th>
+				</tr>
 				<tr>
 					<td id="ad">
 						<span wicket:id="ad">ad comes here</span>
@@ -23,23 +30,24 @@
 						<input type="button" wicket:id="changeAdLink" value="change ad" />
 					</td>
 				</tr>
-			</table>
+			</table>			
 		</div>
 
+		<!-- This table is designed to create a two-column layout: the left column serves as a navigation header, 
+			while the right column is a placeholder for dynamic content -->
 		<table width="100%">
 
 			<tr>
-				<td id="left" class="borderedBlock">
+				<th id="left" class="borderedBlock">
 					<ul>
 						<li><a href="#" wicket:id="page1Link">Page 1</a></li>
 						<li><a href="#" wicket:id="page2Link">Page 2</a></li>
 					</ul>
-				</td>
-				<td id="content" class="borderedBlock">
+				</th>
+				<th id="content" class="borderedBlock">
 					<wicket:body />
-				</td>
+				</th>
 			</tr>
-
 		</table>
 
 		<div id="footer" class="borderedBlock">

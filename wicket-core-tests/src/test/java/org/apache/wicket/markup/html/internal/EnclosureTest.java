@@ -197,6 +197,12 @@ class EnclosureTest extends WicketTestCase
 		assertFalse(page.inputValidate);
 		assertTrue(page.labelOnBeforeRender);
 
+		testRender9One(page);
+		testRender9Two(page);
+		
+	}
+
+	private void testRender9One(EnclosurePage_9 page) throws Exception {
 		page.reset();
 		page.get("form:label").setVisible(false);
 		executePage(page, "EnclosurePageExpectedResult_9-1.html");
@@ -220,6 +226,9 @@ class EnclosureTest extends WicketTestCase
 		assertFalse(page.inputValidate);
 		assertTrue(page.labelOnBeforeRender);
 
+	}
+
+	private void testRender9Two(EnclosurePage_9 page) throws Exception{
 		page.reset();
 		page.get("form:label").setVisible(false);
 		executePage(page, "EnclosurePageExpectedResult_9-2.html");

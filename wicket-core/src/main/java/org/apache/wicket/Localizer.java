@@ -475,7 +475,7 @@ public class Localizer
 		final String value = cache.get(cacheKey);
 
 		// ConcurrentHashMap does not allow null values
-		if (NULL_VALUE == value)
+		if (value == null || value.equals(NULL_VALUE))
 		{
 			return null;
 		}

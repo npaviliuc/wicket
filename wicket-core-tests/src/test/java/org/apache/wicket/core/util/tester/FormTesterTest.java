@@ -169,7 +169,7 @@ class FormTesterTest extends WicketTestCase
 		FileUpload fileUpload = page.getFileUpload();
 		assertNotNull(fileUpload);
 
-		assertTrue(fileUpload.getBytes().length == 428,
+		assertEquals(428, fileUpload.getBytes().length,
 			"uploaded content does not have the right size, expected 428, got " +
 				fileUpload.getBytes().length);
 		assertEquals("bg.jpg", fileUpload.getClientFileName());

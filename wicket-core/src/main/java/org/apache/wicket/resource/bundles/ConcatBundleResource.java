@@ -259,13 +259,13 @@ public class ConcatBundleResource extends AbstractResource implements IStaticCac
 
 		final String contentType = findContentType(streams);
 		final Instant lastModified = findLastModified(streams);
-		AbstractResourceStream ret = new AbstractResourceStream()
+		return new AbstractResourceStream()
 		{
 			private static final long serialVersionUID = 1L;
 
 			private byte[] bytes;
 			
-			private ByteArrayInputStream inputStream;
+			private transient ByteArrayInputStream inputStream;
 
 			private byte[] getBytes() {
 				if (bytes == null) {
@@ -297,9 +297,10 @@ public class ConcatBundleResource extends AbstractResource implements IStaticCac
 			}
 
 			@Override
-			public Bytes length()
-			{
-				return Bytes.bytes((getBytes() != null ? getBytes().length : 0 ));
+			public Bytes length() {
+				byte[] bytesArray = getBytes();
+				int length = (bytesArray != null) ? bytesArray.length : 0;
+				return Bytes.bytes(length);
 			}
 
 			@Override
@@ -322,7 +323,6 @@ public class ConcatBundleResource extends AbstractResource implements IStaticCac
 				}
 			}
 		};
-		return ret;
 	}
 
 	public void setCompressor(ITextResourceCompressor compressor)

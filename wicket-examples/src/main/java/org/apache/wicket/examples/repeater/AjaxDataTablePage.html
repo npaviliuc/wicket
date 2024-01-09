@@ -1,16 +1,25 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
 
-
-This is a demo of the DataTable (DataView wrapper). Provided features:<br/>
-<ul>
-<li>Easy ordering and selection of columns from code</li>
-<li>Takes care of sorting headers automatically</li>
-<li>Takes care of page navigator automatically</li>
-<li>Takes care of adding class="odd" and class="even" to table rows</li>
-<li>Adds a navigator message</li>
-</ul>
-<br/>
-<div>
- <table class="dataview" cellspacing="0" wicket:id="table">[table]</table>
-</div>
+    This is a demo of the DataTable (DataView wrapper). Provided features:<br/>
+    <ul>
+        <li>Easy ordering and selection of columns from code</li>
+        <li>Takes care of sorting headers automatically</li>
+        <li>Takes care of page navigator automatically</li>
+        <li>Takes care of adding class="odd" and class="even" to table rows</li>
+        <li>Adds a navigator message</li>
+    </ul>
+    <br/>
+    <div>
+        <!-- Table with a data view class -->
+        <table class="dataview" cellspacing="0" wicket:id="table">
+            <thead>
+                <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                    <!-- Add more <th> elements for each column -->
+                </tr>
+            </thead>
+            [table]
+        </table>
+    </div>
 </wicket:extend>

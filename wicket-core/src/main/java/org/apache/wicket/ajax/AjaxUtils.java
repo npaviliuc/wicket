@@ -16,7 +16,6 @@
  */
 package org.apache.wicket.ajax;
 
-import java.lang.IllegalStateException;
 import java.util.Optional;
 import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
 import org.apache.wicket.request.cycle.RequestCycle;

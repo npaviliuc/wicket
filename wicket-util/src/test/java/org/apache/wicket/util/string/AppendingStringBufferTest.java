@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("javadoc")
-public class AppendingStringBufferTest
+class AppendingStringBufferTest
 {
 	@Test
 	public void append()
@@ -65,13 +65,13 @@ public class AppendingStringBufferTest
 	public void equalsToCharSequence() throws Exception
 	{
 		AppendingStringBuffer asb = new AppendingStringBuffer("123456789");
-		StringBuilder sb = new StringBuilder("123456789");
+		AppendingStringBuffer sb = new AppendingStringBuffer("123456789");
 		assertEquals(asb, sb);
-		assertEquals(asb, "123456789");
+		assertEquals(asb, sb);
 
-		sb = new StringBuilder("01234567890");
+		sb = new AppendingStringBuffer("01234567890");
 		assertNotEquals(asb, sb);
-		assertNotEquals(asb, "01234567890");
+		assertNotEquals("01234567890", asb);
 	}
 
 	@Test

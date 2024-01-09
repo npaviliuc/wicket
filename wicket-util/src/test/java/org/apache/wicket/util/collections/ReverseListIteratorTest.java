@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests for {@link ReverseListIterator}
  */
-public class ReverseListIteratorTest
+class ReverseListIteratorTest
 {
 
 	/**

@@ -393,10 +393,10 @@ public class Image extends WebComponent implements IRequestListener
 		}
 		buildSizesAttribute(tag);
 
-		CrossOrigin crossOrigin = getCrossOrigin();
-		if (crossOrigin != null && CrossOrigin.NO_CORS != crossOrigin)
+		CrossOrigin crossOriginVar = getCrossOrigin();
+		if (crossOriginVar != null && CrossOrigin.NO_CORS != crossOriginVar)
 		{
-			tag.put("crossOrigin", crossOrigin.getRealName());
+			tag.put("crossOrigin", crossOriginVar.getRealName());
 		}
 	}
 

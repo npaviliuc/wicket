@@ -110,7 +110,7 @@ public class UrlValidator implements IValidator<String>
 	private static final String SCHEME_PATTERN = "^[" + SCHEME_CHARS + "].*$";
 
 	private static final String AUTHORITY_PATTERN = "^(.+(:.*)?@)?([" + AUTHORITY_CHARS +
-		"]*)(:\\d*)?(.*)?";
+		"]*)(:\\d*)?(x*)?";
 
 	private static final int PARSE_AUTHORITY_HOST_IP = 3;
 	private static final int PARSE_AUTHORITY_PORT = 4;

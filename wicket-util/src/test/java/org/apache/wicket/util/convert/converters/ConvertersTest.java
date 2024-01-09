@@ -65,7 +65,7 @@ final class ConvertersTest
 	 * WICKET-4988 nbsp between digits only
 	 */
 	@Test
-	public void thousandSeparatorWithCurrency()
+	void thousandSeparatorWithCurrency()
 	{
 		FloatConverter fc = new FloatConverter()
 		{
@@ -106,11 +106,12 @@ final class ConvertersTest
 	@Test
 	public void invalidBooleanConversion()
 	{
-		BooleanConverter converter = new BooleanConverter();
+		assertThrows(ConversionException.class, () -> returnInvalidBooleanConversion());
+	}
 
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("whatever", Locale.getDefault(Locale.Category.FORMAT));
-		});
+	void returnInvalidBooleanConversion() {
+		BooleanConverter converter = new BooleanConverter();
+		converter.convertToObject("whatever", Locale.getDefault(Locale.Category.FORMAT));
 	}
 
 	@Test

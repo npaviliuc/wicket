@@ -67,7 +67,7 @@ class BehaviorTest extends WicketTestCase
 	}
 
 	@Test
-	public void temporaryBehaviorsAreRemoved() {
+	void temporaryBehaviorsAreRemoved() {
 		WebMarkupContainer container = new WebMarkupContainer("test");
 		TestTemporaryBehavior temp = new TestTemporaryBehavior();
 		container.add(temp);
@@ -77,7 +77,7 @@ class BehaviorTest extends WicketTestCase
 	}
 
 	@Test
-	public void consecutiveTemporaryBehaviorsAreRemoved() {
+	void consecutiveTemporaryBehaviorsAreRemoved() {
 		WebMarkupContainer container = new WebMarkupContainer("test");
 		TestTemporaryBehavior temp1 = new TestTemporaryBehavior();
 		TestTemporaryBehavior temp2 = new TestTemporaryBehavior();

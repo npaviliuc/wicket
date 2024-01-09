@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author jcompagner
  */
-public class PrependingStringBufferTest
+class PrependingStringBufferTest
 {
 
 	/**

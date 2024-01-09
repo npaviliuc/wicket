@@ -92,12 +92,9 @@ public class CrossOriginEmbedderPolicyRequestCycleListener implements IRequestCy
 				return;
 			}
 
-			if (cycle.getResponse() instanceof WebResponse webResponse)
+			if ((cycle.getResponse() instanceof WebResponse webResponse) && webResponse.isHeaderSupported())
 			{
-				if (webResponse.isHeaderSupported())
-				{
-					webResponse.setHeader(coepHeaderName, REQUIRE_CORP);
-				}
+				webResponse.setHeader(coepHeaderName, REQUIRE_CORP);
 			}
 		}
 	}

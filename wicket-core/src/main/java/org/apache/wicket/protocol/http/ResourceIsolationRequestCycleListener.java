@@ -351,7 +351,7 @@ public class ResourceIsolationRequestCycleListener implements IRequestCycleListe
 
 	private void handleDisallowedOutcomeAction(Class<?> policyClass, String pathInfo,
 											HttpServletRequest containerRequest, IRequestablePage targetedPage) {
-		log.debug("Isolation policy {} has rejected a request to {}", Classes.simpleName(policyClass), pathInfo);
+		if(log.isDebugEnabled()) log.debug("Isolation policy {} has rejected a request to {}", Classes.simpleName(policyClass), pathInfo);
 		disallowedOutcomeAction.apply(this, containerRequest, targetedPage);
 	}
 
@@ -364,15 +364,12 @@ public class ResourceIsolationRequestCycleListener implements IRequestCycleListe
 	@Override
 	public void onEndRequest(RequestCycle cycle)
 	{
-		if (cycle.getResponse() instanceof WebResponse webResponse)
+		if ((cycle.getResponse() instanceof WebResponse webResponse) && webResponse.isHeaderSupported())
 		{
-			if (webResponse.isHeaderSupported())
+			for (IResourceIsolationPolicy resourceIsolationPolicy : resourceIsolationPolicies)
 			{
-				for (IResourceIsolationPolicy resourceIsolationPolicy : resourceIsolationPolicies)
-				{
-					resourceIsolationPolicy
-						.setHeaders((HttpServletResponse)webResponse.getContainerResponse());
-				}
+				resourceIsolationPolicy
+					.setHeaders((HttpServletResponse)webResponse.getContainerResponse());
 			}
 		}
 	}

@@ -63,7 +63,7 @@ class WebSessionTest
 	}
 
 	@Test
-	public void changeSessionId() throws Exception
+	void changeSessionId() throws Exception
 	{
 		WicketTester tester = new WicketTester(new MockApplication());
 		MockHttpSession httpSession = (MockHttpSession)tester.getRequest().getSession();
@@ -85,7 +85,7 @@ class WebSessionTest
 	 * WICKET-6558
 	 */
 	@Test
-	public void lockAfterDetach() throws Exception
+	void lockAfterDetach() throws Exception
 	{
 		WicketTester tester = new WicketTester(new MockApplication());
 

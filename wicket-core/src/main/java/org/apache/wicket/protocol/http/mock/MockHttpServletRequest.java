@@ -81,6 +81,8 @@ import org.apache.wicket.util.value.ValueMap;
  */
 public class MockHttpServletRequest implements HttpServletRequest
 {
+	private static final String ACCEPT_LANGUAGE_CONST = "Accept-Language";
+
 	/**
 	 * A holder class for an uploaded file.
 	 *
@@ -630,7 +632,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 	}
 
 	public void setLocale(Locale locale) {
-		setHeader("Accept-Language", locale.getLanguage() + '-' + locale.getCountry());
+		setHeader(ACCEPT_LANGUAGE_CONST, locale.getLanguage() + '-' + locale.getCountry());
 	}
 
 	/**
@@ -667,7 +669,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 	public Enumeration<Locale> getLocales()
 	{
 		List<Locale> list = new ArrayList<>();
-		String header = getHeader("Accept-Language");
+		String header = getHeader(ACCEPT_LANGUAGE_CONST);
 		if (header != null)
 		{
 			int idxOfSemicolon = header.indexOf(';');
@@ -1131,7 +1133,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 				mockHttpSession.setTemporary(false);
 			}
 
-			if (mockHttpSession.isTemporary() == false)
+			if (!(mockHttpSession.isTemporary()))
 			{
 				sess = session;
 			}
@@ -1455,7 +1457,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 		addHeader("Accept", "text/xml,application/xml,application/xhtml+xml,"
 			+ "text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
 		addHeader("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
-		addHeader("Accept-Language", l.getLanguage().toLowerCase(Locale.ROOT) + "-"
+		addHeader(ACCEPT_LANGUAGE_CONST, l.getLanguage().toLowerCase(Locale.ROOT) + "-"
 			+ l.getCountry().toLowerCase(Locale.ROOT) + "," + l.getLanguage().toLowerCase(Locale.ROOT) + ";q=0.5");
 		addHeader("User-Agent",
 			"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0");

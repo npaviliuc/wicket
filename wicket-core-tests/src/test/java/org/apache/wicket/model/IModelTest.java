@@ -68,9 +68,8 @@ class IModelTest
 	@Test
 	void nullFilter()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Model.of(person).filter(null);
-		});
+		IModel<Person> pers = Model.of(person);
+		assertThrows(IllegalArgumentException.class, () -> pers.filter(null));
 	}
 
 	@Test
@@ -92,9 +91,8 @@ class IModelTest
 	@Test
 	void nullMapper()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Model.of(person).map(null);
-		});
+		IModel<Person> pers = Model.of(person);
+		assertThrows(IllegalArgumentException.class, () -> pers.map(null));
 
 	}
 
@@ -125,18 +123,17 @@ class IModelTest
 		SerializableBiFunction<Person, String, String> function = (SerializableBiFunction<Person, String, String>)(
 			person1, other) -> person1.getName() + " is in relationship with " + other;
 
-		assertThrows(IllegalArgumentException.class, () -> {
-			Model.of(person).combineWith(janeModel, function);
-		});
+		IModel<Person> str = Model.of(person);
+		assertThrows(IllegalArgumentException.class, () -> str.combineWith(janeModel, function));
 
 	}
 
 	@Test
 	void combineWithNullCombiner()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Model.of(person).combineWith(Model.of("Jane"), null);
-		});
+		IModel<Person> pers = Model.of(person);
+		IModel<String> jane = Model.of("Jane");
+		assertThrows(IllegalArgumentException.class, () -> pers.combineWith(jane, null));
 
 	}
 
@@ -155,9 +152,11 @@ class IModelTest
 	@Test
 	void nullFlatMapper()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Model.of(person).flatMap(null);
-		});
+		assertThrows(IllegalArgumentException.class, () -> returnNullFlatMapper());
+	}
+
+	void returnNullFlatMapper() {
+		Model.of(person).flatMap(null);
 	}
 
 	@Test
@@ -185,9 +184,8 @@ class IModelTest
 	@Test
 	void orElseGetNullOther()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Model.of(person).map(Person::getName).orElseGet(null);
-		});
+		IModel<String> iModelName = Model.of(person).map(Person::getName);
+		assertThrows(IllegalArgumentException.class, () -> iModelName.orElseGet(null));
 	}
 
 	@Test

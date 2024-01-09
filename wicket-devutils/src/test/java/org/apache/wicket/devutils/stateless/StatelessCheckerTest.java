@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Marat Radchenko
  */
-public class StatelessCheckerTest
+class StatelessCheckerTest
 {
 	@StatelessComponent
 	public static class StatelessPage extends DummyHomePage

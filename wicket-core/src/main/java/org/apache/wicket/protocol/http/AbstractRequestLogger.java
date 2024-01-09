@@ -59,7 +59,7 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	/**
 	 * Key for storing request data in the request cycle's meta data.
 	 */
-	private static MetaDataKey<RequestData> REQUEST_DATA = new MetaDataKey<>()
+	private static MetaDataKey<RequestData> requestData = new MetaDataKey<>()
 	{
 		private static final long serialVersionUID = 1L;
 	};
@@ -67,7 +67,7 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	/**
 	 * Key for storing session data in the request cycle's meta data.
 	 */
-	private static MetaDataKey<SessionData> SESSION_DATA = new MetaDataKey<>()
+	private static MetaDataKey<SessionData> sessionData2 = new MetaDataKey<>()
 	{
 		private static final long serialVersionUID = 1L;
 	};
@@ -212,70 +212,74 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	}
 
 	@Override
-	public void requestTime(long timeTaken)
-	{
-		RequestData requestdata = RequestCycle.get().getMetaData(REQUEST_DATA);
-		if (requestdata != null)
-		{
-			if (activeRequests.get() > 0)
-			{
-				requestdata.setActiveRequest(activeRequests.decrementAndGet());
-			}
-			Session session = Session.exists() ? Session.get() : null;
-			String sessionId = session != null ? session.getId() : "N/A";
-			requestdata.setSessionId(sessionId);
+	public void requestTime(long timeTaken) {
+		RequestData requestData = getRequestData();
+		
+		if (requestData != null) {
+			updateActiveRequests(requestData);
+			updateRequestData(requestData, timeTaken);
+			updateSessionData(requestData);
+		}
+	}
 
-			Object sessionInfo = getSessionInfo(session);
-			requestdata.setSessionInfo(sessionInfo);
+	private RequestData getRequestData() {
+		return RequestCycle.get().getMetaData(requestData);
+	}
 
-			long sizeInBytes = -1;
-			if (Application.exists() &&
-				Application.get().getRequestLoggerSettings().getRecordSessionSize())
-			{
-				try
-				{
-					sizeInBytes = session != null ? session.getSizeInBytes() : -1;
-				}
-				catch (Exception e)
-				{
-					// log the error and let the request logging continue (this is what happens in
-					// the detach phase of the request cycle anyway. This provides better
-					// diagnostics).
-					LOG.error(
-						"Exception while determining the size of the session in the request logger: " +
-							e.getMessage(), e);
-				}
-			}
-			requestdata.setSessionSize(sizeInBytes);
-			requestdata.setTimeTaken(timeTaken);
+	private void updateActiveRequests(RequestData requestData) {
+		if (activeRequests.get() > 0) {
+			requestData.setActiveRequest(activeRequests.decrementAndGet());
+		}
+	}
 
-			addRequest(requestdata);
+	private void updateRequestData(RequestData requestData, long timeTaken) {
+		Session session = Session.exists() ? Session.get() : null;
+		String sessionId = session != null ? session.getId() : "N/A";
+		requestData.setSessionId(sessionId);
 
-			SessionData sessiondata;
-			if (sessionId != null)
-			{
-				sessiondata = liveSessions.get(sessionId);
-				if (sessiondata == null)
-				{
-					// if the session has been destroyed during the request by
-					// Session#invalidateNow, retrieve the old session data from the RequestCycle.
-					sessiondata = RequestCycle.get().getMetaData(SESSION_DATA);
-				}
-				if (sessiondata == null)
-				{
-					// passivated session or logger only started after it.
-					sessionCreated(sessionId);
-					sessiondata = liveSessions.get(sessionId);
-				}
-				if (sessiondata != null)
-				{
-					sessiondata.setSessionInfo(sessionInfo);
-					sessiondata.setSessionSize(sizeInBytes);
-					sessiondata.addTimeTaken(timeTaken);
-					RequestCycle.get().setMetaData(SESSION_DATA, sessiondata);
-				}
+		Object sessionInfo = getSessionInfo(session);
+		requestData.setSessionInfo(sessionInfo);
+
+		long sizeInBytes = getSessionSize(session);
+		requestData.setSessionSize(sizeInBytes);
+		requestData.setTimeTaken(timeTaken);
+
+		addRequest(requestData);
+	}
+
+	private long getSessionSize(Session session) {
+		long sizeInBytes = -1;
+		if (Application.exists() && Application.get().getRequestLoggerSettings().getRecordSessionSize()) {
+			try {
+				sizeInBytes = session != null ? session.getSizeInBytes() : -1;
+			} catch (Exception e) {
+				LOG.error("Exception while determining the size of the session in the request logger: " +
+						e.getMessage(), e);
 			}
 		}
+		return sizeInBytes;
+	}
+
+	private void updateSessionData(RequestData requestData) {
+		String sessionId = requestData.getSessionId();
+		if (sessionId != null) {
+			SessionData sessionData = updateSessionData(requestData, sessionId);
+			RequestCycle.get().setMetaData(sessionData2, sessionData);
+		}
+	}
+
+	private SessionData updateSessionData(RequestData requestData, String sessionId) {
+		SessionData sessionData = liveSessions.get(sessionId);
+		if (sessionData == null) {
+			sessionCreated(sessionId);
+			sessionData = liveSessions.get(sessionId);
+		}
+		if (sessionData != null) {
+			sessionData.setSessionInfo(requestData.getSessionInfo());
+			sessionData.setSessionSize(requestData.getSessionSize());
+			sessionData.addTimeTaken(requestData.getTimeTaken());
+		}
+		return sessionData;
 	}
 
 	@Override
@@ -295,18 +299,18 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 		RequestCycle requestCycle = RequestCycle.get();
 		SessionData sessionData = liveSessions.remove(sessionId);
 		if (requestCycle != null)
-			requestCycle.setMetaData(SESSION_DATA, sessionData);
+			requestCycle.setMetaData(sessionData2, sessionData);
 	}
 
 	@Override
 	public RequestData getCurrentRequest()
 	{
 		RequestCycle requestCycle = RequestCycle.get();
-		RequestData rd = requestCycle.getMetaData(REQUEST_DATA);
+		RequestData rd = requestCycle.getMetaData(requestData);
 		if (rd == null)
 		{
 			rd = new RequestData();
-			requestCycle.setMetaData(REQUEST_DATA, rd);
+			requestCycle.setMetaData(requestData, rd);
 			int activeCount = activeRequests.incrementAndGet();
 
 			if (activeCount > peakActiveRequests.get())
@@ -320,11 +324,11 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	@Override
 	public void performLogging()
 	{
-		RequestData requestdata = RequestCycle.get().getMetaData(REQUEST_DATA);
+		RequestData requestdata = RequestCycle.get().getMetaData(requestData);
 		if (requestdata != null)
 		{
 			// log the request- and sessiondata (the latter can be null)
-			SessionData sessiondata = RequestCycle.get().getMetaData(SESSION_DATA);
+			SessionData sessiondata = RequestCycle.get().getMetaData(sessionData2);
 			log(requestdata, sessiondata);
 		}
 	}

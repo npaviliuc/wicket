@@ -31,11 +31,11 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class ZonedToLocalDateTimeModelTest
+class ZonedToLocalDateTimeModelTest
 {
 
 	@Test
-	public void test() {
+	void test() {
 		
 		ZoneId targetZone = ZoneId.of("UTC");
 		ZoneId clientZone = ZoneId.of("UTC+2");

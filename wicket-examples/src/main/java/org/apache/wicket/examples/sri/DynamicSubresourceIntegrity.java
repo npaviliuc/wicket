@@ -76,15 +76,13 @@ public class DynamicSubresourceIntegrity
 
 	public String getIntegrity(ISubresourceHeaderItem item)
 	{
-		if (item instanceof IReferenceHeaderItem)
+		if (item instanceof IReferenceHeaderItem referenceHeaderItemVar)
 		{
-			ResourceReference reference = ((IReferenceHeaderItem)item).getReference();
+			ResourceReference reference = (referenceHeaderItemVar).getReference();
 
 			IResource resource = reference.getResource();
-			if (resource instanceof IStaticCacheableResource)
+			if (resource instanceof IStaticCacheableResource cacheableResource)
 			{
-				IStaticCacheableResource cacheableResource = (IStaticCacheableResource)resource;
-				
 				return getIntegrity(reference, cacheableResource);
 			}
 		}

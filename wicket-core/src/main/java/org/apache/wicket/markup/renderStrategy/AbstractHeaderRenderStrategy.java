@@ -126,8 +126,8 @@ public abstract class AbstractHeaderRenderStrategy implements IHeaderRenderStrat
 
 		rootComponent.internalRenderHead(headerContainer);
 
-		if (rootComponent instanceof InlineEnclosure) {
-			renderInlineEnclosure(headerContainer, (InlineEnclosure) rootComponent);
+		if (rootComponent instanceof InlineEnclosure inlineEnclosureVar) {
+			renderInlineEnclosure(headerContainer, inlineEnclosureVar);
 		}
 	}
 
@@ -151,14 +151,11 @@ public abstract class AbstractHeaderRenderStrategy implements IHeaderRenderStrat
 		final String childId = enclosure.getChildId();
 
 		// Visit the siblings of the enclosure to attempt and find the controller of the enclosure
-		Component enclosureController = enclosure.getParent().visitChildren(new IVisitor<Component, Component>() {
-			@Override
-			public void component(Component object, IVisit<Component> visit) {
-				if (object.getId().equals(childId)){
-					visit.stop(object);
-				} else {
-					visit.dontGoDeeper();
-				}
+		Component enclosureController = enclosure.getParent().visitChildren((object, visit) -> {
+			if (object.getId().equals(childId)){
+				visit.stop(object);
+			} else {
+				visit.dontGoDeeper();
 			}
 		});
 

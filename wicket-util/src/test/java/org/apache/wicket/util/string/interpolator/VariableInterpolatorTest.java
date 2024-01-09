@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * 
  * @author <a href="mailto:jbq@apache.org">Jean-Baptiste Quenot</a>
  */
-public class VariableInterpolatorTest
+class VariableInterpolatorTest
 {
 	/**
 	 * 

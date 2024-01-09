@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests for {@link LocalDateTimeConverter}
  */
-public class LocalDateTimeConverterTest
+class LocalDateTimeConverterTest
 {
 	@Test
 	@EnabledOnJre({JRE.JAVA_17, JRE.JAVA_18, JRE.JAVA_19})
@@ -64,7 +64,7 @@ public class LocalDateTimeConverterTest
 	}
 	
 	@Test
-	public void convertFails() {
+	void convertFails() {
 		LocalDateTimeConverter converter = new LocalDateTimeConverter();
 
 		try {

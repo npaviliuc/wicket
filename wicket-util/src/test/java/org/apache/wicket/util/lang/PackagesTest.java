@@ -20,10 +20,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PackagesTest {
+class PackagesTest {
 
     @Test
-    public void absolutePath() throws Exception {
+    void absolutePath() throws Exception {
         assertAbsolutePath("org.apache.wicket.util.tester", "/org/apache/wicket/util/tester/BlockedResourceLinkPage.html", "org/apache/wicket/util/tester/BlockedResourceLinkPage.html");
         assertAbsolutePath("org.apache.wicket.util.tester", "BlockedResourceLinkPage.html", "org/apache/wicket/util/tester/BlockedResourceLinkPage.html");
         assertAbsolutePath("org.apache.wicket.util", "tester/BlockedResourceLinkPage.html", "org/apache/wicket/util/tester/BlockedResourceLinkPage.html");

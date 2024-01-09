@@ -1,47 +1,45 @@
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
 <head>
     <title>Wicket Contrib Examples - Template Page</title>
 </head>
 <body>
+  <wicket:extend>
+    <!-- This table is designed to facilitate the input and output of Apache Velocity templates -->
+    <table cellpadding="5px">
+      <tr>
+        <th valign="top" height="100%">
+      
+          <div id="templateInputBox">
+            <form wicket:id="templateForm">
+              <fieldset>
+                <legend><a target="_blank" href="http://velocity.apache.org/">Apache Velocity</a> template input</legend>
 
- <wicket:extend>
+                <textarea wicket:id="templateInput" rows="16" cols="36">Template input comes here</textarea>
+              
+                <div id="templateUpdateButton">
+                  <input type="submit" value="update"/>
+                </div>
+              </fieldset>
+            </form>   
+          </div>
+        </th>
+        <th valign="top" height="100%">
 
-<table cellpadding="5px">
- <tr>
-  <td valign="top" height="100%">
+          <div id="templateOutputBox">
+            <fieldset>
+              <legend>output</legend>
+              <span wicket:id="templatePanel">Template output will be put here</span>
+            </fieldset>
+          </div>
+        </th>
+      </tr>
+    </table>
   
- <div id="templateInputBox">
-    <form wicket:id="templateForm">
-      <fieldset>
-        <legend><a target="_blank" href="http://velocity.apache.org/">Apache Velocity</a> template input</legend>
-
-        <textarea wicket:id="templateInput" rows="16" cols="36">Template input comes here</textarea>
-
-		    <div id="templateUpdateButton">
-          <input type="submit" value="update"/>
-        </div>
-      </fieldset>
-     </form>   
- </div>
- 
-  </td>
-  <td valign="top" height="100%">
-
-    <div id="templateOutputBox">
-      <fieldset>
-        <legend>output</legend>
-        <span wicket:id="templatePanel">Template output will be put here</span>
-      </fieldset>
+    <div>
+      <span wicket:id="feedback"/>
     </div>
- 
-  </td>
- </tr>
-</table>
 
- <div>
-	<span wicket:id="feedback"/>
- </div>
-
-</wicket:extend>
+  </wicket:extend>
 </body>
 </html>

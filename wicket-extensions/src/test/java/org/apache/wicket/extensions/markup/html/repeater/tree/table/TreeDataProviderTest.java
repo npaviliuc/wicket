@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link TreeDataProvider}.
  */
-public class TreeDataProviderTest
+class TreeDataProviderTest
 {
 
 	/**

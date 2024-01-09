@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Tests the <code>Primitives</code> class. The code for testing the hashcode is taken from the
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Martijn Dashorst
  * @author <a href="mailto:pholser@yahoo.com">Paul Holser</a>
  */
-public class PrimitivesTest
+class PrimitivesTest
 {
 	/**
 	 * Test stub for testing the hashcode function.
@@ -88,7 +89,7 @@ public class PrimitivesTest
 		assertEquals(eq1.hashCode(), eq2.hashCode(), "1st vs. 2nd");
 		assertEquals(eq1.hashCode(), eq3.hashCode(), "1st vs. 3rd");
 		assertEquals(eq2.hashCode(), eq3.hashCode(), "2nd vs. 3rd");
-		assertTrue(eq1.hashCode() != neq.hashCode(), "1st vs. neq");
+		assertNotEquals(eq1.hashCode(), neq.hashCode(), "1st vs. neq");
 	}
 
 	/**

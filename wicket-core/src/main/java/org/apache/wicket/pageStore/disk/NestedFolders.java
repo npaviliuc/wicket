@@ -64,7 +64,7 @@ public class NestedFolders
 		String path = createPathFrom(name);
 
 		File folder = new File(base, path);
-		if (create && folder.exists() == false)
+		if (create && !(folder.exists()))
 		{
 			Files.mkdirs(folder);
 		}

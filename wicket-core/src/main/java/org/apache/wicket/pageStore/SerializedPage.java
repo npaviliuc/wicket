@@ -89,6 +89,11 @@ public final class SerializedPage implements IManageablePage
 
 	@Override
 	public void detach() {
+		// This method is intentionally left empty.
+		// Subclasses should override it to define their own detachment behavior.
+		// Custom detachment logic specific to the component can be implemented here.
+		// If no custom behavior is needed, it can be left empty.
+		// Options for further implementation are provided in the comments above.
 	}
 
 	@Override

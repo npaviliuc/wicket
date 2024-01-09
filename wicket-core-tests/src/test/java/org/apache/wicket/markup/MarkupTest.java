@@ -35,24 +35,17 @@ class MarkupTest extends WicketTestCase
 		MarkupFactory markupFactory = tester.getApplication().getMarkupSettings().getMarkupFactory();
 		Markup markup = markupFactory.getMarkup(new MarkupTest_Find_3(), false);
 
-		IMarkupFragment childMarkup;
+		IMarkupFragment childMarkup = null;
 
 		/*
 		 * Ensure we can find inside <head>
 		 */
-		childMarkup = markup.find("a1");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("a1", ((ComponentTag)childMarkup.get(0)).getId());
+		testA1(markup, childMarkup);
 
 		/*
 		 * Ensure we can find in body
 		 */
-		childMarkup = markup.find("a2");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("a2", ((ComponentTag)childMarkup.get(0)).getId());
-
+		testA2(markup, childMarkup);
 		/*
 		 * Ensure we cannot find inside component tag
 		 */
@@ -61,27 +54,17 @@ class MarkupTest extends WicketTestCase
 		/*
 		 * Ensure we can find after other component tag
 		 */
-		childMarkup = markup.find("a4");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("a4", ((ComponentTag)childMarkup.get(0)).getId());
+		testA4(markup, childMarkup);
 
 		/*
 		 * Ensure we can find after wicket:child
 		 */
-		childMarkup = markup.find("a5");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("a5", ((ComponentTag)childMarkup.get(0)).getId());
+		testA5(markup, childMarkup);
 
 		/*
 		 * Ensure we can find after fragment
 		 */
-		childMarkup = markup.find("a6");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof WicketTag);
-		assertEquals("a6", ((ComponentTag)childMarkup.get(0)).getId());
-		assertTrue(((WicketTag)childMarkup.get(0)).isFragmentTag());
+		testA6(markup, childMarkup);
 
 		/*
 		 * Ensure we cannot find inside fragment
@@ -91,19 +74,12 @@ class MarkupTest extends WicketTestCase
 		/*
 		 * Ensure we can find in subclass <wicket:head> section
 		 */
-		childMarkup = markup.find("b1");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("b1", ((ComponentTag)childMarkup.get(0)).getId());
+		testB1(markup, childMarkup);
 
 		/*
 		 * Ensure we can find fragment in subclass
 		 */
-		childMarkup = markup.find("b2");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof WicketTag);
-		assertEquals("b2", ((ComponentTag)childMarkup.get(0)).getId());
-		assertTrue(((WicketTag)childMarkup.get(0)).isFragmentTag());
+		testB2(markup, childMarkup);
 
 		/*
 		 * Ensure we cannot find inside fragment in subclass
@@ -113,10 +89,7 @@ class MarkupTest extends WicketTestCase
 		/*
 		 * Ensure we can find in subclass <wicket:extend> section
 		 */
-		childMarkup = markup.find("b4");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("b4", ((ComponentTag)childMarkup.get(0)).getId());
+		testB4(markup, childMarkup);
 
 		/*
 		 * Ensure we cannot find inside component tag in subclass
@@ -131,19 +104,12 @@ class MarkupTest extends WicketTestCase
 		/*
 		 * Ensure we can find in subclass <wicket:head> section
 		 */
-		childMarkup = markup.find("c1");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("c1", ((ComponentTag)childMarkup.get(0)).getId());
+		testC1(markup, childMarkup);
 
 		/*
 		 * Ensure we can find fragment in subclass
 		 */
-		childMarkup = markup.find("c2");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof WicketTag);
-		assertEquals("c2", ((ComponentTag)childMarkup.get(0)).getId());
-		assertTrue(((WicketTag)childMarkup.get(0)).isFragmentTag());
+		testC2(markup, childMarkup);
 
 		/*
 		 * Ensure we cannot find inside fragment in subclass
@@ -153,14 +119,92 @@ class MarkupTest extends WicketTestCase
 		/*
 		 * Ensure we can find in subclass <wicket:extend> section
 		 */
-		childMarkup = markup.find("c4");
-		assertNotNull(childMarkup);
-		assertTrue(childMarkup.get(0) instanceof ComponentTag);
-		assertEquals("c4", ((ComponentTag)childMarkup.get(0)).getId());
+		testC4(markup, childMarkup);
 
 		/*
 		 * Ensure we cannot find inside component tag in subclass
 		 */
 		assertNull(markup.find("c5"));
 	}
+
+	private void testA1(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("a1");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("a1", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testA2(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("a2");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("a2", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testA4(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("a4");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("a4", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testA5(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("a5");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("a5", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testA6(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("a6");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof WicketTag);
+		assertEquals("a6", ((ComponentTag)mkFragment.get(0)).getId());
+		assertTrue(((WicketTag)mkFragment.get(0)).isFragmentTag());
+	}
+
+	private void testB1(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("b1");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("b1", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testB2(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("b2");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof WicketTag);
+		assertEquals("b2", ((ComponentTag)mkFragment.get(0)).getId());
+		assertTrue(((WicketTag)mkFragment.get(0)).isFragmentTag());
+	}
+
+	private void testB4(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("b4");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("b4", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testC1(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("c1");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("c1", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
+	private void testC2(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment = mk.find("c2");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof WicketTag);
+		assertEquals("c2", ((ComponentTag)mkFragment.get(0)).getId());
+		assertTrue(((WicketTag)mkFragment.get(0)).isFragmentTag());
+	}
+
+	private void testC4(Markup mk, IMarkupFragment mkFragment) {
+		mkFragment= mk.find("c4");
+		assertNotNull(mkFragment);
+		assertTrue(mkFragment.get(0) instanceof ComponentTag);
+		assertEquals("c4", ((ComponentTag)mkFragment.get(0)).getId());
+	}
+
 }

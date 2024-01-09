@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 <!DOCTYPE HTML PUBLIC "-//W3C/DTD HTML 3.2 Final//NL">
-<html>
+<html lang="en" xml:lang="en" >
 <head>
 <title>wicket.extensions.wizard package</title>
 </head>
@@ -24,12 +24,12 @@
 Package for working with Wizard components. Wizards are dialogs which take
 users through a number of steps to achieve something.
 <p>
-The main component is <tt>wicket.extensions.wizard</tt>, which serves as
+The main component is <code>wicket.extensions.wizard</code>, which serves as
 the panel on which the whole wizard is rendered. It is possible to implement</p>
 <p>
-<tt>wicket.extensions.wizard.IWizard</tt> directly, but it is not recommended.
-The wizard cooperates with an instance of <tt>wicket.extensions.wizard.IWizardModel</tt>,
-for which the default implementation <tt>wicket.extensions.wizard.WizardModel</tt> is
+<code>wicket.extensions.wizard.IWizard</code> directly, but it is not recommended.
+The wizard cooperates with an instance of <code>wicket.extensions.wizard.IWizardModel</code>,
+for which the default implementation <code>wicket.extensions.wizard.WizardModel</code> is
 provided. This model knows about the wizard's steps and the transitions between them,
 and it holds a reference to the currently active step. It might function as a generic
 state holder for the wizard too, though you might find it more convenient to use the

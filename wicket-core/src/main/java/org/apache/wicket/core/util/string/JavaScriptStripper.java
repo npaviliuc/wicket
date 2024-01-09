@@ -30,28 +30,28 @@ public class JavaScriptStripper
 	 * Determines the state of script processing.
 	 */
 	/** Inside regular text */
-	private final static int REGULAR_TEXT = 1;
+	private static final int REGULAR_TEXT = 1;
 
 	/** String started with single quote (') */
-	private final static int STRING_SINGLE_QUOTE = 2;
+	private static final int STRING_SINGLE_QUOTE = 2;
 
 	/** String started with double quotes (") */
-	private final static int STRING_DOUBLE_QUOTES = 3;
+	private static final int STRING_DOUBLE_QUOTES = 3;
 
 	/** Inside two or more whitespace characters */
-	private final static int WHITE_SPACE = 4;
+	private static final int WHITE_SPACE = 4;
 
 	/** Inside a line comment (// ) */
-	private final static int LINE_COMMENT = 5;
+	private static final int LINE_COMMENT = 5;
 
 	/** Inside a multi line comment */
-	private final static int MULTILINE_COMMENT = 6;
+	private static final int MULTILINE_COMMENT = 6;
 
 	/** Inside a regular expression */
-	private final static int REG_EXP = 7;
+	private static final int REG_EXP = 7;
 
 	/** Inside a template literal */
-	private final static int TEMPLATE_LITERAL = 8;
+	private static final int TEMPLATE_LITERAL = 8;
 
 	/** Function "return" keyword, useful to identify if we are inside a regexp */
 	private static final String RETURN_KEYWORD = "return";
@@ -93,7 +93,7 @@ public class JavaScriptStripper
 			char c = original.charAt(i);
 			char next = (i < original.length() - 1) ? original.charAt(i + 1) : 0;
 			char prev = (i > 0) ? original.charAt(i - 1) : 0;
-
+			
 			if (state == WHITE_SPACE)
 			{
 				// WICKET 2060

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author almaw
  */
-public class MiniMapTest
+class MiniMapTest
 {
 	private static final Object FOO = new Object();
 	private static final Object BAR = new Object();

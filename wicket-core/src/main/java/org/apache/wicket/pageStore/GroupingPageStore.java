@@ -58,7 +58,7 @@ public abstract class GroupingPageStore extends DelegatingPageStore
 	 * @param maxGroups
 	 *            maximum groups to keep
 	 */
-	public GroupingPageStore(IPageStore delegate, int maxGroups)
+	protected GroupingPageStore(IPageStore delegate, int maxGroups)
 	{
 		super(delegate);
 
@@ -165,7 +165,7 @@ public abstract class GroupingPageStore extends DelegatingPageStore
 		
 		public synchronized void addPage(IPageContext context, IManageablePage page, String group, int maxGroups, boolean stableGroups, IPageStore delegate)
 		{
-			if (stableGroups == false)
+			if (!(stableGroups))
 			{
 				// group might have changed, so remove page first from all groups
 				for (String other : groups)

@@ -300,7 +300,7 @@ public class Select<T> extends FormComponent<T>
 		}
 		else
 		{
-			return Objects.equal(selected, value);
+			return Objects.areEquals(selected, value);
 		}
 	}
 

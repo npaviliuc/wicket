@@ -250,7 +250,7 @@ class AjaxRequestHandlerTest extends WicketTestCase
 	}
 
 	@Test
-	public void addDuringRender()
+	void addDuringRender()
 	{
 		tester.startPage(AddDuringRenderPage.class);
 

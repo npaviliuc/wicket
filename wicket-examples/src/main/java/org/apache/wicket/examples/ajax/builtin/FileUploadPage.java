@@ -190,6 +190,7 @@ public class FileUploadPage extends BasePage
 					}));
 			WebMarkupContainer drop = new WebMarkupContainer("drop");
 			drop.add(new AjaxFileDropBehavior() {
+				@Override
 				protected void onFileUpload(AjaxRequestTarget target, List<FileUpload> files) {
 
 					// display uploaded info
@@ -199,9 +200,9 @@ public class FileUploadPage extends BasePage
 					}
 					else
 					{
-						for (FileUpload file : files) {
-							info(FILE_NAME + file.getClientFileName() + FILE_SIZE +
-									Bytes.bytes(file.getSize()).toString());
+						for (FileUpload fileVar : files) {
+							info(FILE_NAME + fileVar.getClientFileName() + FILE_SIZE +
+									Bytes.bytes(fileVar.getSize()).toString());
 						}
 					}
 

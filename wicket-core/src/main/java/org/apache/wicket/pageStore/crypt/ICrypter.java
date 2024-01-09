@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 package org.apache.wicket.pageStore.crypt;
-
-import java.io.Serializable;
 import java.security.SecureRandom;
 
 import javax.crypto.SecretKey;

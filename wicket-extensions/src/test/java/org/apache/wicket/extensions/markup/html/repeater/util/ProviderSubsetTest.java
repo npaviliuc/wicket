@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class ProviderSubsetTest
+class ProviderSubsetTest
 {
 	private ITreeProvider<String> provider = new EmptyProvider();
 

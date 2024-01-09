@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
  * @see <a href="https://issues.apache.org/jira/browse/WICKET-2937">WICKET-2937</a>
  * @author Pedro Santos
  */
-public class AbstractPropertyModelObjectClassTest
+class AbstractPropertyModelObjectClassTest
 {
 
 	/**

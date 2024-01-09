@@ -1,31 +1,37 @@
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
 <head>
     <title>Wicket Examples - navomatic</title>
 </head>
 <body>
     <wicket:border> 
         <p>
-        <table height = "100%">
-            <tr>
-                <td height = "100%" valign = "top">
-                    <div wicket:id = "navigationBorder">
-                      <b>Navigation Links</b>
-                      <p>
-                        <wicket:link>
-                          <a href = "Page1.html">Page1</a><br/>
-                          <a href = "Page2.html">Page2</a><br/>
-                          <a href = "Page3.html">Page3</a>
-                        </wicket:link>
-                      </p>
-                    </div>
-                </td>
-                <td valign = "top">
-                    <span wicket:id = "bodyBorder">
-                        <wicket:body/>
-                    </span>
-                </td>
-            </tr>
-        </table>
+            <!-- table using a layout for a web page with navigation links on the left and a content area on the right.-->
+            <table height="100%">
+                <tr>
+                    <th>Navigation</th>
+                    <th>Content</th>
+                </tr>
+                <tr>
+                    <td height="100%" valign="top">
+                        <div wicket:id="navigationBorder">
+                            <b>Navigation Links</b>
+                            <p>
+                                <wicket:link>
+                                    <a href="Page1.html">Page1</a><br />
+                                    <a href="Page2.html">Page2</a><br />
+                                    <a href="Page3.html">Page3</a>
+                                </wicket:link>
+                            </p>
+                        </div>
+                    </td>
+                    <td valign="top">
+                        <span wicket:id="bodyBorder">
+                            <wicket:body />
+                        </span>
+                    </td>
+                </tr>
+            </table>            
         </p>
     </wicket:border>
 </body>

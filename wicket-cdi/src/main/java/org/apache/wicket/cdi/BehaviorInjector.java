@@ -32,6 +32,8 @@ public class BehaviorInjector extends AbstractInjector implements IBehaviorInsta
 	 */
 	public BehaviorInjector()
 	{
+		// This default constructor is intentionally left empty and throws UnsupportedOperationException
+ 		// to signal that subclasses must provide their own implementation of this constructor.
 	}
 
 	@Override

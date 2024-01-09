@@ -46,6 +46,9 @@ class PageParametersTest
 
 		List<StringValue> stringValue = parameters.getValues("key");
 
+		// Assert that the number of StringValues is equal to the input array length
+    	assertEquals(input.length, stringValue.size(), "Number of StringValues should be equal to the length of the input array");
+
 		for (String in : input)
 		{
 
@@ -59,10 +62,8 @@ class PageParametersTest
 				}
 			}
 
-			if (found == false)
-			{
-				throw new IllegalStateException("Expected to find a StringValue with value: " + in);
-			}
+			// Assert that each value in the input array is found in the StringValues
+        	assertTrue(found, "Expected to find a StringValue with value: " + in);
 		}
 	}
 

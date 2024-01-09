@@ -158,8 +158,8 @@ public class InMemoryPageStore extends AbstractPersistentPageStore implements IP
 		synchronized (data)
 		{
 			return StreamSupport.stream(data.spliterator(), false).map(page -> {
-				String pageType = page instanceof SerializedPage
-					? ((SerializedPage)page).getPageType()
+				String pageType = page instanceof SerializedPage serializedPageVar
+					? (serializedPageVar).getPageType()
 					: Classes.name(page.getClass());
 
 				return new PersistedPage(page.getPageId(), pageType, getSize(page));
@@ -191,9 +191,9 @@ public class InMemoryPageStore extends AbstractPersistentPageStore implements IP
 	 */
 	protected long getSize(IManageablePage page)
 	{
-		if (page instanceof SerializedPage)
+		if (page instanceof SerializedPage serializedPageVar)
 		{
-			return ((SerializedPage)page).getData().length;
+			return (serializedPageVar).getData().length;
 		}
 		else
 		{
@@ -349,7 +349,7 @@ public class InMemoryPageStore extends AbstractPersistentPageStore implements IP
 		@Override
 		public synchronized void add(IManageablePage page)
 		{
-			if (page instanceof SerializedPage == false)
+			if (!(page instanceof SerializedPage))
 			{
 				throw new WicketRuntimeException(
 					"InMemoryPageStore limited by size works with serialized pages only");

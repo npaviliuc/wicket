@@ -262,7 +262,7 @@ public final class LocalizedImageResource implements IClusterable
 		String s = component.getStyle();
 		String v = component.getVariation();
 		if (resourceKind == null &&
-			(!Objects.equal(locale, l) || !Objects.equal(style, s) || !Objects.equal(variation, v)))
+			(!Objects.areEquals(locale, l) || !Objects.areEquals(style, s) || !Objects.areEquals(variation, v)))
 		{
 			// Get new component locale and style
 			locale = l;

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests for {@link LocalTimeConverter}
  */
-public class LocalTimeConverterTest
+class LocalTimeConverterTest
 {
 	@Test
 	public void convertToString() {
@@ -44,7 +44,7 @@ public class LocalTimeConverterTest
 	}
 	
 	@Test
-	public void convertFails() {
+	void convertFails() {
 		LocalTimeConverter converter = new LocalTimeConverter();
 
 		try {

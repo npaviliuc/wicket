@@ -162,9 +162,9 @@ public class HttpHeaderCollection
 
 	private String valueToString(Object value)
 	{
-		if (value instanceof Instant)
+		if (value instanceof Instant instantVar)
 		{
-			return Instants.toRFC7231Format((Instant)value);
+			return Instants.toRFC7231Format(instantVar);
 		}
 		else
 		{
@@ -272,7 +272,7 @@ public class HttpHeaderCollection
 		}
 		Object object = objects.get(0);
 
-		if ((object instanceof Instant) == false)
+		if (!(object instanceof Instant))
 		{
 			throw new IllegalStateException("header value is not of type date");
 		}

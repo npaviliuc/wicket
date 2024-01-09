@@ -54,13 +54,13 @@ class PersistedPagesProvider extends SortableDataProvider<IPersistedPage, String
 	@Override
 	public Iterator<? extends IPersistedPage> iterator(long first, long count)
 	{
-		List<IPersistedPage> pages = getPages();
+		List<IPersistedPage> pagesVar = getPages();
 
 		if (getSort() != null) {
-			Collections.sort(pages, new SortComparator());
+			Collections.sort(pagesVar, new SortComparator());
 		}
 
-		return pages.subList((int)first,  (int)(first + count)).iterator();
+		return pagesVar.subList((int)first,  (int)(first + count)).iterator();
 	}
 
 	private List<IPersistedPage> getPages()
@@ -122,7 +122,7 @@ class PersistedPagesProvider extends SortableDataProvider<IPersistedPage, String
 
 			int c = Objects.compareWithConversion(value0, value1);
 
-			if (getSort().isAscending() == false)
+			if (!(getSort().isAscending()))
 			{
 				c = c * -1;
 			}

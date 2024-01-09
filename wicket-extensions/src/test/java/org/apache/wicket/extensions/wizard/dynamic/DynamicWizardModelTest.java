@@ -27,13 +27,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link DynamicWizardModel}.
  */
-public class DynamicWizardModelTest extends WicketTestCase
+class DynamicWizardModelTest extends WicketTestCase
 {
 
 	private IDynamicWizardStep step4;
 	
 	@Test
-	public void testDynamicWizard()
+	void testDynamicWizard()
 	{
 		DynamicWizardStep step1 = new DynamicWizardStep(null)
 		{

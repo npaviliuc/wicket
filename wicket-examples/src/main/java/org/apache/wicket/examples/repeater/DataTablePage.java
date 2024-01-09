@@ -51,6 +51,7 @@ import org.apache.wicket.util.convert.converter.DateConverter;
  */
 public class DataTablePage extends BasePage
 {
+	private static final String CLASS_CONST = "class";
 	/**
 	 * constructor
 	 */
@@ -127,12 +128,12 @@ public class DataTablePage extends BasePage
 		
 		//This is a table that uses ColGroup to style the columns: 
 		ColGroup colgroup = tableWithColGroup.getColGroup();
-		colgroup.addCol(colgroup.new Col(AttributeModifier.append("class", "lightblue")));
-		colgroup.addCol(colgroup.new Col(AttributeModifier.append("class", "lightgreen")));
-		colgroup.addCol(colgroup.new Col(AttributeModifier.append("class", "pink")));
-		colgroup.addCol(colgroup.new Col(AttributeModifier.append("class", "yellow")));
+		colgroup.addCol(colgroup.new Col(AttributeModifier.append(CLASS_CONST, "lightblue")));
+		colgroup.addCol(colgroup.new Col(AttributeModifier.append(CLASS_CONST, "lightgreen")));
+		colgroup.addCol(colgroup.new Col(AttributeModifier.append(CLASS_CONST, "pink")));
+		colgroup.addCol(colgroup.new Col(AttributeModifier.append(CLASS_CONST, "yellow")));
 		colgroup.addCol(colgroup.new Col(AttributeModifier.append("span", "2"),
-			AttributeModifier.append("class", "brown")));
+			AttributeModifier.append(CLASS_CONST, "brown")));
 	}
 	
 	/**

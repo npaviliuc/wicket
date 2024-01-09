@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author Frank Bille
  */
-public class RfcCompliantEmailValidatorTest
+class RfcCompliantEmailValidatorTest
 {
 	/**
 	 * Test a couple of valid email addresses.

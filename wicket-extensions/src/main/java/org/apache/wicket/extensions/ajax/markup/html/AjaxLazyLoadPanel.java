@@ -64,7 +64,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	 * 
 	 * @param id
 	 */
-	public AjaxLazyLoadPanel(final String id)
+	protected AjaxLazyLoadPanel(final String id)
 	{
 		this(id, null);
 	}
@@ -75,7 +75,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	 * @param id
 	 * @param model
 	 */
-	public AjaxLazyLoadPanel(final String id, final IModel<?> model)
+	protected AjaxLazyLoadPanel(final String id, final IModel<?> model)
 	{
 		super(id, model);
 
@@ -144,7 +144,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	{
 		super.onBeforeRender();
 
-		if (loaded == false) {
+		if (!loaded) {
 			initTimer();
 		}
 	}
@@ -161,10 +161,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 			AbstractAjaxTimerBehavior timer = new AjaxLazyLoadTimer();
 			getPage().add(timer);
 			
-			getRequestCycle().find(AjaxRequestTarget.class).ifPresent(target -> {
-				// the timer will not be rendered, so restart it immediately on the Ajax target
-				timer.restart(target);
-			});
+			getRequestCycle().find(AjaxRequestTarget.class).ifPresent(timer::restart);
 		}
 	}
 
@@ -186,7 +183,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	 * 
 	 * @return update interval, must not be {@code null}
 	 */
-	protected Duration getUpdateInterval() {
+	public Duration getUpdateInterval() {
 		return Duration.ofSeconds(1);
 	}
 
@@ -200,29 +197,27 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	 * 
 	 * @see #isContentReady()
 	 */
-	protected final boolean isLoaded() {
-		if (loaded == false)
+	public final boolean isLoaded() {
+		if (!loaded && isContentReady())
 		{
-			if (isContentReady())
-			{
-				loaded = true;
+			loaded = true;
 
-				// create the lazy load component
-				T content = getLazyLoadComponent(CONTENT_ID);
+			// create the lazy load component
+			T content = getLazyLoadComponent(CONTENT_ID);
 
-				// replace the loading component with the new component
-				// note: use addOrReplace(), since onConfigure() might not have been called yet 
-				AjaxLazyLoadPanel.this.addOrReplace(content);
+			// replace the loading component with the new component
+			// note: use addOrReplace(), since onConfigure() might not have been called yet 
+			AjaxLazyLoadPanel.this.addOrReplace(content);
 
-				Optional<AjaxRequestTarget> target = getRequestCycle().find(AjaxRequestTarget.class);
+			Optional<AjaxRequestTarget> target = getRequestCycle().find(AjaxRequestTarget.class);
 
-				// notify our subclasses of the updated component
-				onContentLoaded(content, target);
+			// notify our subclasses of the updated component
+			onContentLoaded(content, target);
 
-				// repaint our selves if there's an AJAX request in play, otherwise let the page
-				// redraw itself
-				target.ifPresent(t -> t.add(AjaxLazyLoadPanel.this));
-			}
+			// repaint our selves if there's an AJAX request in play, otherwise let the page
+			// redraw itself
+			target.ifPresent(t -> t.add(AjaxLazyLoadPanel.this));
+			
 		}
 		
 		return loaded;
@@ -253,19 +248,14 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 		{
 			setUpdateInterval(Duration.ofMillis(Long.MAX_VALUE));
 			
-			getComponent().getPage().visitChildren(AjaxLazyLoadPanel.class, new IVisitor<AjaxLazyLoadPanel<?>, Void>()
-			{
-				@Override
-				public void component(AjaxLazyLoadPanel<?> panel, IVisit<Void> visit)
-				{
-					if (panel.isVisibleInHierarchy() && panel.isLoaded() == false) {
-						Duration updateInterval = panel.getUpdateInterval();
-						if (getUpdateInterval() == null) {
-							throw new IllegalArgumentException("update interval must not ben null");
-						}
-						
-						setUpdateInterval(Comparators.min(getUpdateInterval(), updateInterval));
-					}						
+			getComponent().getPage().visitChildren(AjaxLazyLoadPanel.class, (panel, visit) -> {
+				if (panel.isVisibleInHierarchy() && !panel.isLoaded()) {
+					Duration updateInterval = panel.getUpdateInterval();
+					if (getUpdateInterval() == null) {
+						throw new IllegalArgumentException("update interval must not be null");
+					}
+			
+					setUpdateInterval(Comparators.min(getUpdateInterval(), updateInterval));
 				}
 			});
 

@@ -115,7 +115,7 @@ public class AjaxNewWindowNotifyingBehavior extends AbstractDefaultAjaxBehavior
 			// now bound to window
 			boundName = windowName;
 		}
-		else if (boundName.equals(windowName) == false)
+		else if (!(boundName.equals(windowName)))
 		{
 			onNewWindow(target);
 		}

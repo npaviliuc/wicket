@@ -1,16 +1,17 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-	 <table>
+	<!-- table with form input fields, likely used in a Wicket framework-based web application for user registration or profile information -->
+	<table>
 	  <tr>
-	   <td><wicket:message key="username">Username</wicket:message></td>
+	   <th><wicket:message key="username">Username</wicket:message></th>
 	   <td><input type="text" wicket:id="user.userName" /></td>
 	  </tr>
 	  <tr>
-	   <td><wicket:message key="email">Email Adress</wicket:message></td>
+	   <th><wicket:message key="email">Email Adress</wicket:message></th>
 	   <td><input type="text" wicket:id="user.email" /></td>
 	  </tr>
 	  <tr>
-	   <td><wicket:message key="email">Email Adress</wicket:message></td>
+	   <th><wicket:message key="email">Email Adress</wicket:message></th>
 	   <td><input type="text" wicket:id="emailRepeat" /></td>
 	  </tr>
-	 </table>
+	</table>
 </wicket:panel>

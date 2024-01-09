@@ -66,7 +66,7 @@ public final class FeedbackMessages implements IClusterable, Iterable<FeedbackMe
 	 */
 	public final void add(FeedbackMessage message)
 	{
-		log.debug("Adding feedback message '{}'", message);
+		log.debug("Adding feedback message...");
 
 		synchronized (messages)
 		{

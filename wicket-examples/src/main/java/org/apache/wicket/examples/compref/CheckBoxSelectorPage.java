@@ -95,7 +95,7 @@ public class CheckBoxSelectorPage extends WicketExamplePage
 
 					@Override
 					public void setObject(Boolean object) {
-						if (object) {
+						if (Boolean.TRUE.equals(object)) {
 							selected.add(item.getModelObject());
 						} else {
 							selected.remove(item.getModelObject());
@@ -123,7 +123,7 @@ public class CheckBoxSelectorPage extends WicketExamplePage
 
 				setEnabled(extensibleChoices.size() > 1);
 			}
-			
+			@Override
 			public void onSubmit()
 			{
 				
@@ -135,7 +135,7 @@ public class CheckBoxSelectorPage extends WicketExamplePage
 
 		final CheckBoxSelector extensibleSelector = new CheckBoxSelector("extensibleSelector") {
 			@Override
-			protected Iterable<? extends CheckBox> getCheckBoxes()
+			protected Iterable<CheckBox> getCheckBoxes()
 			{
 				return collectCheckBoxes(listView);
 			}

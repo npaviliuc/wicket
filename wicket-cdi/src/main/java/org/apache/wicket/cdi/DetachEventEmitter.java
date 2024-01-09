@@ -65,7 +65,7 @@ public class DetachEventEmitter implements IRequestCycleListener
 	{
 		if (Boolean.TRUE.equals(cycle.getMetaData(DETACH_SCHEDULED_KEY)))
 		{
-			logger.debug("Firing Detach event {}", cycle.getRequest().getUrl());
+			logger.debug("Firing Detach event...");
 
 			detachEvent.fire(new DetachEvent());
 

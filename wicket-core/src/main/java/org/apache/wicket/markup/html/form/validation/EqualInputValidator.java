@@ -70,7 +70,7 @@ public class EqualInputValidator extends AbstractFormValidator
 		final FormComponent<?> formComponent1 = components[0];
 		final FormComponent<?> formComponent2 = components[1];
 
-		if (!Objects.equal(formComponent1.getInput(), formComponent2.getInput()))
+		if (!Objects.areEquals(formComponent1.getInput(), formComponent2.getInput()))
 		{
 			error(formComponent2);
 		}

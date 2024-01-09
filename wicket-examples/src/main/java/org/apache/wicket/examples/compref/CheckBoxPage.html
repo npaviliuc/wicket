@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
 <head>
 	<title>Wicket Examples - component reference</title>
@@ -18,22 +19,25 @@
 		<p>
 		<form wicket:id="form">
 
+			<!-- Checkbox Validation Table -->
 			<table class="dotted-box">
-				<th></th>
 				<caption>Checkbox validation</caption>
 				<tr>
+					<!-- Label for the checkbox -->
 					<td valign="top">I want it checked!</td>
+
+					<!-- Checkbox input field -->
 					<td>
 						<input type="checkbox" wicket:id="bool" />
 					</td>
 				</tr>
 				<tr>
+					<!-- Submit button in a row spanning two columns, centered -->
 					<td colspan="2" align="center">
 						<input type="submit" value="submit" />
 					</td>
 				</tr>
 			</table>
-
 		</form>
 		<span wicket:id="feedback">feedbackmessages will be put here</span>
 		</p>

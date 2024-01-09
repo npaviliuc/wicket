@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author svenmeier
  */
-public class NodeModelTest
+class NodeModelTest
 {
 	/**
 	 * Test equality.

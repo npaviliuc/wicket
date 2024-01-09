@@ -42,7 +42,7 @@ public class FeedbackDelay implements Serializable, AutoCloseable
 	
 	private final List<IFeedback> feedbacks = new ArrayList<>();
 
-	private RequestCycle cycle;
+	private transient RequestCycle cycle;
 	
 	/**
 	 * Delay all feedbacks for the given cycle.
@@ -95,9 +95,7 @@ public class FeedbackDelay implements Serializable, AutoCloseable
 		
 		for (IFeedback feedback : feedbacks)
 		{
-			if (feedback instanceof Component) {
-				Component component = (Component)feedback;
-				
+			if (feedback instanceof Component component) {
 				// render only if it is still in the page hierarchy (WICKET-4895)
 				if (component.findParent(Page.class) == null)
 				{

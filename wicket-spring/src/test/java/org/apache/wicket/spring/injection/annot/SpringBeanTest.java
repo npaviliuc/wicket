@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @author Andrea Del Bene
  */
-public class SpringBeanTest
+class SpringBeanTest
 {
 	private WicketTester tester;
 	private ApplicationContextMock ctx;

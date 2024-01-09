@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
  * @author jcompagner
  * @author Doug Donohoe
  */
-public class ValueMapTest
+class ValueMapTest
 {
 	/**
 	 * @throws Exception
@@ -202,51 +202,75 @@ public class ValueMapTest
 		vm.put("boolean.bad", "xxx");
 
 		// boolean
+		getAsTest1(vm, booleanValue, defBoolean);
+
+		// integer
+		getAsTest2(vm, integerValue, defInteger);
+
+		// long
+		getAsTest3(vm, longValue, defLong);
+
+		// double
+		getAsTest4(vm, doubleValue, defDouble);
+
+		// instant
+		getAsTest5(vm, timeValue, defTime);
+
+		// duration
+		getAsTest6(vm, durationValue, defDuration);
+		
+		vm.remove("instant");
+		assertEquals("num = \"42\" num.bad = \"xxx\" instant.bad = \"xxx\" duration = \"PT1H\" duration.bad = \"xxx\" boolean = \"true\" boolean.bad = \"xxx\"", vm.toString());
+	}
+
+	private void getAsTest1(ValueMap vm, boolean booleanValue, boolean defBoolean) {
 		assertEquals(booleanValue, vm.getAsBoolean("boolean"));
 		assertNull(vm.getAsBoolean("boolean.bad"));
 		assertEquals(defBoolean, vm.getAsBoolean("boolean.bad", defBoolean));
 		assertNull(vm.getAsBoolean("boolean.missing"));
 		assertEquals(defBoolean, vm.getAsBoolean("boolean.missing", defBoolean));
 		assertEquals(!defBoolean, vm.getAsBoolean("boolean.missing", !defBoolean));
+	}
 
-		// integer
+	private void getAsTest2(ValueMap vm, int integerValue, int defInteger) {
 		assertEquals(integerValue, vm.getAsInteger("num"));
 		assertNull(vm.getAsInteger("num.bad"));
 		assertEquals(defInteger, vm.getAsInteger("num.bad", defInteger));
 		assertNull(vm.getAsInteger("num.missing"));
 		assertEquals(defInteger, vm.getAsInteger("num.missing", defInteger));
+	}
 
-		// long
+	private void getAsTest3(ValueMap vm, Long longValue, Long defLong) {
 		assertEquals(longValue, vm.getAsLong("num"));
 		assertNull(vm.getAsLong("num.bad"));
 		assertEquals(defLong, vm.getAsLong("num.bad", defLong));
 		assertNull(vm.getAsLong("num.missing"));
 		assertEquals(defLong, vm.getAsLong("num.missing", defLong));
+	}
 
-		// double
+	private void getAsTest4(ValueMap vm, double doubleValue, double defDouble) {
 		assertEquals(doubleValue, vm.getAsDouble("num"));
 		assertNull(vm.getAsDouble("num.bad"));
 		assertEquals(defDouble, vm.getAsDouble("num.bad", defDouble), 0.001);
 		assertNull(vm.getAsDouble("num.missing"));
 		assertEquals(defDouble, vm.getAsDouble("num.missing", defDouble), 0.001);
+	}
 
-		// instant
+	private void getAsTest5(ValueMap vm, Instant timeValue, Instant defTime) {
 		assertEquals(timeValue, vm.getAsInstant("instant"));
 
 		assertNull(vm.getAsInstant("instant.bad"));
 		assertEquals(defTime, vm.getAsTime("instant.bad", defTime));
 		assertNull(vm.getAsInstant("instant.missing"));
 		assertEquals(defTime, vm.getAsTime("instant.missing", defTime));
+	}
 
-		// duration
+	private void getAsTest6(ValueMap vm, Duration durationValue, Duration defDuration) {
 		assertEquals(durationValue, vm.getAsDuration("duration"));
 		assertNull(vm.getAsDuration("duration.bad"));
 		assertEquals(defDuration, vm.getAsDuration("duration.bad", defDuration));
 		assertNull(vm.getAsDuration("duration.missing"));
 		assertEquals(defDuration, vm.getAsDuration("duration.missing", defDuration));
-		
-		vm.remove("instant");
-		assertEquals("num = \"42\" num.bad = \"xxx\" instant.bad = \"xxx\" duration = \"PT1H\" duration.bad = \"xxx\" boolean = \"true\" boolean.bad = \"xxx\"", vm.toString());
 	}
 
 	/**

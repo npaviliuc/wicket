@@ -152,6 +152,8 @@ public class Form<T> extends WebMarkupContainer
 {
 	public static final String ENCTYPE_MULTIPART_FORM_DATA = "multipart/form-data";
 
+	private static final String METHOD_CONST = "method";
+
 	public static final String HIDDEN_FIELDS_CSS_CLASS_KEY = CssUtils
 		.key(Form.class, "hidden-fields");
 
@@ -786,10 +788,10 @@ public class Form<T> extends WebMarkupContainer
 	public final void onFormSubmitted(IFormSubmitter submitter)
 	{
 		// check methods match
-		if (getRequest().getContainerRequest() instanceof HttpServletRequest)
+		if (getRequest().getContainerRequest() instanceof HttpServletRequest httpServletRequestVar)
 		{
 			String desiredMethod = getMethod();
-			String actualMethod = ((HttpServletRequest)getRequest().getContainerRequest()).getMethod();
+			String actualMethod = (httpServletRequestVar).getMethod();
 			if (!actualMethod.equalsIgnoreCase(desiredMethod))
 			{
 				MethodMismatchResponse response = onMethodMismatch();
@@ -1408,7 +1410,7 @@ public class Form<T> extends WebMarkupContainer
 	 */
 	protected String getMethod()
 	{
-		String method = getMarkupAttributes().getString("method");
+		String method = getMarkupAttributes().getString(METHOD_CONST);
 		return (method != null) ? method : METHOD_POST;
 	}
 
@@ -1650,7 +1652,7 @@ public class Form<T> extends WebMarkupContainer
 			checkComponentTag(tag, "form");
 
 			String method = getMethod().toLowerCase(Locale.ROOT);
-			tag.put("method", method);
+			tag.put(METHOD_CONST, method);
 			String url = getActionUrl().toString();
 			if (encodeUrlInHiddenFields())
 			{
@@ -1673,7 +1675,7 @@ public class Form<T> extends WebMarkupContainer
 				{
 					log.warn("Form with id '{}' is multipart. It should use method 'POST'!",
 						getId());
-					tag.put("method", METHOD_POST.toLowerCase(Locale.ROOT));
+					tag.put(METHOD_CONST, METHOD_POST.toLowerCase(Locale.ROOT));
 				}
 
 				tag.put("enctype", ENCTYPE_MULTIPART_FORM_DATA);
@@ -1702,7 +1704,7 @@ public class Form<T> extends WebMarkupContainer
 		else
 		{
 			adjustNestedTagName(tag);
-			tag.remove("method");
+			tag.remove(METHOD_CONST);
 			tag.remove("action");
 			tag.remove("enctype");
 		}
@@ -1824,9 +1826,8 @@ public class Form<T> extends WebMarkupContainer
 
 	private boolean hasDefaultSubmittingComponent()
 	{
-		if (defaultSubmittingComponent instanceof Component)
+		if (defaultSubmittingComponent instanceof Component submittingComponent)
 		{
-			final Component submittingComponent = (Component) defaultSubmittingComponent;
 			return submittingComponent.isVisibleInHierarchy()
 				&& submittingComponent.isEnabledInHierarchy();
 		}

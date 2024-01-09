@@ -41,7 +41,7 @@
          */
         precondition : function (inputField) {
             if (inputField.files && inputField.files.length > 0) {
-                let id = this.varId(inputField.id);
+                var id = this.varId(inputField.id);
                 Wicket.FilesSelected[id] = inputField.files;
                 return true;
             }
@@ -56,9 +56,9 @@
          * @returns array with file infos.
          */
         collectFilesDetails: function(componentId) {
-            let id = this.varId(componentId);
-            let sources = Wicket.FilesSelected[id];
-            let files = [];
+            var id = this.varId(componentId);
+            var sources = Wicket.FilesSelected[id];
+            var files = [];
             for (var i = 0; i < sources.length; i++) {
                 var file = sources[i];
                 var info = {

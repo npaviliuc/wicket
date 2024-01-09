@@ -29,6 +29,9 @@ import org.apache.wicket.util.string.StringValue;
  */
 public class Durations
 {
+	private Durations() {
+		throw new IllegalStateException("Utility class");
+	  }
 
 	public static String toString(final Duration duration, final Locale locale)
 	{

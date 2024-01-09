@@ -19,11 +19,11 @@ package org.apache.wicket.extensions.markup.html.repeater.data.table.filter;
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.Test;
 
-public class FilterFormTest extends WicketTestCase
+class FilterFormTest extends WicketTestCase
 {
 
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		executeTest(FilterFormTestPage.class, "FilterFormTestPage_expected.html");
 	}
 }

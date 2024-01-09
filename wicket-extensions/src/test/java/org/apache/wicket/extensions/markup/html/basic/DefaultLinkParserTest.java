@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * 
  * @author Juergen Donnerstag
  */
-public class DefaultLinkParserTest
+class DefaultLinkParserTest
 {
 	/**
 	 * 

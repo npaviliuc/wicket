@@ -80,7 +80,7 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 		 * <p>
 		 * This is recommended for modern browsers.
 		 */
-		Blob,
+		BLOB_PATTERN,
 
 		/**
 		 * The resource will be downloaded via a temporary created iframe, the resource has to be a
@@ -90,7 +90,7 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 		 * closed automatically on JavaScript <em>unload</em> event, like WebSockets.
 		 * Supports both <em>success</em> and <em>failure</em> callbacks!
 		 */
-		IFrame,
+		IFRAME_PATTERN,
 
 		/**
 		 * The resource will be downloaded by changing the location of the current DOM document,
@@ -100,13 +100,13 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 		 * Does not support {@link AjaxDownloadBehavior#onDownloadFailed(AjaxRequestTarget)} callback,
 		 * i.e. it is not possible to detect when the download has failed!
 		 */
-		SameWindow,
+		SAME_WINDOW,
 
 		/**
 		 * The resource will be downloaded in a new browser window by using JavaScript <code>window.open()</code> API,
 		 * the resource has to be a {@link ContentDisposition#INLINE}.
 		 */
-		NewWindow
+		NEW_WINDOW
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 
 	private PageParameters resourceParameters;
 
-	private Location location = Location.Blob;
+	private Location location = Location.BLOB_PATTERN;
 
 	private CookieDefaults.SameSite sameSite = CookieDefaults.SameSite.Lax;
 
@@ -279,6 +279,9 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 
 	protected void onBeforeDownload(IPartialPageRequestHandler handler)
 	{
+		// This method is intentionally left empty and throws UnsupportedOperationException
+    	// because the onBeforeDownload functionality is not supported or implemented for this component.
+    	// If onBeforeDownload is required for this component, please complete the implementation accordingly.
 	}
 
 	/**
@@ -288,6 +291,11 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 	 */
 	protected void onDownloadSuccess(AjaxRequestTarget target)
 	{
+		// This method is intentionally left empty as a placeholder. The implementation may be
+		// completed in subclasses based on specific requirements. Throwing an UnsupportedOperationException
+		// serves as a reminder that subclasses should override this method to handle the logic
+ 		// related to download success. If the base class has no common behavior to provide, it's
+ 		// recommended to override this method in the subclasses instead of implementing it here.
 	}
 
 	/**
@@ -302,6 +310,8 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 	 */
 	protected void onDownloadFailed(AjaxRequestTarget target)
 	{
+		// This implementation is intentionally left empty, and it throws an UnsupportedOperationException
+ 		// because the concrete subclass should provide its own implementation based on specific requirements.
 	}
 
 	/**
@@ -311,6 +321,11 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 	 */
 	protected void onDownloadCompleted(AjaxRequestTarget target)
 	{
+		// This method is left empty and throws an UnsupportedOperationException by design.
+		// The onDownloadCompleted method is intended to be overridden by subclasses to provide
+		// custom behavior when a download operation is completed. By default, this method
+		// does nothing and throws an UnsupportedOperationException to remind developers to
+		// implement this method in their subclasses.
 	}
 
 	@Override

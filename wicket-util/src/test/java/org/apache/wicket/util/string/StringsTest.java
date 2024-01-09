@@ -51,7 +51,7 @@ class StringsTest
 			Strings.stripJSessionId(url + ";a=b;c=d;jsessionid=12345?param=a;b"));
 
 		// WICKET-6858
-		final Field sessionIdParamField = Strings.class.getDeclaredField("session_id_param");
+		final Field sessionIdParamField = Strings.class.getDeclaredField("sessionIdParam");
 		sessionIdParamField.setAccessible(true);
 		try {
 			final String customSessionIdParam = ";Custom seSsion - ид=";

@@ -17,7 +17,6 @@
 package org.apache.wicket.util.value;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;

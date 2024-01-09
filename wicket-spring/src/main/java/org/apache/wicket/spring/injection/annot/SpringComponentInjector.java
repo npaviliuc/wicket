@@ -60,7 +60,7 @@ public class SpringComponentInjector extends Injector
 	/**
 	 * Metadata key used to store application context in application's metadata
 	 */
-	private static MetaDataKey<ApplicationContext> CONTEXT_KEY = new MetaDataKey<>()
+	private static MetaDataKey<ApplicationContext> contextKey = new MetaDataKey<>()
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -112,7 +112,7 @@ public class SpringComponentInjector extends Injector
 		Args.notNull(ctx, "ctx");
 
 		// store context in application's metadata ...
-		webapp.setMetaData(CONTEXT_KEY, ctx);
+		webapp.setMetaData(contextKey, ctx);
 		fieldValueFactory = new AnnotProxyFieldValueFactory(new ContextLocator(), wrapInProxies);
 		webapp.getBehaviorInstantiationListeners().add(this);
 		bind(webapp);
@@ -153,7 +153,7 @@ public class SpringComponentInjector extends Injector
 		{
 			if (context == null)
 			{
-				context = Application.get().getMetaData(CONTEXT_KEY);
+				context = Application.get().getMetaData(contextKey);
 			}
 			return context;
 		}
@@ -169,7 +169,7 @@ public class SpringComponentInjector extends Injector
 	 */
 	private static ApplicationContext getDefaultContext(final WebApplication webapp)
 	{
-		ApplicationContext context = webapp.getMetaData(CONTEXT_KEY);
+		ApplicationContext context = webapp.getMetaData(contextKey);
 		if (context == null)
 		{
 			context = WebApplicationContextUtils.getRequiredWebApplicationContext(webapp.getServletContext());
@@ -189,9 +189,9 @@ public class SpringComponentInjector extends Injector
 	{
 		Args.notNull(context, "context");
 
-		if (webapp.getMetaData(CONTEXT_KEY) == null)
+		if (webapp.getMetaData(contextKey) == null)
 		{
-			webapp.setMetaData(CONTEXT_KEY, context);
+			webapp.setMetaData(contextKey, context);
 		}
 	}
 }

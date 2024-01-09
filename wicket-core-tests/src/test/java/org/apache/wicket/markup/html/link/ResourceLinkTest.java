@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link ResourceLink}
  */
-public class ResourceLinkTest extends WicketTestCase
+class ResourceLinkTest extends WicketTestCase
 {
 
 	IResource resource = new CharSequenceResource("text", "DATA");
@@ -38,7 +38,7 @@ public class ResourceLinkTest extends WicketTestCase
 	 * Test resource
 	 */
 	@Test
-	public void reference()
+	void reference()
 	{
 		ResourceReference reference = new ResourceReference(ResourceLinkTest.class, "resource") {
 			@Override
@@ -57,7 +57,7 @@ public class ResourceLinkTest extends WicketTestCase
 	 * Test resource
 	 */
 	@Test
-	public void resource()
+	void resource()
 	{
 		PageWithResourceLink page = new PageWithResourceLink(resource);
 		

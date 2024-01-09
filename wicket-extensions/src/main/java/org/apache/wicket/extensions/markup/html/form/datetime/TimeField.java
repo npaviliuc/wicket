@@ -131,13 +131,15 @@ public class TimeField extends FormComponentPanel<LocalTime>
 		super.onInitialize();
 
 		// Create and add the "hours" TextField
-		add(hoursField = newHoursTextField("hours", new HoursModel(), Integer.class));
+		hoursField = newHoursTextField("hours", new HoursModel(), Integer.class);
+		add(hoursField);
 
 		// Create and add the "minutes" TextField
-		add(minutesField = newMinutesTextField("minutes", new MinutesModel(), Integer.class));
+		minutesField = newMinutesTextField("minutes", new MinutesModel(), Integer.class);
+		add(minutesField);
 
 		// Create and add the "AM/PM" choice
-		add(amOrPmChoice = new DropDownChoice<AM_PM>("amOrPmChoice", new AmPmModel(),
+		amOrPmChoice = new DropDownChoice<AM_PM>("amOrPmChoice", new AmPmModel(),
 			Arrays.asList(AM_PM.values())) {
 				private static final long serialVersionUID = 1L;
 
@@ -146,7 +148,8 @@ public class TimeField extends FormComponentPanel<LocalTime>
 			{
 				return true;
 			}
-		});
+		};
+		add(amOrPmChoice);
 	}
 
 	/**
@@ -203,7 +206,7 @@ public class TimeField extends FormComponentPanel<LocalTime>
 	protected TextField<Integer> newMinutesTextField(final String id, IModel<Integer> model,
 		Class<Integer> type)
 	{
-		TextField<Integer> minutesField = new TextField<Integer>(id, model, type)
+		TextField<Integer> minutesFieldVar = new TextField<Integer>(id, model, type)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -234,8 +237,8 @@ public class TimeField extends FormComponentPanel<LocalTime>
 				tag.put("max", 59);
 			}
 		};
-		minutesField.add(new RangeValidator<>(0, 59));
-		return minutesField;
+		minutesFieldVar.add(new RangeValidator<>(0, 59));
+		return minutesFieldVar;
 	}
 
 	@Override

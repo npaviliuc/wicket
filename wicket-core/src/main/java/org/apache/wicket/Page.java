@@ -381,15 +381,17 @@ public abstract class Page extends MarkupContainer
 			@Override
 			public void component(final Component component, final IVisit<Void> visit)
 			{
-				int levels = 0;
-				for (Component current = component; current != null; current = current.getParent())
-				{
-					levels++;
+				if (component != null) {
+					int levels = 0;
+					for (Component current = component; current != null; current = current.getParent())
+					{
+						levels++;
+					}
+					buffer.append(StringValue.repeat(levels, "	"))
+						.append(component.getPageRelativePath())
+						.append(':')
+						.append(Classes.simpleName(component.getClass()));
 				}
-				buffer.append(StringValue.repeat(levels, "	"))
-					.append(component.getPageRelativePath())
-					.append(':')
-					.append(Classes.simpleName(component.getClass()));
 			}
 		});
 		return buffer.toString();
@@ -534,7 +536,7 @@ public abstract class Page extends MarkupContainer
 	 * 
 	 * @see Component#renderPart()
 	 */
-	final void startComponentRender(Component component)
+	final void startComponentRender()
 	{
 		renderedComponents = null;
 	}

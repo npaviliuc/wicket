@@ -17,6 +17,7 @@
 package org.apache.wicket.markup.html.list;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.AbstractRepeater;
@@ -134,6 +135,10 @@ public abstract class Loop extends AbstractRepeater
 			@Override
 			public Component next()
 			{
+				if (!hasNext()) {
+            throw new NoSuchElementException("No more elements in the collection");
+       		 }
+
 				return get(Integer.toString(index++));
 			}
 		};

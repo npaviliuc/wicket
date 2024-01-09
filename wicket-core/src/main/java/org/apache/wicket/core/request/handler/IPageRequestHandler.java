@@ -66,14 +66,13 @@ public interface IPageRequestHandler extends IPageClassRequestHandler
 	 */
 	static Page getPage(IRequestHandler handler)
 	{
-		while (handler instanceof IRequestHandlerDelegate)
+		while (handler instanceof IRequestHandlerDelegate requestHandlerDelegateVar)
 		{
-			handler = ((IRequestHandlerDelegate) handler).getDelegateHandler();
+			handler = (requestHandlerDelegateVar).getDelegateHandler();
 		}
 
-		if (handler instanceof IPageRequestHandler)
+		if (handler instanceof IPageRequestHandler pageHandler)
 		{
-			IPageRequestHandler pageHandler = (IPageRequestHandler) handler;
 			if (pageHandler.isPageInstanceCreated())
 			{
 				return (Page) pageHandler.getPage();

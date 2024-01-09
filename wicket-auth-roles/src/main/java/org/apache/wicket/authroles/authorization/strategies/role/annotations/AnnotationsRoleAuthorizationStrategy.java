@@ -99,7 +99,7 @@ public class AnnotationsRoleAuthorizationStrategy extends AbstractRoleAuthorizat
 	 *            The annotations information
 	 * @return False if the instantiation is not authorized
 	 */
-	private <T extends IRequestableComponent> boolean check(
+	private boolean check(
 		final AuthorizeInstantiation authorizeInstantiationAnnotation)
 	{
 		// We are authorized unless we are found not to be

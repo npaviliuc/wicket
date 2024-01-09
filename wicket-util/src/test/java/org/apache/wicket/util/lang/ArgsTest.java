@@ -46,9 +46,8 @@ class ArgsTest
 	@Test
 	void notEmptyCollection()
 	{
-		assertThrows(IllegalArgumentException.class, () -> {
-			Args.notEmpty(Collections.emptySet(), "col");
-		});
+		Collection<?> collect = Collections.emptySet();
+		assertThrows(IllegalArgumentException.class, () -> Args.notEmpty(collect, "col"));
 	}
 
 	@Test

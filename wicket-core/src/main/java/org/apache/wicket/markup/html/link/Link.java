@@ -80,6 +80,8 @@ public abstract class Link<T> extends AbstractLink implements IRequestListener, 
 {
 	private static final long serialVersionUID = 1L;
 
+	private static final String CLICK_CONST = "click";
+
 	/**
 	 * An anchor (form 'http://server/app/etc#someAnchor') will be appended to the link so that
 	 * after this link executes, it will jump to the provided anchor component's position. The
@@ -400,7 +402,7 @@ public abstract class Link<T> extends AbstractLink implements IRequestListener, 
 			final CharSequence onClickJavaScript = getOnClickScript(url);
 			if (onClickJavaScript != null)
 			{
-				response.render(OnEventHeaderItem.forComponent(this, "click", onClickJavaScript));
+				response.render(OnEventHeaderItem.forComponent(this, CLICK_CONST, onClickJavaScript));
 				return;
 			}
 
@@ -408,7 +410,7 @@ public abstract class Link<T> extends AbstractLink implements IRequestListener, 
 			if (popupSettings != null)
 			{
 				popupSettings.setTarget("'" + url + "'");
-				response.render(OnEventHeaderItem.forComponent(this, "click",
+				response.render(OnEventHeaderItem.forComponent(this, CLICK_CONST,
 					popupSettings.getPopupJavaScript()));
 				return;
 			}
@@ -422,11 +424,10 @@ public abstract class Link<T> extends AbstractLink implements IRequestListener, 
 				// generate an onclick JS handler directly
 				// in firefox when the element is quickly clicked 3 times a second request is
 				// generated during page load. This check ensures that the click is ignored
-				response.render(OnEventHeaderItem.forComponent(this, "click",
+				response.render(OnEventHeaderItem.forComponent(this, CLICK_CONST,
 					"var win = this.ownerDocument.defaultView || this.ownerDocument.parentWindow; "
 						+ "if (win == window) { window.location.href='" + url
 						+ "'; } ;return false"));
-				return;
 			}
 		}
 	}

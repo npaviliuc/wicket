@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 
  * @since 1.5.7
  */
-public class AllVisitFilterTest
+class AllVisitFilterTest
 {
 	/**
 	 * @throws Exception

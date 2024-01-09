@@ -113,6 +113,6 @@ public abstract class GenericBaseModel<T> implements IObjectClassAwareModel<T>
 			return false;
 		}
 		GenericBaseModel<?> that = (GenericBaseModel<?>)obj;
-		return Objects.equal(object, that.object);
+		return Objects.areEquals(object, that.object);
 	}
 }

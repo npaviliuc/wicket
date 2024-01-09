@@ -19,7 +19,6 @@ package org.apache.wicket.markup.html.form;
 import org.apache.wicket.Component;
 import org.apache.wicket.IRequestListener;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -85,6 +84,9 @@ public class FormComponentUpdatingBehavior extends Behavior implements IRequestL
 	 */
 	protected void onBind()
 	{
+		// This method is intentionally left empty and throws an UnsupportedOperationException
+    	// as it is meant to be overridden by subclasses. Subclasses should provide their own
+    	// implementation of onBind() based on their specific requirements.
 	}
 
 	/**
@@ -203,6 +205,9 @@ public class FormComponentUpdatingBehavior extends Behavior implements IRequestL
 	 */
 	protected void onUpdate()
 	{
+		// This method is intentionally left empty and throws an UnsupportedOperationException
+    	// as it is meant to be overridden by subclasses. Subclasses should provide their own
+    	// implementation of onUpdate() based on their specific requirements.
 	}
 
 	/**
@@ -246,11 +251,17 @@ public class FormComponentUpdatingBehavior extends Behavior implements IRequestL
 				@Override
 				public void onError()
 				{
+					// This method is intentionally left empty and throws an UnsupportedOperationException
+    				// as it is meant to be overridden by subclasses. Subclasses should provide their own
+    				// implementation of onError() based on their specific requirements.
 				}
 
 				@Override
 				public void onAfterSubmit()
 				{
+					// This method is intentionally left empty and throws an UnsupportedOperationException
+    				// as it is meant to be overridden by subclasses. Subclasses should provide their own
+    				// implementation of onAfterSubmit() based on their specific requirements.
 				}
 
 				@Override

@@ -17,6 +17,7 @@
 package org.apache.wicket.markup.repeater.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.apache.wicket.model.IModel;
 
@@ -70,6 +71,9 @@ public abstract class ArrayIteratorAdapter<T> implements Iterator<IModel<T>>
 	@Override
 	public IModel<T> next()
 	{
+		if (!hasNext()) {
+            throw new NoSuchElementException("No more elements in the collection");
+			}
 		return model(array[pos++]);
 	}
 

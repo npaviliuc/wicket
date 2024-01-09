@@ -154,9 +154,8 @@ public class SecuredRemoteAddressRequestWrapperFactory extends AbstractRequestWr
 
 		if (log.isDebugEnabled())
 		{
-			log.debug("Incoming request uri=" + request.getRequestURI() + " with originalSecure='" +
-				request.isSecure() + "', remoteAddr='" + request.getRemoteAddr() +
-				"' will be seen with newSecure='" + xRequest.isSecure() + "'");
+			log.debug(String.format("Incoming request uri=%s with originalSecure='%s', remoteAddr='%s' will be seen with newSecure='%s'"),
+					 request.getRequestURI(), request.isSecure(), request.getRemoteAddr(), xRequest.isSecure());
 		}
 
 		return xRequest;

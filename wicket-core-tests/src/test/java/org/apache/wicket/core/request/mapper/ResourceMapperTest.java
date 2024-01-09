@@ -182,7 +182,7 @@ class ResourceMapperTest extends WicketTestCase
 		assertEquals("fred", paramName.toString());
 
 		List<StringValue> foo = params.getValues("foo");
-		assertNotNull(foo.size() == 2);
+		assertNotNull(foo.size());
 		assertEquals("bar", foo.get(0).toString(""));
 		assertEquals("baz", foo.get(1).toString(""));
 
