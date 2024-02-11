@@ -152,15 +152,15 @@ public class FileSystemResource extends AbstractResource
 	 */
 	protected String getMimeType() throws IOException
 	{
-		final Path path = getPath(); 
+		final Path filePath = getPath(); 
 		String mimeType = null;
 		if (Application.exists())
 		{
-			mimeType = Application.get().getMimeType(path.getFileName().toString());
+			mimeType = Application.get().getMimeType(filePath.getFileName().toString());
 		}
 		if (mimeType == null)
 		{
-			mimeType = Files.probeContentType(path);
+			mimeType = Files.probeContentType(filePath);
 		}
 		return mimeType;
 	}

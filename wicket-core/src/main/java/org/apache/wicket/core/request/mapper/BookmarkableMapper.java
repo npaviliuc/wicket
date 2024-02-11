@@ -83,12 +83,9 @@ public class BookmarkableMapper extends AbstractBookmarkableMapper
 	@Override
 	protected UrlInfo parseRequest(Request request)
 	{
-		if (Application.exists())
+		if (Application.exists() && Application.get().getSecuritySettings().getEnforceMounts())
 		{
-			if (Application.get().getSecuritySettings().getEnforceMounts())
-			{
-				return null;
-			}
+			return null;
 		}
 
 		if (matches(request))
@@ -118,7 +115,7 @@ public class BookmarkableMapper extends AbstractBookmarkableMapper
 
 			Class<? extends IRequestablePage> pageClass = getPageClass(className);
 
-			if (pageClass != null && IRequestablePage.class.isAssignableFrom(pageClass))
+			if ((pageClass != null) && IRequestablePage.class.isAssignableFrom(pageClass))
 			{
 				// extract the PageParameters from URL if there are any
 				PageParameters pageParameters = extractPageParameters(request, 3,

@@ -138,7 +138,7 @@ public class CompoundRequestMapper implements ICompoundRequestMapper
 
 		if (LOG.isDebugEnabled())
 		{
-			logMappers(list, request.getUrl().toString());
+			logMappers(list);
 		}
 
 		for (MapperWithScore mapperWithScore : list)
@@ -162,7 +162,7 @@ public class CompoundRequestMapper implements ICompoundRequestMapper
 	 * @param url
 	 *      the url to match by these mappers
 	 */
-	private void logMappers(final List<MapperWithScore> mappersWithScores, final String url)
+	private void logMappers(final List<MapperWithScore> mappersWithScores)
 	{
 		final List<MapperWithScore> compatibleMappers = new ArrayList<>();
 		for (MapperWithScore mapperWithScore : mappersWithScores)

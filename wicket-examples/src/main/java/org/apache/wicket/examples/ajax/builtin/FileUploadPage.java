@@ -104,11 +104,13 @@ public class FileUploadPage extends BasePage
 			add(form);
 
 			// create a textfield to demo non-file content
-			form.add(text = new TextField<>("text", Model.of()));
+			text = new TextField<>("text", Model.of());
+			form.add(text);
 			text.add(StringValidator.minimumLength(2));
 
 			// create the file upload field
-			form.add(file = new FileUploadField("file"));
+			file = new FileUploadField("file");
+			form.add(file);
 
 			selectedFileInfo = new Label("selectedFileInfo", (IModel<String>) () -> fileInfo) {
 				@Override

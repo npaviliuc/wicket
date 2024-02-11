@@ -44,6 +44,7 @@ public final class Home extends WicketExamplePage
 	/**
 	 * Constructor
 	 */
+	private static final String VIDEO_MIME_TYPE = "video/mp4";
 	public Home()
 	{
 		// Internal video with several options
@@ -55,7 +56,7 @@ public final class Home extends WicketExamplePage
 		video1.setLooping(false);
 		video1.setWidth(320);
 		video1.setHeight(240);
-		video1.setType("video/mp4");
+		video1.setType(VIDEO_MIME_TYPE);
 		video1.setPoster(new PackageResourceReference(Home.class, "novideo.gif"));
 		add(video1);
 
@@ -85,19 +86,11 @@ public final class Home extends WicketExamplePage
 		add(video3);
 
 		/*
-		 * // video with track Video video4 = new Video("video4", new
-		 * PackageResourceReference(Home.class, "dummyVideo.m4a"));
-		 *
 		 * // source tag Source source4 = new Source("source4",
 		 * "http://www.mytestpage.xc/video.m4a"); source4.setMedia("screen and (device-width:500px)"
-		 * ); source4.setType("video/mp4"); source4.setDisplayType(true); video4.add(source4);
 		 *
 		 * // tack tag Track track4 = new Track("track4", new PackageResourceReference(Home.class,
-		 * "dummySubtitles.vtt")); track4.setKind(Kind.subtitles); track4.setLabel(
-		 * "Subtitles of video"); track4.setSrclang(Locale.GERMANY); track4.setDefaultTrack(true);
-		 * video4.add(track4);
-		 *
-		 * add(video4);
+		 * "dummySubtitles.vtt")); track4.setKind(Kind.subtitles); track4.setLabel
 		 */
 	}
 

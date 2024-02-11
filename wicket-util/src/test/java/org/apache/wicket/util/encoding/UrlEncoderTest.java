@@ -33,7 +33,7 @@ class UrlEncoderTest
 	private static final Charset CHARSET = StandardCharsets.UTF_8;
 
 	@Test
-	public void pathUnencoded()  {
+	 void pathUnencoded()  {
 		String unencoded = "azAZ09.-_~!$&*+,;=:@";
 		
 		assertEquals(unencoded, UrlEncoder.PATH_INSTANCE.encode(unencoded, CHARSET));
@@ -48,7 +48,7 @@ class UrlEncoderTest
 	}
 
 	@Test
-	public void queryStringUnencoded()  {
+	 void queryStringUnencoded()  {
 		String unencoded = "azAZ09.-_~!$*,:@/";
 		
 		assertEquals(unencoded, UrlEncoder.QUERY_INSTANCE.encode(unencoded, CHARSET));
@@ -63,7 +63,7 @@ class UrlEncoderTest
 	}
 	
 	@Test
-	public void headerUnencoded()  {
+	 void headerUnencoded()  {
 		String unencoded = "azAZ09.-_~!$&+#^`|";
 		
 		assertEquals(unencoded, UrlEncoder.HEADER_INSTANCE.encode(unencoded, CHARSET));

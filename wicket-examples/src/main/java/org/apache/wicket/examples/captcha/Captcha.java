@@ -17,6 +17,7 @@
 package org.apache.wicket.examples.captcha;
 
 import org.apache.wicket.examples.WicketExamplePage;
+import java.security.SecureRandom;
 
 /**
  * Captcha example page.
@@ -41,7 +42,8 @@ public class Captcha extends WicketExamplePage
 
 	static int randomInt(int min, int max)
 	{
-		return (int)(Math.random() * (max - min) + min);
+		SecureRandom secureRandom = new SecureRandom();
+		return (int)(secureRandom.nextDouble() * (max - min) + min);
 	}
 
 	static String randomString(int min, int max)

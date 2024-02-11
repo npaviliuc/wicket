@@ -29,6 +29,7 @@ import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.string.AppendingStringBuffer;
+import java.security.SecureRandom;
 
 
 /**
@@ -83,7 +84,8 @@ public class Index extends WicketExamplePage
 			{
 				IRequestHandler handler = new ListenerRequestHandler(new PageAndComponentProvider(getPage(), this));
 				Url componentUrl = RequestCycle.get().mapUrlFor(handler);
-				componentUrl.addQueryParameter("anticache", Math.random());
+				SecureRandom secureRandom = new SecureRandom();
+				componentUrl.addQueryParameter("anticache", secureRandom.nextDouble());
 				return new AppendingStringBuffer("new Ajax.Updater('counter', '").append(
 					componentUrl)
 					.append("', {method:'get'}); return false;")

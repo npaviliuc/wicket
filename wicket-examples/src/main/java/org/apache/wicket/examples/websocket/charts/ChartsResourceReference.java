@@ -44,7 +44,7 @@ public class ChartsResourceReference extends JavaScriptResourceReference
 	@Override
 	public List<HeaderItem> getDependencies()
 	{
-		List<HeaderItem> dependencies = new ArrayList<HeaderItem>();
+		List<HeaderItem> dependencies = new ArrayList<>();
 		dependencies.add(JavaScriptHeaderItem.forReference(new UrlResourceReference(Url.parse("https://www.google.com/jsapi"))));
 		dependencies.add(JavaScriptHeaderItem.forReference(WicketWebSocketJQueryResourceReference.get()));
 		return dependencies;

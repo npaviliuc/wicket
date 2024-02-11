@@ -19,6 +19,7 @@ package org.apache.wicket.core.request.mapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -38,6 +39,8 @@ import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ResourceMapperTest extends WicketTestCase
 {
@@ -98,35 +101,13 @@ class ResourceMapperTest extends WicketTestCase
 		};
 	}
 
-	/**
-	 * testInvalidPathIsEmpty()
-	 */
-	@Test
-	void invalidPathIsEmpty()
-	{
-		IRequestHandler requestHandler = mapper.mapRequest(createRequest(""));
-		assertNull(requestHandler);
-	}
-
-	/**
-	 * testInvalidPathIsMismatch()
-	 */
-	@Test
-	void invalidPathIsMismatch()
-	{
-		IRequestHandler requestHandler = mapper.mapRequest(createRequest("test/resourcex"));
-		assertNull(requestHandler);
-	}
-
-	/**
-	 * testInvalidPathIsTooShort()
-	 */
-	@Test
-	void invalidPathIsTooShort()
-	{
-		IRequestHandler requestHandler = mapper.mapRequest(createRequest("test"));
-		assertNull(requestHandler);
-	}
+	@ParameterizedTest
+    @ValueSource(strings = {"", "test/resourcex", "test"})
+    void invalidPaths(String path)
+    {
+        IRequestHandler requestHandler = mapper.mapRequest(createRequest(path));
+        assertNull(requestHandler);
+    }
 
 	/**
 	 * testValidPathWithParams()
@@ -182,7 +163,7 @@ class ResourceMapperTest extends WicketTestCase
 		assertEquals("fred", paramName.toString());
 
 		List<StringValue> foo = params.getValues("foo");
-		assertNotNull(foo.size());
+		assertNotEquals(0, foo.size());
 		assertEquals("bar", foo.get(0).toString(""));
 		assertEquals("baz", foo.get(1).toString(""));
 

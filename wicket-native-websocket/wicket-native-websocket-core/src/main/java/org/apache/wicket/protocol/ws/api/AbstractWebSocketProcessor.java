@@ -372,33 +372,33 @@ public abstract class AbstractWebSocketProcessor implements IWebSocketProcessor
 	private WebSocketPayload<?> createEventPayload(IWebSocketMessage message, WebSocketRequestHandler handler)
 	{
 		final WebSocketPayload<?> payload;
-		if (message instanceof TextMessage)
+		if (message instanceof TextMessage messageCast)
 		{
-			payload = new WebSocketTextPayload((TextMessage) message, handler);
+			payload = new WebSocketTextPayload(messageCast, handler);
 		}
-		else if (message instanceof BinaryMessage)
+		else if (message instanceof BinaryMessage messageCast)
 		{
-			payload = new WebSocketBinaryPayload((BinaryMessage) message, handler);
+			payload = new WebSocketBinaryPayload(messageCast, handler);
 		}
-		else if (message instanceof ConnectedMessage)
+		else if (message instanceof ConnectedMessage messageCast)
 		{
-			payload = new WebSocketConnectedPayload((ConnectedMessage) message, handler);
+			payload = new WebSocketConnectedPayload(messageCast, handler);
 		}
-		else if (message instanceof ClosedMessage)
+		else if (message instanceof ClosedMessage messageCast)
 		{
-			payload = new WebSocketClosedPayload((ClosedMessage) message, handler);
+			payload = new WebSocketClosedPayload(messageCast, handler);
 		}
-		else if (message instanceof ErrorMessage)
+		else if (message instanceof ErrorMessage messageCast)
 		{
-			payload = new WebSocketErrorPayload((ErrorMessage) message, handler);
+			payload = new WebSocketErrorPayload(messageCast, handler);
 		}
-		else if (message instanceof AbortedMessage)
+		else if (message instanceof AbortedMessage messageCast)
 		{
-			payload = new WebSocketAbortedPayload((AbortedMessage) message, handler);
+			payload = new WebSocketAbortedPayload(messageCast, handler);
 		}
-		else if (message instanceof IWebSocketPushMessage)
+		else if (message instanceof IWebSocketPushMessage messageCast)
 		{
-			payload = new WebSocketPushPayload((IWebSocketPushMessage) message, handler);
+			payload = new WebSocketPushPayload(messageCast, handler);
 		}
 		else
 		{

@@ -61,7 +61,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.apache.wicket.util.diff.myers.MyersDiff;
 
@@ -289,7 +289,7 @@ public class Diff extends ToString
 	 */
 	public static Object[] randomEdit(final Object[] text)
 	{
-		return randomEdit(text, text.length);
+		return randomEdit2(text);
 	}
 
 	/**
@@ -297,14 +297,12 @@ public class Diff extends ToString
 	 * 
 	 * @param text
 	 *            The input sequence.
-	 * @param seed
-	 *            A seed value for the randomizer.
 	 * @return The sequence with random edits performed.
 	 */
-	public static Object[] randomEdit(final Object[] text, final long seed)
+	public static Object[] randomEdit2(final Object[] text)
 	{
 		List<Object> result = new ArrayList<>(Arrays.asList(text));
-		Random r = new Random(seed);
+		SecureRandom r = new SecureRandom();
 		int nops = r.nextInt(10);
 		for (int i = 0; i < nops; i++)
 		{
@@ -343,8 +341,6 @@ public class Diff extends ToString
 	 * 
 	 * @param text
 	 *            the input sequence.
-	 * @param seed
-	 *            a seed value for randomizing the generation.
 	 * @return The shuffled sequence.
 	 */
 	public static Object[] shuffle(final Object[] text, final long seed)
@@ -363,7 +359,7 @@ public class Diff extends ToString
 	 */
 	public static Object[] randomSequence(final int size)
 	{
-		return randomSequence(size, size);
+		return randomSequence2(size);
 	}
 
 	/**
@@ -371,14 +367,12 @@ public class Diff extends ToString
 	 * 
 	 * @param size
 	 *            the size of the sequence to generate.
-	 * @param seed
-	 *            a seed value for randomizing the generation.
 	 * @return The generated sequence.
 	 */
-	public static Object[] randomSequence(final int size, final long seed)
+	public static Object[] randomSequence2(final int size)
 	{
 		Integer[] result = new Integer[size];
-		Random r = new Random(seed);
+		SecureRandom r = new SecureRandom();
 		for (int i = 0; i < result.length; i++)
 		{
 			result[i] = r.nextInt(size);

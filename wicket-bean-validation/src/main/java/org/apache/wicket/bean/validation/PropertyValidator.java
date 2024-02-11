@@ -222,7 +222,7 @@ public class PropertyValidator<T> extends Behavior implements INullAcceptingVali
 			
 			if (config.isRequiredConstraint(constraint))
 			{
-				if (canApplyToDefaultGroup(constraint) && groups.size() == 0)
+				if (canApplyToDefaultGroup(constraint) && groups.isEmpty())
 				{
 					return true;
 				}

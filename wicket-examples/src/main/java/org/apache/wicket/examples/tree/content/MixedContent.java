@@ -18,6 +18,7 @@ package org.apache.wicket.examples.tree.content;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.security.SecureRandom;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.examples.tree.Foo;
@@ -42,7 +43,8 @@ public class MixedContent extends Content
 	@Override
 	public Component newContentComponent(String id, final AbstractTree<Foo> tree, IModel<Foo> model)
 	{
-		int index = (int)(Math.random() * contents.size()) % contents.size();
+		SecureRandom secureRandom = new SecureRandom();
+		int index = (int)(secureRandom.nextDouble() * contents.size()) % contents.size();
 
 		return contents.get(index).newContentComponent(id, tree, model);
 	}

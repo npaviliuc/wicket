@@ -332,25 +332,20 @@ public class ReloadingClassLoader extends URLClassLoader
 			if (clzFile.exists())
 			{
 				log.info("Watching changes of class " + clzFile);
-				watcher.add(clzFile, new IChangeListener<IModifiable>()
-				{
-					@Override
-					public void onChange(IModifiable modifiable)
+				watcher.add(clzFile, modifiable -> {
+					log.info("Class file " + finalClzFile + " has changed, reloading");
+					try
 					{
-						log.info("Class file " + finalClzFile + " has changed, reloading");
-						try
-						{
-							listener.onChange(clz);
-						}
-						catch (Exception e)
-						{
-							log.error("Could not notify listener", e);
-							// If an error occurs when the listener is notified,
-							// remove the watched object to avoid rethrowing the
-							// exception at next check
-							// FIXME check if class file has been deleted
-							watcher.remove(finalClzFile);
-						}
+						listener.onChange(clz);
+					}
+					catch (Exception e)
+					{
+						log.error("Could not notify listener", e);
+						// If an error occurs when the listener is notified,
+						// remove the watched object to avoid rethrowing the
+						// exception at next check
+						// FIXME check if class file has been deleted
+						watcher.remove(finalClzFile);
 					}
 				});
 				break;

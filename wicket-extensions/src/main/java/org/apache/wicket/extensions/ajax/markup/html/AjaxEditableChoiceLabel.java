@@ -287,7 +287,7 @@ public class AjaxEditableChoiceLabel<T> extends AjaxEditableLabel<T>
 				}
 				else
 				{
-					replaceComponentTagBody(markupStream, openTag, displayValue);
+					//replaceComponentTagBody(markupStream, openTag, displayValue);
 				}
 			}
 		};

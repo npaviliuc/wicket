@@ -47,7 +47,7 @@ public class OrderByBorder<S> extends Border
 
 	private final ISortStateLocator<S> stateLocator;
 
-	private final S property;
+	private final transient S property;
 
 	/**
 	 * @param id

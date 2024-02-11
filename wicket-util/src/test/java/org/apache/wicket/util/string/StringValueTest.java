@@ -130,7 +130,7 @@ class StringValueTest
 	}
 
 	@Test
-	public void enums()
+	 void enums()
 	{
 		assertEquals(TestEnum.FOO, new StringValue("FOO").toEnum(TestEnum.class));
 		assertEquals(TestEnum.FOO, new StringValue("FOO").toEnum(TestEnum.BAR));

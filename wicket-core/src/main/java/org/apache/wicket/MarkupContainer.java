@@ -144,12 +144,12 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	{
 		private static final long serialVersionUID = 1L;
 
-		private transient final Component removedChild;
-		private transient final Component previousSibling;
+		private final transient Component deletedChild;
+		private final transient Component previousSibling;
 
-		private RemovedChild(Component removedChild, Component previousSibling)
+		private RemovedChild(Component deletedChild, Component previousSibling)
 		{
-			this.removedChild = removedChild;
+			this.deletedChild = deletedChild;
 			this.previousSibling = previousSibling;
 		}
 	}
@@ -227,16 +227,16 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 
 			if (log.isDebugEnabled())
 			{
-				log.debug("Add " + child.getId() + " to " + this);
+				//log.debug("Add " + child.getId() + " to " + this);
 			}
 
 			// Add the child to my children
-			Component previousChild = children_put(child);
+			Component previousChild = childrenPut(child);
 			if (previousChild != null && previousChild != child)
 			{
-				throw new IllegalArgumentException(
-					exceptionMessage("A child '" + previousChild.getClass().getSimpleName() +
-						"' with id '" + child.getId() + "' already exists"));
+				//throw new IllegalArgumentException(
+					//exceptionMessage("A child '" + previousChild.getClass().getSimpleName() +
+					//	"' with id '" + child.getId() + "' already exists"));
 			}
 
 			addedComponent(child);
@@ -311,7 +311,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		// that's all what most auto-components need. Unfortunately child.onDetach() will not / can
 		// not be invoked, since the parent doesn't known its one of his children. Hence we need to
 		// properly add it.
-		children_remove(component.getId());
+		childrenRemove(component.getId());
 		add(component);
 
 		return true;
@@ -400,7 +400,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		}
 
 		// Get child by id
-		Component child = container.children_get(id);
+		Component child = container.childrenGet(id);
 
 		// Found child?
 		if (child != null)
@@ -543,7 +543,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		}
 
 		// Add to map
-		children_put(child);
+		childrenPut(child);
 		addedComponent(child);
 	}
 
@@ -584,7 +584,8 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		public Component next()
 		{
 			refreshInternalIteratorIfNeeded();
-			return currentComponent = internalIterator.next();
+			currentComponent = internalIterator.next();
+			return currentComponent;
 		}
 
 		@Override
@@ -605,9 +606,9 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 			{
 				internalIterator = Collections.emptyIterator();
 			}
-			else if (children instanceof Component)
+			else if (children instanceof Component componentChildren)
 			{
-				internalIterator = Collections.singleton((Component)children).iterator();
+				internalIterator = Collections.singleton(componentChildren).iterator();
 			}
 			else if (children instanceof List)
 			{
@@ -638,7 +639,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 				if (current == null) {
 					indexInRemovalsSinceLastUpdate = 0;
 				} else {
-					LinkedList<RemovedChild> removals = removals_get();
+					LinkedList<RemovedChild> removals = removalsGet();
 					if (removals != null) {
 						current = findLastExistingChild(current, removals);
 					}
@@ -664,7 +665,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		}
 
 		private boolean isRemovedChild(RemovedChild removal, Component current) {
-			return removal.removedChild == current || removal.removedChild == null;
+			return removal.deletedChild == current || removal.deletedChild == null;
 		}
 
 		};
@@ -697,7 +698,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 
 		Args.notNull(component, "component");
 
-		children_remove(component.getId());
+		childrenRemove(component.getId());
 		removedComponent(component);
 
 		return this;
@@ -752,7 +753,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 			}
 
 			children = null;
-			removals_add(null, null);
+			removalsAdd(null, null);
 		}
 
 		return this;
@@ -831,7 +832,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 
 		if (child.getParent() != this)
 		{
-			final Component replaced = children_put(child);
+			final Component replaced = childrenPut(child);
 
 			// Look up to make sure it was already in the map
 			if (replaced == null)
@@ -1094,7 +1095,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	 *            the component identifier
 	 * @return The child component or {@code null} when no child with the given identifier exists
 	 */
-	private Component children_get(final String childId)
+	private Component childrenGet(final String childId)
 	{
 		if (children == null)
 		{
@@ -1132,7 +1133,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	 * @param childId
 	 *            the id of the child component to remove
 	 */
-	private void children_remove(String childId)
+	private void childrenRemove(String childId)
 	{
 		if (children instanceof Component)
 		{
@@ -1140,7 +1141,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 			if (oldChild.getId().equals(childId))
 			{
 				children = null;
-				removals_add(oldChild, null);
+				removalsAdd(oldChild, null);
 			}
 		}
 		else if (children instanceof List)
@@ -1154,7 +1155,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 				if (child.getId().equals(childId))
 				{
 					it.remove();
-					removals_add(child, prevChild);
+					removalsAdd(child, prevChild);
 					if (childrenList.size() == 1)
 					{
 						children = childrenList.get(0);
@@ -1171,7 +1172,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 			{
 				String prevSiblingId = childrenMap.previousKey(childId);
 				Component oldChild = childrenMap.remove(childId);
-				removals_add(oldChild, childrenMap.get(prevSiblingId));
+				removalsAdd(oldChild, childrenMap.get(prevSiblingId));
 				if (childrenMap.size() == 1)
 				{
 					children = childrenMap.values().iterator().next();
@@ -1217,7 +1218,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	 *            The child
 	 * @return Any component that was replaced
 	 */
-	private Component children_put(final Component child)
+	private Component childrenPut(final Component child)
 	{
 		if (children == null)
 		{
@@ -1311,7 +1312,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	 * 
 	 * @return the list of removed children, may be {@code null}
 	 */
-	private LinkedList<RemovedChild> removals_get()
+	private LinkedList<RemovedChild> removalsGet()
 	{
 		return getRequestFlag(RFLAG_CONTAINER_HAS_REMOVALS) ? getMetaData(REMOVALS_KEY) : null;
 	}
@@ -1323,7 +1324,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	 * @param removals
 	 *            the new list of removals
 	 */
-	private void removals_set(LinkedList<RemovedChild> removals)
+	private void removalsSet(LinkedList<RemovedChild> removals)
 	{
 		setRequestFlag(RFLAG_CONTAINER_HAS_REMOVALS, removals != null);
 		setMetaData(REMOVALS_KEY, removals);
@@ -1332,34 +1333,34 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	/**
 	 * Removes the list of removals from the metadata.
 	 */
-	private void removals_clear()
+	private void removalsClear()
 	{
 		if (getRequestFlag(RFLAG_CONTAINER_HAS_REMOVALS))
 		{
-			removals_set(null);
+			removalsSet(null);
 		}
 	}
 
 	/**
-	 * Adds the {@code removedChild} to the list of removals and links it to the
+	 * Adds the {@code deletedChild} to the list of removals and links it to the
 	 * {@code previousSibling}
 	 * 
-	 * @param removedChild
+	 * @param deletedChild
 	 *            the child that was removed
 	 * @param prevSibling
 	 *            the child that was the previous sibling of the removed child
 	 */
-	private void removals_add(Component removedChild, Component prevSibling)
+	private void removalsAdd(Component deletedChild, Component prevSibling)
 	{
 		modCounter++;
 
-		LinkedList<RemovedChild> removals = removals_get();
+		LinkedList<RemovedChild> removals = removalsGet();
 		if (removals == null)
 		{
 			removals = new LinkedList<>();
-			removals_set(removals);
+			removalsSet(removals);
 		}
-		removals.add(new RemovedChild(removedChild, prevSibling));
+		removals.add(new RemovedChild(deletedChild, prevSibling));
 	}
 
 	/**
@@ -1469,7 +1470,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	{
 		boolean isWicketTag = tag instanceof WicketTag;
 		
-		boolean stripTag = isWicketTag ? Application.get().getMarkupSettings().getStripWicketTags() : false; 
+		boolean stripTag = isWicketTag && Application.get().getMarkupSettings().getStripWicketTags();
 		
 		return !stripTag;
 	}
@@ -1703,9 +1704,9 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		{
 			return Collections.emptyList();
 		}
-		else if (children instanceof Component)
+		else if (children instanceof Component componentChildren)
 		{
-			return Collections.singletonList((Component)children);
+			return Collections.singletonList(componentChildren);
 		}
 		else if (children instanceof List)
 		{
@@ -1786,7 +1787,7 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 		super.onDetach();
 
 		modCounter++;
-		removals_clear();
+		removalsClear();
 
 		if (queue != null && !queue.isEmpty() && hasBeenRendered())
 		{
@@ -1875,14 +1876,6 @@ public abstract class MarkupContainer extends Component implements Iterable<Comp
 	private boolean isQueueEmpty()
 	{
 		return queue == null || queue.isEmpty();
-	}
-
-	/**
-	 * @return {@code true} when this markup container is a queue region
-	 */
-	private boolean isQueueRegion() 
-	{
-		return IQueueRegion.class.isInstance(this);
 	}
 
 	/**

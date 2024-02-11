@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.wicket.request.Url;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Tests for {@link UrlPathPageParametersEncoder}
@@ -77,103 +79,23 @@ class UrlPathPageParametersEncoderTest
 		assertThrows(IllegalArgumentException.class, () -> encoder.encodePageParameters(params));
 	}
 
-	/**
-	 * Decode properly encoded parameters
-	 */
-	@Test
-	void decodeUrl()
-	{
-		Url url = Url.parse("name1/value1/name2/value2");
+	@ParameterizedTest
+    @CsvSource({
+            "name1/value1/name2/value2, 2, name1, value1, name2, value2",
+            "name1/value1/name2/value2/, 2, name1, value1, name2, value2",
+            "name1/value1/name2/value2/name3, 2, name1, value1, name2, value2",
+            "/name1/value1/name2/value2, 2, name1, value1, name2, value2",
+            "name1/value1////name2/value2, 2, name1, value1, name2, value2",
+            "name1/value1////name2//, 2, name1, value1, name2, ''"
+    })
+    void decodeUrl(String urlString, int expectedSize, String key1, String value1, String key2, String value2) {
+        Url url = Url.parse(urlString);
 
-		UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
-		PageParameters parameters = decoder.decodePageParameters(url);
+        UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
+        PageParameters parameters = decoder.decodePageParameters(url);
 
-		assertEquals(2, parameters.getAllNamed().size());
-		assertEquals("value1", parameters.get("name1").toString());
-		assertEquals("value2", parameters.get("name2").toString());
-	}
-
-	/**
-	 * Decode encoded parameters with trailing slash. The parameter with the empty name should be
-	 * ignored
-	 */
-	@Test
-	void decodeUrlWithTrailingSlash()
-	{
-		Url url = Url.parse("name1/value1/name2/value2/");
-
-		UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
-		PageParameters parameters = decoder.decodePageParameters(url);
-
-		assertEquals(2, parameters.getAllNamed().size());
-		assertEquals("value1", parameters.get("name1").toString());
-		assertEquals("value2", parameters.get("name2").toString());
-	}
-
-	/**
-	 * Decode encoded parameters with trailing slash. The parameter with the empty value should be
-	 * ignored
-	 */
-	@Test
-	void decodeUrlWithTrailingSlashAfterName()
-	{
-		Url url = Url.parse("name1/value1/name2/value2/name3");
-
-		UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
-		PageParameters parameters = decoder.decodePageParameters(url);
-
-		assertEquals(2, parameters.getAllNamed().size());
-		assertEquals("value1", parameters.get("name1").toString());
-		assertEquals("value2", parameters.get("name2").toString());
-	}
-
-	/**
-	 * Decode encoded parameters with a leading slash. The empty name segment should be ignored.
-	 */
-	@Test
-	void decodeUrlWithLeadingSlash()
-	{
-		Url url = Url.parse("/name1/value1/name2/value2");
-
-		UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
-		PageParameters parameters = decoder.decodePageParameters(url);
-
-		assertEquals(2, parameters.getAllNamed().size());
-		assertEquals("value1", parameters.get("name1").toString());
-		assertEquals("value2", parameters.get("name2").toString());
-	}
-
-	/**
-	 * Decode encoded parameters with a slashes in the middle. The empty name segments should be
-	 * ignored.
-	 */
-	@Test
-	void decodeUrlWithSlashesInTheMiddle()
-	{
-		Url url = Url.parse("name1/value1////name2/value2");
-
-		UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
-		PageParameters parameters = decoder.decodePageParameters(url);
-
-		assertEquals(2, parameters.getAllNamed().size());
-		assertEquals("value1", parameters.get("name1").toString());
-		assertEquals("value2", parameters.get("name2").toString());
-	}
-
-	/**
-	 * Decode encoded parameters with a slashes in the middle. The empty name segments should be
-	 * ignored.
-	 */
-	@Test
-	void decodeUrlWithSlashesInTheMiddleAndEmptyValue()
-	{
-		Url url = Url.parse("name1/value1////name2//");
-
-		UrlPathPageParametersEncoder decoder = new UrlPathPageParametersEncoder();
-		PageParameters parameters = decoder.decodePageParameters(url);
-
-		assertEquals(2, parameters.getAllNamed().size());
-		assertEquals("value1", parameters.get("name1").toString());
-		assertEquals("", parameters.get("name2").toString());
-	}
+        assertEquals(expectedSize, parameters.getAllNamed().size());
+        assertEquals(value1, parameters.get(key1).toString());
+        assertEquals(value2, parameters.get(key2).toString());
+    }
 }

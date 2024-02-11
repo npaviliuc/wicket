@@ -43,7 +43,7 @@ public abstract class AbstractAjaxBehavior extends Behavior implements IRequestL
 	/**
 	 * Constructor.
 	 */
-	public AbstractAjaxBehavior()
+	protected AbstractAjaxBehavior()
 	{
 	}
 
@@ -78,15 +78,15 @@ public abstract class AbstractAjaxBehavior extends Behavior implements IRequestL
 	 */
 	public CharSequence getCallbackUrl()
 	{
-		Component component = getComponent();
-		if (component == null)
+		Component newComponent = getComponent();
+		if (newComponent == null)
 		{
 			throw new IllegalArgumentException(
 				"Behavior must be bound to a component to create the URL");
 		}
 
 		PageParameters parameters = new PageParameters();
-		PageParameters pageParameters = component.getPage().getPageParameters();
+		PageParameters pageParameters = newComponent.getPage().getPageParameters();
 		List<INamedParameters.NamedPair> allNamedInPath = pageParameters.getAllNamedByType(INamedParameters.Type.PATH);
 		for (INamedParameters.NamedPair namedPair : allNamedInPath) {
 			parameters.add(namedPair.getKey(), namedPair.getValue(), INamedParameters.Type.PATH);

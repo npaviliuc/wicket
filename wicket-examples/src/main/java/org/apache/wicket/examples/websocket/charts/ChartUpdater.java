@@ -16,7 +16,7 @@
  */
 package org.apache.wicket.examples.websocket.charts;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +26,9 @@ import org.apache.wicket.protocol.ws.api.IWebSocketConnection;
 import org.apache.wicket.protocol.ws.api.message.ConnectedMessage;
 import org.apache.wicket.protocol.ws.api.registry.IKey;
 import org.apache.wicket.protocol.ws.api.registry.IWebSocketConnectionRegistry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A helper class that uses the web connection to push data to the
@@ -44,7 +47,7 @@ public class ChartUpdater
         scheduledExecutorService.schedule(updateTask, 1, TimeUnit.SECONDS);
 	}
 
-	private static Random randomGenerator = new Random();
+	private static SecureRandom randomGenerator = new SecureRandom();
 
 	/**
 	 * Generates some random data to send to the client
@@ -71,6 +74,9 @@ public class ChartUpdater
 	private static class UpdateTask implements Runnable
 	{
 		private static final String JSON_SKELETON = "{ \"year\": \"%s\", \"field\": \"%s\", \"value\": %s }";
+
+		private static final Logger logger = LoggerFactory.getLogger(UpdateTask.class);
+
 
 		/**
 		 * The following fields are needed to be able to lookup the IWebSocketConnection from
@@ -128,7 +134,7 @@ public class ChartUpdater
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					logger.error("Error on update task", e);
 					break;
 				}
 			}

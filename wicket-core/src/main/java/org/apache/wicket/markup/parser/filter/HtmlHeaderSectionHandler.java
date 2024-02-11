@@ -77,23 +77,9 @@ public final class HtmlHeaderSectionHandler extends AbstractMarkupFilter
 	/** The Markup available so far for the resource */
 	private final Markup markup;
 
-	private static final IAutoComponentFactory HTML_HEADER_FACTORY = new IAutoComponentFactory()
-	{
-		@Override
-		public Component newComponent(MarkupContainer container, ComponentTag tag)
-		{
-			return new HtmlHeaderContainer(tag.getId());
-		}
-	};
+	private static final IAutoComponentFactory HTML_HEADER_FACTORY = (container, tag) -> new HtmlHeaderContainer(tag.getId());
 	
-	private static final IAutoComponentFactory HTML_HEADER_ITEMS_FACTORY = new IAutoComponentFactory()
-	{
-		@Override
-		public Component newComponent(MarkupContainer container, ComponentTag tag)
-		{
-			return new HtmlHeaderItemsContainer(tag.getId());
-		}
-	};
+	private static final IAutoComponentFactory HTML_HEADER_ITEMS_FACTORY = (container, tag) -> new HtmlHeaderItemsContainer(tag.getId());
 	
 	/**
 	 * Construct.

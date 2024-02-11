@@ -17,7 +17,7 @@
 package org.apache.wicket.examples.niceurl.mounted;
 
 import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.apache.wicket.examples.WicketExamplePage;
 import org.apache.wicket.examples.niceurl.Home;
@@ -34,7 +34,7 @@ import org.apache.wicket.util.string.StringValue;
  */
 public class Page5 extends WicketExamplePage
 {
-	private final Random random = new Random();
+	private final SecureRandom random = new SecureRandom();
 
 	/**
 	 * Constructor

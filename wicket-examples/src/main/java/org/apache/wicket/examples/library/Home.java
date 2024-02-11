@@ -43,8 +43,7 @@ public final class Home extends AuthenticatedWebPage
 	public Home(final PageParameters parameters)
 	{
 		// Add table of books
-		final PageableListView<Book> listView;
-		add(listView = new PageableListView<Book>("books", new PropertyModel<>(this,
+		final PageableListView<Book> listView = new PageableListView<Book>("books", new PropertyModel<>(this,
 			"books"), 4)
 		{
 			@Override
@@ -59,7 +58,8 @@ public final class Home extends AuthenticatedWebPage
 				listItem.add(removeLink("remove", listItem));
 				listItem.add(EditBook.link("edit", book.getId()));
 			}
-		});
+		};
+		add(listView);
 		add(new PagingNavigator("navigator", listView));
 	}
 

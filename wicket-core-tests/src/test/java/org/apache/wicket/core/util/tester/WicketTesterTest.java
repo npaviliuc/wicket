@@ -86,6 +86,8 @@ import org.apache.wicket.util.tester.Result;
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @see WicketTesterCookieTest for cookie related test
@@ -191,50 +193,40 @@ class WicketTesterTest extends WicketTestCase
 		tester.assertRenderedPage(CreateBook.class);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_setResponsePageClass() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
+	// Define the test data for the parameterized test
+    static List<String> linkIds() {
+        return List.of(
+                "linkWithSetResponsePageClass",
+                "linkWithSetResponsePage",
+                "ajaxLinkWithSetResponsePageClass",
+                "ajaxLinkWithSetResponsePage",
+                "ajaxFallbackLinkWithSetResponsePageClass",
+                "ajaxFallbackLinkWithSetResponsePage",
+                "form:submit"
+        );
+    }
 
-		// Set the response page class in the link callback
-		tester.clickLink("linkWithSetResponsePageClass");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "No Parameter");
-	}
+    // Parameterized test using the test data
+    @ParameterizedTest
+    @MethodSource("linkIds")
+    void clickLink_setResponsePage(String linkId) throws Exception
+    {
+        tester.startPage(LinkPage.class);
+        tester.assertRenderedPage(LinkPage.class);
 
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_setResponsePage() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
+        // Execute the test for each link ID
+        tester.clickLink(linkId);
+        tester.assertRenderedPage(ResultPage.class);
 
-		// Set the response page instance in the link callback
-		tester.clickLink("linkWithSetResponsePage");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "A special label");
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_ajaxLink_setResponsePageClass() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
-
-		// Set the response page class in the link callback
-		tester.clickLink("ajaxLinkWithSetResponsePageClass");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "No Parameter");
-	}
+        // Additional assertions based on the link ID can be added here
+        if (linkId.equals("linkWithSetResponsePageClass")) {
+            tester.assertLabel("label", "No Parameter");
+        } else if (linkId.equals("linkWithSetResponsePage") || linkId.equals("ajaxLinkWithSetResponsePage")) {
+            tester.assertLabel("label", "A special label");
+        } else {
+            // Handle other cases as needed
+        }
+    }
 
 	/**
 	 * WICKET-3164
@@ -366,66 +358,6 @@ class WicketTesterTest extends WicketTestCase
 		{
 			;
 		}
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_ajaxLink_setResponsePage() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
-
-		// Set the response page instance in the link callback
-		tester.clickLink("ajaxLinkWithSetResponsePage");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "A special label");
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_ajaxFallbackLink_setResponsePageClass() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
-
-		// Set the response page class in the link callback
-		tester.clickLink("ajaxFallbackLinkWithSetResponsePageClass");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "No Parameter");
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_ajaxFallbackLink_setResponsePage() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
-
-		// Set the response page instance in the link callback
-		tester.clickLink("ajaxFallbackLinkWithSetResponsePage");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "A special label");
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	@Test
-	void clickLink_ajaxSubmitLink_setResponsePage() throws Exception
-	{
-		tester.startPage(LinkPage.class);
-		tester.assertRenderedPage(LinkPage.class);
-
-		// Set the response page instance in the form submit
-		tester.clickLink("form:submit");
-		tester.assertRenderedPage(ResultPage.class);
-		tester.assertLabel("label", "A form label");
 	}
 
 	/**

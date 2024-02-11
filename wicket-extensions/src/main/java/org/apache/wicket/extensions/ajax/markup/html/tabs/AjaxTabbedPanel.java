@@ -99,6 +99,10 @@ public class AjaxTabbedPanel<T extends ITab> extends TabbedPanel<T>
 	 */
 	protected void onAjaxUpdate(final Optional<AjaxRequestTarget> target)
 	{
+		/**This method is intentionally left empty. The onAjaxUpdate behavior for this
+ 		* component may not require any specific logic at this level. If custom Ajax update behavior
+	 	* is needed, it can be implemented in a subclass by overriding this method.
+		* */
 	}
 
 }

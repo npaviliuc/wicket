@@ -21,14 +21,14 @@ body {
 	background-attachment: fixed;
 	background-position: 4% 96%;
 	color: #6F6F6F;
-	font-family: 'Lucida Sans', 'Helvetica', 'Sans-serif', 'sans';
+	font-family: 'Lucida Sans', 'Helvetica', 'Sans-serif', 'sans', sans-serif;
 	font-size: 9pt;
 	line-height: 1.8em;
 	padding: 10px 10px 10px 10px;
 	margin: 10px 10px 10px 10px;
 }
 
-h1,h2,h3,h4,h5,h6,h7,h8 {
+h1,h2,h3,h4,h5,h6 {
 	color: #E9601A;
 }
 
@@ -97,7 +97,7 @@ img {
 }
 
 pre {
-	font-family: 'Lucida Sans', 'Helvetica', 'Sans serif', 'sans';
+	font-family: 'Lucida Sans', 'Helvetica', 'Sans serif', 'sans', sans-serif;
 }
 
 th {
@@ -166,7 +166,7 @@ table.dataview {
 	margin-bottom: 10px;
 	border-bottom: 1px solid #0079d6;
 	font-size: 1em;
-	font-family: arial;
+	font-family: arial, sans-serif;
 	}
 	
 table.dataview caption { text-align: left; }

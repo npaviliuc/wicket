@@ -41,7 +41,7 @@
 }
 #wicketDebugBar .contributor a {
 	margin-right: 10px;
-	font-family: Verdana;
+	font-family: Verdana, sans-serif;
 	font-size: 9pt;
 	color: black;
 }

@@ -48,7 +48,7 @@ public class CssUrlReplacer implements IScopeAwareTextResourceProcessor, ICssCom
 {
 	// The pattern to find URLs in CSS resources
 	private static final Pattern URL_PATTERN = Pattern
-		.compile("url\\([ ]*['|\"]?([^ ]*?)['|\"]?[ ]*\\)");
+		.compile("url\\( *['|\"]?([^ ]*?)['|\"]? *\\)");
 
 	/**
 	 * Used to be append to CSS URLs (background-image: url('Beer.gif?embedBase64');). The

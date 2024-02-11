@@ -35,7 +35,7 @@ public class BrowserInfoForm extends GenericPanel<ClientProperties>
 	public static final ResourceReference JS = new JavaScriptResourceReference(BrowserInfoForm.class, "wicket-browser-info.js");
 
 	/**
-	 * The special form that submits the client/browser info
+	 * The special customForm that submits the client/browser info
 	 */
 	private final Form<ClientProperties> form;
 
@@ -63,7 +63,7 @@ public class BrowserInfoForm extends GenericPanel<ClientProperties>
 	 */
 	protected Form<ClientProperties> createForm(String componentId, IModel<ClientProperties> properties)
 	{
-		Form<ClientProperties> form = new Form<ClientProperties>(componentId, properties)
+		return new Form<ClientProperties>(componentId, properties)
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -75,7 +75,6 @@ public class BrowserInfoForm extends GenericPanel<ClientProperties>
 				afterSubmit();
 			}
 		};
-		return form;
 	}
 
 	protected void afterSubmit()
@@ -91,7 +90,7 @@ public class BrowserInfoForm extends GenericPanel<ClientProperties>
 	}
 
 	/**
-	 * @return The markup id of the form that submits the client info
+	 * @return The markup id of the customForm that submits the client info
 	 */
 	public String getFormMarkupId()
 	{

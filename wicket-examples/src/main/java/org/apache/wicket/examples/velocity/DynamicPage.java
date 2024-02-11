@@ -28,6 +28,8 @@ import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.velocity.markup.html.VelocityPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Template example page.
@@ -36,6 +38,7 @@ import org.apache.wicket.velocity.markup.html.VelocityPanel;
  */
 public class DynamicPage extends WicketExamplePage
 {
+	private static final Logger logger = LoggerFactory.getLogger(DynamicPage.class);
 	/**
 	 * Constructor
 	 * 
@@ -44,16 +47,15 @@ public class DynamicPage extends WicketExamplePage
 	 */
 	public DynamicPage(final PageParameters parameters)
 	{
-		final IResourceStream template = new PackageResourceStream(DynamicPage.class,
-			"fields.vm");
-		try {
+		
+		try (final IResourceStream template = new PackageResourceStream(DynamicPage.class,
+			"fields.vm")) {
 
 			Map<String, List<Field>> map = new HashMap<>();
 			List<Field> fields = VelocityTemplateApplication.getFields();
 			map.put("fields", fields);
 
-			VelocityPanel panel;
-			add(panel = new VelocityPanel("templatePanel", new MapModel<>(map))
+			VelocityPanel panel = new VelocityPanel("templatePanel", new MapModel<>(map))
 			{
 				@Override
 				protected IResourceStream getTemplateResource()
@@ -66,14 +68,16 @@ public class DynamicPage extends WicketExamplePage
 				{
 					return true;
 				}
-			});
+			};
+			add(panel);
+			
 			for (Field field : fields)
 			{
 				panel.add(new TextField<>(field.getFieldName()));
 			}
-		}
-		finally{
-			IOUtils.closeQuietly(template);
-		 }
+		} catch (Exception e) {
+			// Handle exceptions if needed
+           logger.error("Error during loading dynamic page. ", e);
+        }
 	}
 }

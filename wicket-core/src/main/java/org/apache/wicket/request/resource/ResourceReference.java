@@ -296,6 +296,24 @@ public abstract class ResourceReference implements IClusterable
 		{
 			return resourceBuilder.get();
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null || getClass() != obj.getClass()) return false;
+			if (!super.equals(obj)) return false;
+
+			LambdaResourceReference that = (LambdaResourceReference) obj;
+
+			return resourceBuilder.equals(that.resourceBuilder);
+		}
+
+		@Override
+		public int hashCode() {
+			int result = super.hashCode();
+			result = 31 * result + resourceBuilder.hashCode();
+			return result;
+		}
 	}
 	
 	/**

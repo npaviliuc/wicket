@@ -110,7 +110,7 @@ public class ServletRequestCopy implements HttpServletRequest
 		this.localName = request.getLocalName();
 		this.localPort = request.getLocalPort();
 		this.pathTranslated = request.getPathTranslated();
-		this.requestedSessionId = request.getRequestedSessionId();
+		this.requestedSessionId = request.getSession().getId();
 		this.principal = request.getUserPrincipal();
 
 		HttpSession session = request.getSession(true);
@@ -235,23 +235,23 @@ public class ServletRequestCopy implements HttpServletRequest
 	@Override
 	public String getProtocol()
 	{
-		String _protocol = "ws";
+		String protocolVar = "ws";
 		if ("https".equalsIgnoreCase(protocol))
 		{
-			_protocol = "wss";
+			protocolVar = "wss";
 		}
-		return _protocol;
+		return protocolVar;
 	}
 
 	@Override
 	public String getScheme()
 	{
-		String _scheme = "ws";
+		String schemeVar = "ws";
 		if ("https".equalsIgnoreCase(scheme))
 		{
-			_scheme = "wss";
+			schemeVar = "wss";
 		}
-		return _scheme;
+		return schemeVar;
 	}
 
 	@Override

@@ -34,7 +34,8 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.settings.ExceptionSettings;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Ajax links demo.
@@ -122,7 +123,7 @@ public class LinksPage extends BasePage
 			}
 			catch (InterruptedException e)
 			{
-				// noop
+				Thread.currentThread().interrupt();				throw new ThreadInterruptedException("Thread interrupted during sleep", e);
 			}
 		}));
 
@@ -234,5 +235,11 @@ public class LinksPage extends BasePage
 		super.renderHead(response);
 		response.render(CssHeaderItem.forCSS(
 			"span.wicket-ajax-indicator { margin:0; padding:0; padding-left: 2px; }", "indicator"));
+	}
+
+	public class ThreadInterruptedException extends RuntimeException {
+		public ThreadInterruptedException(String message, Throwable cause) {
+			super(message, cause);
+		}
 	}
 }

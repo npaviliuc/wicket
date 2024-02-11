@@ -25,13 +25,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for GuiceFieldValueFactory
  */
-public class GuiceFieldValueFactoryTest extends AbstractInjectorTest
+ class GuiceFieldValueFactoryTest extends AbstractInjectorTest
 {
 	/**
 	 * https://issues.apache.org/jira/browse/WICKET-6020
 	 */
 	@Test
-	public void getFieldValueShouldReturnNullEvenWhenUsingTheCache() throws Exception
+	 void getFieldValueShouldReturnNullEvenWhenUsingTheCache() throws Exception
 	{
 		GuiceFieldValueFactory factory = new GuiceFieldValueFactory(false);
 		TestComponent owner = new TestComponent("id");

@@ -256,16 +256,16 @@ public class NumberTextField<N extends Number & Comparable<N>> extends TextField
 			attributes.remove("max");
 		}
 
-		final N _step = step.getObject();
-		if (_step != null)
+		final N stepVar = step.getObject();
+		if (stepVar != null)
 		{
-			if (_step.doubleValue() == ANY)
+			if (stepVar.doubleValue() == ANY)
 			{
 				attributes.put("step", "any");
 			}
 			else
 			{
-				attributes.put("step", Objects.stringValue(_step));
+				attributes.put("step", Objects.stringValue(stepVar));
 			}
 		}
 		else

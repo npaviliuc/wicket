@@ -316,7 +316,6 @@ public class AsynchronousPageStore extends DelegatingPageStore
 			}
 			catch (InterruptedException e)
 			{
-				log.error(e.getMessage(), e);
 				// Re-interrupt the current thread and rethrow the InterruptedException
     	        Thread.currentThread().interrupt();
 	            throw new WicketRuntimeException("Interrupted while waiting for pageSavingThread to finish", e);

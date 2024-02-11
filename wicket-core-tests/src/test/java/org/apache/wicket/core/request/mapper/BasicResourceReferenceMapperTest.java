@@ -19,11 +19,13 @@ package org.apache.wicket.core.request.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
@@ -43,6 +45,9 @@ import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Matej Knopp
@@ -169,16 +174,23 @@ class BasicResourceReferenceMapperTest extends AbstractResourceReferenceMapperTe
 		assertEquals(0, h.getPageParameters().getNamedKeys().size());
 	}
 
-	/**
-	 *
-	 */
-	@Test
-	void decode3B()
-	{
-		Url url = Url.parse("wicket/resource/" + CLASS_NAME + "/reference2/name2");
-		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertNull(handler);
-	}
+	private static final String RESOURCE_CLASS_NAME = "TestResourceClass";
+
+	@ParameterizedTest
+    @MethodSource("provideTestData")
+    void decodeResourceReference(Url url, IRequestHandler expectedHandler) {
+        IRequestHandler handler = encoder.mapRequest(getRequest(url));
+        assertThat(handler).isEqualTo(expectedHandler);
+    }
+
+    private static Stream<Arguments> provideTestData() {
+        return Stream.of(
+            arguments(Url.parse("wicket/resource/" + RESOURCE_CLASS_NAME + "/reference2/name2"), null),
+            arguments(Url.parse("wicket/resource/" + RESOURCE_CLASS_NAME + "/reference4?sk"), null),
+            arguments(Url.parse("wicket/resource/" + RESOURCE_CLASS_NAME + "/"), null)
+            // Add more test cases as needed
+        );
+    }
 
 	/**
 	 *
@@ -253,17 +265,6 @@ class BasicResourceReferenceMapperTest extends AbstractResourceReferenceMapperTe
 		assertNull(h.getVariation());
 		assertEquals(0, h.getPageParameters().getIndexedCount());
 		assertEquals(0, h.getPageParameters().getNamedKeys().size());
-	}
-
-	/**
-	 *
-	 */
-	@Test
-	void decode7A()
-	{
-		Url url = Url.parse("wicket/resource/" + CLASS_NAME + "/reference4?sk");
-		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertNull(handler);
 	}
 
 	/**
@@ -582,18 +583,7 @@ class BasicResourceReferenceMapperTest extends AbstractResourceReferenceMapperTe
 		{
 			return pattern;
 		}
-	}
-
-	/**
-	 *
-	 */
-	@Test
-	void requestWithEmptyFilename()
-	{
-		Url url = Url.parse("wicket/resource/" + CLASS_NAME + "/");
-		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertNull(handler);
-	}
+	}	
 
 	/**
 	 * Tests <a href="https://issues.apache.org/jira/browse/WICKET-3918">WICKET-3918</a>.

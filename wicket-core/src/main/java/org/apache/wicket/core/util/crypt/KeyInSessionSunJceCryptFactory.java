@@ -72,7 +72,7 @@ public class KeyInSessionSunJceCryptFactory extends AbstractKeyInSessionCryptFac
 			}
 			catch (Exception ex)
 			{
-				throw new RuntimeException("Unable to load SunJCE service provider", ex);
+				throw new ProviderInitializationException("Unable to load SunJCE service provider", ex);
 			}
 		}
 	}
@@ -110,6 +110,12 @@ public class KeyInSessionSunJceCryptFactory extends AbstractKeyInSessionCryptFac
 		{
 			this.key = key;
 			this.salt = salt;
+		}
+	}
+
+	public class ProviderInitializationException extends RuntimeException {
+		public ProviderInitializationException(String message, Throwable cause) {
+			super(message, cause);
 		}
 	}
 }

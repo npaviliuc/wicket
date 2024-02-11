@@ -16,9 +16,7 @@
  */
 package org.apache.wicket.resource;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -194,13 +192,25 @@ public class FileSystemResourceReference extends ResourceReference
 	 * @param uri
 	 *            the URI to create the file system and the path of
 	 * @return the path of the file in the file system
-	 * @throws IOException
-	 *             if the file system could'nt be created
-	 * @throws URISyntaxException
-	 *             if the URI has no valid syntax
 	 */
-	public static Path getPath(URI uri) throws IOException, URISyntaxException
+	public static Path getPath(URI uri)
 	{
 		return getPath(uri, null);
 	}
+
+	@Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof FileSystemResourceReference)) return false;
+        if (!super.equals(other)) return false;
+		FileSystemResourceReference that = (FileSystemResourceReference) other;
+        return (path == null ? that.path == null : path.equals(that.path));
+    }
+
+	@Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        return result;
+    }
 }

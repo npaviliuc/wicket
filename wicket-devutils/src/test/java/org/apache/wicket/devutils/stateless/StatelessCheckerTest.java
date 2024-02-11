@@ -128,7 +128,7 @@ class StatelessCheckerTest
 	}
 
 	@Test
-	public void testNonBookmarkablePageQuietly()
+	 void testNonBookmarkablePageQuietly()
 	{
 		startNonBookmarkablePage(checkerQuietly);
 		StatelessCheckFailureException ex = checkerQuietly.getFailureException();
@@ -147,11 +147,12 @@ class StatelessCheckerTest
 	}
 
 	@Test
-	public void testStatefulBehaviors()
+	 void testStatefulBehaviors()
 	{
+		Component foo = new StatelessLabel("foo").add(new StatefulBehavior());
 		try
 		{
-			startComponentInPage(checker, new StatelessLabel("foo").add(new StatefulBehavior()));
+			startComponentInPage(checker, foo);
 			fail("Expected tester.startComponentInPage() to fail with StatelessCheckFailureException");
 		}
 		catch (StatelessCheckFailureException ex)
@@ -161,7 +162,7 @@ class StatelessCheckerTest
 	}
 
 	@Test
-	public void testStatefulBehaviorsQuietly()
+	 void testStatefulBehaviorsQuietly()
 	{
 		startComponentInPage(checkerQuietly, new StatelessLabel("foo").add(new StatefulBehavior()));
 		StatelessCheckFailureException ex = checkerQuietly.getFailureException();
@@ -179,17 +180,18 @@ class StatelessCheckerTest
 	}
 
 	@Test
-	public void testPositive()
+	 void testPositive()
 	{
 		startComponentInPage(checker, new StatelessLabel("foo"));
 	}
 
 	@Test
-	public void testStatefulMarkupContainer()
+	 void testStatefulMarkupContainer()
 	{
+		StatefulMarkupContainer foo = new StatefulMarkupContainer("foo");
 		try
 		{
-			startComponentInPage(checker, new StatefulMarkupContainer("foo"));
+			startComponentInPage(checker, foo);
 			fail("Expected tester.startComponentInPage() to fail with StatelessCheckFailureException");
 		}
 		catch (StatelessCheckFailureException ex)
@@ -199,7 +201,7 @@ class StatelessCheckerTest
 	}
 
 	@Test
-	public void testStatefulMarkupContainerQuietly()
+	 void testStatefulMarkupContainerQuietly()
 	{
 		startComponentInPage(checkerQuietly, new StatefulMarkupContainer("foo"));
 		StatelessCheckFailureException ex = checkerQuietly.getFailureException();

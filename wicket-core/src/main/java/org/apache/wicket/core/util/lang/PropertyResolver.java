@@ -300,8 +300,6 @@ public final class PropertyResolver
 			}
 			catch (WicketRuntimeException ex)
 			{
-				// expression by itself can't be found. try combined with the following
-				// expression (e.g. for a indexed property);
 				int temp = getNextDotIndex(expressionBracketsSeperated, index + 1);
 				if (temp == -1)
 				{
@@ -1151,7 +1149,8 @@ public final class PropertyResolver
 		IPropertyLocator result = applicationToLocators.get(key);
 		if (result == null)
 		{
-			IPropertyLocator tmpResult = applicationToLocators.putIfAbsent(key, result = new CachingPropertyLocator(new DefaultPropertyLocator()));
+			result = new CachingPropertyLocator(new DefaultPropertyLocator());
+			IPropertyLocator tmpResult = applicationToLocators.putIfAbsent(key, result);
 			if (tmpResult != null)
 			{
 				result = tmpResult;
@@ -1205,7 +1204,7 @@ public final class PropertyResolver
 		/**
 		 * Special token to put into the cache representing no located {@link IGetAndSet}. 
 		 */
-		private IGetAndSet NONE = new AbstractGetAndSet() {
+		private IGetAndSet none = new AbstractGetAndSet() {
 
 			@Override
 			public Object getValue(Object object) {
@@ -1219,6 +1218,15 @@ public final class PropertyResolver
 
 			@Override
 			public void setValue(Object object, Object value, PropertyResolverConverter converter) {
+
+				/**
+    			 * This setValue() method is intentionally left empty.
+     			 * Explanation: The purpose of this custom property model is to provide a basic
+    			 * implementation without any specific logic for setting property values. If necessary,
+    			 * this method can be overridden in a subclass to handle property value assignments or
+    			 * customized conversions.
+    			 * */
+				
 			}
 		};
 
@@ -1236,12 +1244,12 @@ public final class PropertyResolver
 			if (located == null) {
 				located = locator.get(clz, exp);
 				if (located == null) {
-					located = NONE;
+					located = none;
 				}
 				map.put(key, located);
 			}
 			
-			if (located == NONE) {
+			if (located == none) {
 				located = null;
 			}
 			

@@ -24,6 +24,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.wicket.util.io.IClusterable;
 
 
@@ -96,6 +99,7 @@ public final class FormInputModel implements IClusterable
 	private String stringProperty = "test";
 	private URL urlProperty;
 
+	private static final Logger logger = LoggerFactory.getLogger(FormInputModel.class);
 	/**
 	 * Construct.
 	 */
@@ -107,7 +111,7 @@ public final class FormInputModel implements IClusterable
 		}
 		catch (MalformedURLException e)
 		{
-			e.printStackTrace();
+			logger.error("Error during form submission.", e);
 		}
 		lines.add(new Line("line one"));
 		lines.add(new Line("line two"));

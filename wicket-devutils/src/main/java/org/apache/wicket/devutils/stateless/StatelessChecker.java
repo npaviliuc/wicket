@@ -123,9 +123,8 @@ public class StatelessChecker implements IComponentOnBeforeRenderListener
 				return;
 			}
 
-			if (component instanceof MarkupContainer)
+			if (component instanceof MarkupContainer container)
 			{
-				MarkupContainer container = ((MarkupContainer)component);
 				// Traverse children
 				final Object o = container.visitChildren(visitor);
 				if (o != null)
@@ -146,7 +145,6 @@ public class StatelessChecker implements IComponentOnBeforeRenderListener
 				if (!p.isPageStateless())
 				{
 					fail(new StatelessCheckFailureException(p, " for unknown reason"));
-					return;
 				}
 			}
 		}

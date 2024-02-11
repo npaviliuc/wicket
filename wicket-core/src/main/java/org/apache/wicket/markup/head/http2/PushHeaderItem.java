@@ -101,12 +101,12 @@ public class PushHeaderItem extends HeaderItem implements Serializable
 	/**
 	 * The web response of the page to apply the caching information to
 	 */
-	private WebResponse pageWebResponse;
+	private transient WebResponse pageWebResponse;
 
 	/**
 	 * The web request of the page to get the caching information from
 	 */
-	private WebRequest pageWebRequest;
+	private transient WebRequest pageWebRequest;
 
 	/**
 	 * The page to get the modification time of
@@ -344,19 +344,19 @@ public class PushHeaderItem extends HeaderItem implements Serializable
 
 		normalizeUrl(pushItem, url);
 
-		String partialUrl = buildPartialUrl(requestCycle, url);
+		String partialUrl = buildPartialUrl(url);
 
 		pushItem.setUrl(partialUrl);
 		this.pushItems.add(pushItem);
 	}
 
 	private CharSequence getUrlForObject(RequestCycle requestCycle, Object object, PageParameters parameters, PushItem pushItem) {
-		if (object instanceof ResourceReference) {
-			return requestCycle.urlFor((ResourceReference) object, parameters);
+		if (object instanceof ResourceReference resourceReference) {
+			return requestCycle.urlFor(resourceReference, parameters);
 		} else if (Page.class.isAssignableFrom(object.getClass())) {
 			return requestCycle.urlFor((Class<? extends Page>) object, parameters);
-		} else if (object instanceof IRequestHandler) {
-			return requestCycle.urlFor((IRequestHandler) object);
+		} else if (object instanceof IRequestHandler requestHandler) {
+			return requestCycle.urlFor(requestHandler);
 		} else if (pushItem.getUrl() != null) {
 			return pushItem.getUrl();
 		} else {
@@ -374,7 +374,7 @@ public class PushHeaderItem extends HeaderItem implements Serializable
 		}
 	}
 
-	private String buildPartialUrl(RequestCycle requestCycle, CharSequence url) {
+	private String buildPartialUrl(CharSequence url) {
 		StringBuilder partialUrl = new StringBuilder();
 		String contextPath = WebApplication.get().getServletContext().getContextPath();
 		partialUrl.append(contextPath);

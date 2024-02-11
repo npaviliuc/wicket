@@ -18,7 +18,6 @@ package org.apache.wicket.util.license;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -27,12 +26,10 @@ import java.util.List;
 import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.string.Strings;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 abstract class AbstractLicenseHeaderHandler implements ILicenseHeaderHandler
 {
-	private static final Logger log = LoggerFactory.getLogger(AbstractLicenseHeaderHandler.class);
 	protected static final String LINE_ENDING = System.getProperty("line.separator");
 	private final List<String> ignoreFiles;
 	private String licenseHeader;

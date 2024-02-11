@@ -446,9 +446,7 @@ public class CheckBoxMultipleChoice<T> extends ListMultipleChoice<T>
 	 */
 	protected IValueMap getAdditionalAttributesForLabel(int index, T choice)
 	{
-		IValueMap emptyValueMap = new ValueMap();
-
-		return emptyValueMap;
+		return new ValueMap();
 	}
 
 	/**

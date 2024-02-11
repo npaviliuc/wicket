@@ -105,7 +105,7 @@ public abstract class Link<T> extends AbstractLink implements IRequestListener, 
 	/**
 	 * @see org.apache.wicket.Component#Component(String)
 	 */
-	public Link(final String id)
+	protected Link(final String id)
 	{
 		super(id);
 	}
@@ -115,7 +115,7 @@ public abstract class Link<T> extends AbstractLink implements IRequestListener, 
 	 * @param model
 	 * @see org.apache.wicket.Component#Component(String, IModel)
 	 */
-	public Link(final String id, IModel<T> model)
+	protected Link(final String id, IModel<T> model)
 	{
 		super(id, model);
 	}

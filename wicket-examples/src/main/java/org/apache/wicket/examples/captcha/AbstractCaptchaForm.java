@@ -94,6 +94,7 @@ public abstract class AbstractCaptchaForm<T> extends GenericPanel<T>
 		};
 		form.add(changeCaptchaLink);
 
+		/*
 		form.add(new RequiredTextField<String>("text",
 				new PropertyModel<>(AbstractCaptchaForm.this, "captchaText"), String.class)
 		{
@@ -105,6 +106,7 @@ public abstract class AbstractCaptchaForm<T> extends GenericPanel<T>
 				tag.put("value", "");
 			}
 		});
+		*/
 	}
 
 	protected abstract CaptchaImageResource createCaptchaImageResource();

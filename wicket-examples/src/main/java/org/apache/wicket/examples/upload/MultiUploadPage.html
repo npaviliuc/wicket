@@ -14,7 +14,7 @@
 <body>
 <wicket:extend>
 
-	<p>The multi upload field is based on javascript found <a target="_blank" href="http://the-stickman.com/web-development/javascript/upload-multiple-files-with-a-single-file-element/">here</a>.<br /><br />
+	<p>The multi upload field is based on javascript found <a target="_blank" rel="noopener" href="http://the-stickman.com/web-development/javascript/upload-multiple-files-with-a-single-file-element/">here</a>.<br /><br />
 	Wicket can also handle file uploads via AJAX, please see AJAX examples section. AJAX Functionality is not included in this example to keep things simple.</p>
 	<p>The maximum file size of a single upload is: 90k!</p>
 	<p>The maximum size of uploading several files (third demo) is: 100k!</p>
@@ -38,8 +38,9 @@
       <h4>Current files in <span wicket:id="dir">(dir)</span>:</h4>
 	  <!-- table structure with embedded Wicket framework attributes for dynamic content rendering -->
       <table>
+		<caption> table structure with embedded Wicket framework attributes for dynamic content rendering </caption>
 		<tr>
-			<th width="200">File</th>
+			<th scope="col">File</th>
 			<th>Action</th>
 		</tr>
 		<tr wicket:id="fileList">

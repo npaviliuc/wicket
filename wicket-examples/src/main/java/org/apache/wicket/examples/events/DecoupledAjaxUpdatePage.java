@@ -32,7 +32,7 @@ import org.apache.wicket.model.PropertyModel;
 public class DecoupledAjaxUpdatePage extends BasePage
 {
 	private int counter;
-
+	private static final String COUNTER_FIELD_NAME = "counter";
 	/**
 	 * Construct.
 	 */
@@ -52,7 +52,7 @@ public class DecoupledAjaxUpdatePage extends BasePage
 		add(form);
 
 		// add the textfield that will update the counter value
-		form.add(new TextField<>("counter", new PropertyModel<>(this, "counter"),
+			form.add(new TextField<>(COUNTER_FIELD_NAME, new PropertyModel<>(this, COUNTER_FIELD_NAME),
 			Integer.class).setRequired(true));
 
 		// add button that will broadcast counter update event

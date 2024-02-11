@@ -241,7 +241,7 @@ public class ListenerRequestHandler
 		{
 			// just return so that we have a silent fail and just re-render the
 			// page
-			LOG.info("component not enabled or visible; ignoring call. Component: " + component);
+			LOG.info("component not enabled or visible; ignoring call. Component: {}", component);
 			throw new ListenerInvocationNotAllowedException(component, null,
 				"Component rejected interface invocation");
 		}

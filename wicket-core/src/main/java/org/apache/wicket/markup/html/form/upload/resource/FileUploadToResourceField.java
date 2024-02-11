@@ -285,14 +285,14 @@ public abstract class FileUploadToResourceField extends FileUploadField
         if (AbstractFileUploadResource.NO_FILE_SELECTED.equals(errorMessage)) {
             errorMessage = getString(AbstractFileUploadResource.NO_FILE_SELECTED);
         } else {
-            handleCustomErrorMessage(target, errorMessage);
+            handleCustomErrorMessage(errorMessage);
         }
 
         error(errorMessage);
         onUploadFailure(target, errorMessage);
     }
 
-    private void handleCustomErrorMessage(AjaxRequestTarget target, String errorMessage) {
+    private void handleCustomErrorMessage(String errorMessage) {
         final Map<String, Object> model = new HashMap<>();
         if (Strings.isEmpty(errorMessage)) {
             errorMessage = "uploadTooLarge";
@@ -301,7 +301,6 @@ public abstract class FileUploadToResourceField extends FileUploadField
         model.put("maxSize", getMaxSize());
         model.put("fileMaxSize", getFileMaxSize());
         model.put("fileCountMax", getFileCountMax());
-        errorMessage = getString(errorMessage, Model.ofMap(model));
     }
 
     private void addAjaxBehavior() {

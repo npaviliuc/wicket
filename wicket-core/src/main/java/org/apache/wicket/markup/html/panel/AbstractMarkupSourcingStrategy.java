@@ -74,14 +74,7 @@ public abstract class AbstractMarkupSourcingStrategy implements IMarkupSourcingS
 		final List<MarkupContainer> componentResolvers = new ArrayList<>();
 		
 		//collect all "transparent" (i.e. component resolvers) children
-		container.visitChildren(IComponentResolver.class, new IVisitor<MarkupContainer, Void>()
-		{
-			@Override
-			public void component(MarkupContainer child, IVisit<Void> visit)
-			{
-				componentResolvers.add(child);
-			}
-		});
+		container.visitChildren(IComponentResolver.class, (IVisitor<MarkupContainer, Void>) (child1, visit) -> componentResolvers.add(child1));
 				
 		while (childrenIterator.hasNext() && childMarkupFound == null)
 		{

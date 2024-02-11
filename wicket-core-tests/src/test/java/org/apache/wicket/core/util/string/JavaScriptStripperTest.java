@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests {@link JavaScriptStripper}
@@ -78,15 +80,41 @@ class JavaScriptStripperTest
 			s);
 	}
 
-	/**	 */
-	@Test
-	void regexp4()
-	{
-		String before = " attr: /**/ //xyz\n /\\[((?:[\\w-]*:)?[\\w-]+)\\s*(?:([!^$*~|]?=)\\s*((['\"])([^\\4]*?)\\4|([^'\"][^\\]]*?)))?\\]/    after     regex";
-		String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
-		String expected = " attr:  \n /\\[((?:[\\w-]*:)?[\\w-]+)\\s*(?:([!^$*~|]?=)\\s*((['\"])([^\\4]*?)\\4|([^'\"][^\\]]*?)))?\\]/ after regex";
-		assertEquals(expected, after);
-	}
+	@ParameterizedTest
+    @ValueSource(strings = {
+            " attr: /**/ //xyz\n /\\[((?:[\\w-]*:)?[\\w-]+)\\s*(?:([!^$*~|]?=)\\s*((['\"])([^\\4]*?)\\4|([^'\"][^\\]]*?)))?\\]/    after     regex",
+            "a = [ /^(\\[) *@?([\\w-]+) *([!*$^~=]*) *('?\"?)(.*?)\\4 *\\]/ ];    b()",
+            "   a   b   c",
+            "   a \n  b   c\n\n",
+            "return  this.__unbind__(type, fn);",
+            "x++ //\nx++"
+    })
+    void testJavaScriptStripping(String before) {
+        String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
+        assertEquals(getExpectedResult(before), after);
+    }
+
+    // Add this method to provide expected results for each input string
+    private String getExpectedResult(String input) {
+        // Implement the logic to calculate the expected result for each input
+        // For simplicity, you can manually define the expected results here
+        // You might need to adjust these based on your actual requirements
+        if (input.startsWith(" attr")) {
+            return " attr:  \n /\\[((?:[\\w-]*:)?[\\w-]+)\\s*(?:([!^$*~|]?=)\\s*((['\"])([^\\4]*?)\\4|([^'\"][^\\]]*?)))?\\]/ after regex";
+        } else if (input.startsWith("a = [")) {
+            return "a = [ /^(\\[) *@?([\\w-]+) *([!*$^~=]*) *('?\"?)(.*?)\\4 *\\]/ ]; b()";
+        } else if (input.startsWith("   a   b   c")) {
+            return " a b c";
+        } else if (input.startsWith("   a \n  b   c\n\n")) {
+            return " a\nb c\n";
+        } else if (input.startsWith("return  this.__unbind__(type, fn);")) {
+            return "return this.__unbind__(type, fn);";
+        } else if (input.startsWith("x++ //\nx++")) {
+            return "x++ \nx++";
+        } else {
+            return "";
+        }
+    }	
 
 	@Test
     void regexpDoubleSlash()
@@ -95,56 +123,6 @@ class JavaScriptStripperTest
 	    String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
 	    assertEquals(before, after);
     }
-	/**	 */
-	@Test
-	void WICKET1806()
-	{
-		String before = "a = [ /^(\\[) *@?([\\w-]+) *([!*$^~=]*) *('?\"?)(.*?)\\4 *\\]/ ];    b()";
-		String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
-		String expected = "a = [ /^(\\[) *@?([\\w-]+) *([!*$^~=]*) *('?\"?)(.*?)\\4 *\\]/ ]; b()";
-
-		assertEquals(expected, after);
-	}
-
-	/**	 */
-	@Test
-	void WICKET2060_1()
-	{
-		String before = "   a   b   c";
-		String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
-		String expected = " a b c";
-		assertEquals(expected, after);
-	}
-
-	/**	 */
-	@Test
-	void WICKET2060_2()
-	{
-		String before = "   a \n  b   c\n\n";
-		String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
-		String expected = " a\nb c\n";
-		assertEquals(expected, after);
-	}
-
-	/**	 */
-	@Test
-	void WICKET2060_3()
-	{
-		String before = "return  this.__unbind__(type, fn);";
-		String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
-		String expected = "return this.__unbind__(type, fn);";
-		assertEquals(expected, after);
-	}
-
-	/**     */
-	@Test
-	void WICKET4760()
-	{
-		String before = "x++ //\nx++";
-		String after = new JavaScriptStripper().stripCommentsAndWhitespace(before);
-		String expected = "x++ \nx++";
-		assertEquals(expected, after);
-	}
 
 	/**     */
 	// @formatter:off

@@ -1,32 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" xml:lang="en"  xmlns:wicket="http://wicket.apache.org">
-    <head>
-        <title>Data Table Page</title>
-    </head>
+<html lang="en" xml:lang="en" xmlns:wicket="http://wicket.apache.org">
+
+<head>
+    <title>Data Table Page</title>
+</head>
 <wicket:extend>
 
 
-This is a demo of the DataTable (DataView wrapper). Provided features:<br/>
-<ul>
-<li>Easy ordering and selection of columns from code</li>
-<li>Takes care of sorting headers automatically</li>
-<li>Takes care of page navigator automatically</li>
-<li>Takes care of adding class="odd" and class="even" to table rows</li>
-<li>Adds a navigator message</li>
-<li>Different CSS class for certain columns</li>
-<li>Export to CSV toolbar</li>
-</ul>
-<br/>
+    This is a demo of the DataTable (DataView wrapper). Provided features:<br />
+    <ul>
+        <li>Easy ordering and selection of columns from code</li>
+        <li>Takes care of sorting headers automatically</li>
+        <li>Takes care of page navigator automatically</li>
+        <li>Takes care of adding class="odd" and class="even" to table rows</li>
+        <li>Adds a navigator message</li>
+        <li>Different CSS class for certain columns</li>
+        <li>Export to CSV toolbar</li>
+    </ul>
+    <br />
     <div>
         <!-- This table is likely a dynamic table that gets populated with data using Wicket (a Java web application framework) -->
-        <table class="dataview" cellspacing="0" wicket:id="table">[table]</table>
+        <table class="dataview" cellspacing="0" wicket:id="table">[table]
+            <tr>
+                <th scope="col">Header</th>
+            </tr>
+        </table>
+        <caption> This table is likely a dynamic table that gets populated with data using Wicket (a Java web application framework) </caption>
     </div>
-    <br/>
-    <hr/>
-    <br/>
+    <br />
+    <hr />
+    <br />
 
     <span>This is a table that uses <em>org.apache.wicket.extensions.markup.html.repeater.data.table.ColGroup</em>
-    to style the columns</span>:
+        to style the columns</span>:
     <div>
         <!--  Table structure with some placeholders -->
         <table class="dataview" wicket:id="tableWithColGroup">
@@ -37,6 +43,7 @@ This is a demo of the DataTable (DataView wrapper). Provided features:<br/>
             </tr>
             [table]
         </table>
-    </div>        
+    </div>
 </wicket:extend>
+
 </html>

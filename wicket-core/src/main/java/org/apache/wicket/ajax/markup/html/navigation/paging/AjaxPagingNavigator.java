@@ -18,7 +18,6 @@ package org.apache.wicket.ajax.markup.html.navigation.paging;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
@@ -141,7 +140,7 @@ public class AjaxPagingNavigator extends PagingNavigator
 	{
 		// Update a parental container of the pageable, this assumes that the pageable is a component.
 		Component container = ((Component)pageable);
-		while (container instanceof AbstractRepeater || container.getOutputMarkupId() == false)
+		while (container instanceof AbstractRepeater || !container.getOutputMarkupId())
 		{
 			Component parent = container.getParent();
 			if (parent == null) {
@@ -153,7 +152,7 @@ public class AjaxPagingNavigator extends PagingNavigator
 
 		// in case the navigator is not contained by the container, we have
 		// to add it to the response
-		if (((MarkupContainer)container).contains(this, true) == false)
+		if (!((MarkupContainer) container).contains(this, true))
 		{
 			target.add(this);
 		}

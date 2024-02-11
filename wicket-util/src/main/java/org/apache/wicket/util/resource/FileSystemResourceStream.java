@@ -46,7 +46,7 @@ public class FileSystemResourceStream extends AbstractResourceStream
 
 	/** Resource stream */
 	private transient InputStream inputStream;
-
+	private static final String STREAM_ACQUISITION_ERROR = " could not be acquired";
 	/**
 	 * Constructor.
 	 * 
@@ -94,8 +94,7 @@ public class FileSystemResourceStream extends AbstractResourceStream
 			}
 			catch (IOException e)
 			{
-				throw new ResourceStreamNotFoundException("Input stream of path " + path +
-					" could not be acquired", e);
+				throw new ResourceStreamNotFoundException("Input stream of path " + path + STREAM_ACQUISITION_ERROR, e);
 			}
 		}
 		return inputStream;
@@ -126,7 +125,7 @@ public class FileSystemResourceStream extends AbstractResourceStream
 		}
 		catch (IOException e)
 		{
-			throw new RuntimeException("Content type of path " + path + " could not be acquired", e);
+			throw new ContentRetrievalException("Content type of path " + path + " could not be acquired", e);
 		}
 	}
 
@@ -150,7 +149,7 @@ public class FileSystemResourceStream extends AbstractResourceStream
 		}
 		catch (IOException e)
 		{
-			throw new RuntimeException("Modification time of path " + path +
+			throw new ContentRetrievalException("Modification time of path " + path +
 				" could not be acquired", e);
 		}
 	}
@@ -166,7 +165,7 @@ public class FileSystemResourceStream extends AbstractResourceStream
 		}
 		catch (IOException e)
 		{
-			throw new RuntimeException("Length of path " + path + " could not be acquired", e);
+			throw new ContentRetrievalException("Length of path " + path + " could not be acquired", e);
 		}
 	}
 
@@ -180,5 +179,11 @@ public class FileSystemResourceStream extends AbstractResourceStream
 	public String toString()
 	{
 		return locationAsString();
+	}
+
+	public class ContentRetrievalException extends RuntimeException {
+		public ContentRetrievalException(String message, Throwable cause) {
+			super(message, cause);
+		}
 	}
 }

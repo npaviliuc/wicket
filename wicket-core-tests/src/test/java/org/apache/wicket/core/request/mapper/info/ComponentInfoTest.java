@@ -19,8 +19,14 @@ package org.apache.wicket.core.request.mapper.info;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.wicket.request.mapper.info.ComponentInfo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * 
@@ -28,19 +34,16 @@ import org.junit.jupiter.api.Test;
  */
 class ComponentInfoTest
 {
-	/**
-	 * 
-	 */
-	@Test
-	void test1()
-	{
-		String s = "-component-path";
-		ComponentInfo info = ComponentInfo.parse(s);
-		assertEquals("component:path", info.getComponentPath());
-		assertNull(info.getBehaviorId());
-
-		assertEquals(s, info.toString());
-	}
+	@ParameterizedTest(name = "Parsing {0}")
+    @CsvSource({ "-component-path, component:path",
+                 "-compo~~nent-path, compo--nent:path",
+                 "-co~mpo~~nent-path, co-mpo--nent:path" })
+    void testParsing(String input, String expectedComponentPath) {
+        ComponentInfo info = ComponentInfo.parse(input);
+        assertEquals(expectedComponentPath, info.getComponentPath());
+        assertNull(info.getBehaviorId());
+        assertEquals(input, info.toString());
+    }
 
 	/**
 	 * 
@@ -84,34 +87,6 @@ class ComponentInfoTest
 	{
 		String s = "abcd";
 		assertEquals(null, ComponentInfo.parse(s));
-	}
-
-	/**
-	 * 
-	 */
-	@Test
-	void test6()
-	{
-		String s = "-compo~~nent-path";
-		ComponentInfo info = ComponentInfo.parse(s);
-		assertEquals("compo--nent:path", info.getComponentPath());
-		assertNull(info.getBehaviorId());
-
-		assertEquals(s, info.toString());
-	}
-
-	/**
-	 * 
-	 */
-	@Test
-	void test7()
-	{
-		String s = "-co~mpo~~nent-path";
-		ComponentInfo info = ComponentInfo.parse(s);
-		assertEquals("co-mpo--nent:path", info.getComponentPath());
-		assertNull(info.getBehaviorId());
-
-		assertEquals(s, info.toString());
 	}
 
 	/**

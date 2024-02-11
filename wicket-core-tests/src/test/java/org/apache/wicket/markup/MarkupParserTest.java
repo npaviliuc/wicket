@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Locale;
 import java.util.regex.Matcher;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.wicket.core.util.resource.locator.IResourceStreamLocator;
 import org.apache.wicket.core.util.resource.locator.ResourceStreamLocator;
@@ -37,6 +39,8 @@ import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.string.StringValueConversionException;
 import org.apache.wicket.util.tester.WicketTestCase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -357,68 +361,27 @@ final class MarkupParserTest extends WicketTestCase
 		markup = parser.parse();
 		assertEquals(3, markup.size());
 	}
+	
+	private static Collection<Object[]> scriptTestData() {
+        return Arrays.asList(new Object[][] {
+            {"<script language=\"JavaScript\">... <x a> ...</script>", 5, "html", "html", "\n/*<![CDATA[*/\n... <x a> ...\n/*]]>*/\n"},
+            {"<script type=\"text/x-jquery-tmpl\" language=\"JavaScript\">... <x a/> ...</script>", 5, "html", "html", "... <x a/> ..."},
+            {"<script type='text/x-jquery-tmpl' language=\"JavaScript\">... <x a/> ...</script>", 5, "html", "html", "... <x a/> ..."}
+        });
+    }
 
-	/**
-	 * Test &lt;wicket: .
-	 * 
-	 * @throws ParseException
-	 * @throws ResourceStreamNotFoundException
-	 * @throws IOException
-	 */
-	@Test
-	void script() throws ParseException, ResourceStreamNotFoundException, IOException
-	{
-		final MarkupParser parser = new MarkupParser(
-			"<html wicket:id=\"test\"><script language=\"JavaScript\">... <x a> ...</script></html>");
+    @ParameterizedTest
+    @MethodSource("scriptTestData")
+    void script(String inputMarkup, int expectedSize, String firstTagName, String lastTagName, String expectedContent)
+            throws ParseException, ResourceStreamNotFoundException, IOException {
+        final MarkupParser parser = new MarkupParser("<html wicket:id=\"test\">" + inputMarkup + "</html>");
 
-		IMarkupFragment markup = parser.parse();
-		assertEquals(5, markup.size());
-		assertEquals("html", ((ComponentTag)markup.get(0)).getName());
-		assertEquals("html", ((ComponentTag)markup.get(4)).getName());
-		assertEquals("\n/*<![CDATA[*/\n... <x a> ...\n/*]]>*/\n", markup.get(2).toString());
-	}
-
-	/**
-	 * https://issues.apache.org/jira/browse/WICKET-5288
-	 * Verifies that &lt;script&gt; with custom type can contain child nodes
-	 *
-	 * @throws ParseException
-	 * @throws ResourceStreamNotFoundException
-	 * @throws IOException
-	 */
-	@Test
-	void scriptWithTemplate() throws ParseException, ResourceStreamNotFoundException, IOException
-	{
-		final MarkupParser parser = new MarkupParser(
-				"<html wicket:id=\"test\"><script type=\"text/x-jquery-tmpl\" language=\"JavaScript\">... <x a/> ...</script></html>");
-
-		IMarkupFragment markup = parser.parse();
-		assertEquals(5, markup.size());
-		assertEquals("html", ((ComponentTag)markup.get(0)).getName());
-		assertEquals("html", ((ComponentTag)markup.get(4)).getName());
-		assertEquals("... <x a/> ...", markup.get(2).toString());
-	}
-
-	/**
-	 * https://issues.apache.org/jira/browse/WICKET-5288
-	 * Verifies that &lt;script&gt; with custom type can contain child nodes
-	 *
-	 * @throws ParseException
-	 * @throws ResourceStreamNotFoundException
-	 * @throws IOException
-	 */
-	@Test
-	void scriptWithTemplateSingleQuotes() throws ParseException, ResourceStreamNotFoundException, IOException
-	{
-		final MarkupParser parser = new MarkupParser(
-				"<html wicket:id=\"test\"><script type='text/x-jquery-tmpl' language=\"JavaScript\">... <x a/> ...</script></html>");
-
-		IMarkupFragment markup = parser.parse();
-		assertEquals(5, markup.size());
-		assertEquals("html", ((ComponentTag)markup.get(0)).getName());
-		assertEquals("html", ((ComponentTag)markup.get(4)).getName());
-		assertEquals("... <x a/> ...", markup.get(2).toString());
-	}
+        IMarkupFragment markup = parser.parse();
+        assertEquals(expectedSize, markup.size());
+        assertEquals(firstTagName, ((ComponentTag) markup.get(0)).getName());
+        assertEquals(lastTagName, ((ComponentTag) markup.get(expectedSize - 1)).getName());
+        assertEquals(expectedContent, markup.get(2).toString());
+    }
 
 	/**
 	 * 

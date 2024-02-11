@@ -17,7 +17,6 @@
 package org.apache.wicket.examples.ajax.builtin;
 
 import org.apache.wicket.examples.WicketExamplePage;
-import org.apache.wicket.examples.homepage.HomePage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 

@@ -436,18 +436,12 @@ public abstract class Application implements UnboundListener, IEventSink, IMetad
 	 * 
 	 * @return The session facade
 	 */
-	public final ISessionStore getSessionStore()
+	public final synchronized ISessionStore getSessionStore()
 	{
 		if (sessionStore == null)
 		{
-			synchronized (this)
-			{
-				if (sessionStore == null)
-				{
-					sessionStore = sessionStoreProvider.get();
-					sessionStore.registerUnboundListener(this);
-				}
-			}
+			sessionStore = sessionStoreProvider.get();
+			sessionStore.registerUnboundListener(this);
 		}
 		return sessionStore;
 	}
@@ -1355,17 +1349,11 @@ public abstract class Application implements UnboundListener, IEventSink, IMetad
 	 * 
 	 * @return the page manager
 	 */
-	final IPageManager internalGetPageManager()
+	final synchronized IPageManager internalGetPageManager()
 	{
 		if (pageManager == null)
 		{
-			synchronized (this)
-			{
-				if (pageManager == null)
-				{
-					pageManager = pageManagerProvider.get();
-				}
-			}
+			pageManager = pageManagerProvider.get();
 		}
 		return pageManager;
 	}

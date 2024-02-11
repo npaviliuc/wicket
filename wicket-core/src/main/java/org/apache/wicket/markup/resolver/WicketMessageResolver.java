@@ -221,7 +221,7 @@ public class WicketMessageResolver implements IComponentResolver
 			}
 			else
 			{
-				if (isThrowExceptionIfPropertyNotFound() == true)
+				if (isThrowExceptionIfPropertyNotFound())
 				{
 					throw new WicketRuntimeException("Property '" + key +
 						"' not found in property files. Markup: " + markupStream.toString());
@@ -230,7 +230,7 @@ public class WicketMessageResolver implements IComponentResolver
 				log.warn("No value found for wicket:message tag with key: {}", key);
 
 				// If open tag was open-close
-				if (markupStream.isCurrentIndexInsideTheStream() == false)
+				if (!markupStream.isCurrentIndexInsideTheStream())
 				{
 					String formatedNotFound = String.format(NOT_FOUND, key);
 					getResponse().write(formatedNotFound);

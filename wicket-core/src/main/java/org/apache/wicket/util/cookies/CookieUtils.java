@@ -146,6 +146,7 @@ public class CookieUtils
 		return value;
 	}
 
+
 	/**
 	 * Create a Cookie with key and value and save it in the browser with the next response
 	 *
@@ -160,11 +161,9 @@ public class CookieUtils
 		if (cookie == null)
 		{
 			cookie = new Cookie(name, value);
+			cookie.setHttpOnly(true);
 		}
-		else
-		{
-			cookie.setValue(value);
-		}
+		
 		save(cookie);
 	}
 
@@ -294,11 +293,12 @@ public class CookieUtils
 		getWebResponse().addCookie(cookie);
 
 		if (log.isDebugEnabled()) {
-        // Avoid logging user-controlled data (cookieToDebugString may contain sensitive information)
+        	// Avoid logging user-controlled data (cookieToDebugString may contain sensitive information)
         if (log.isTraceEnabled()) {
-            log.trace("Cookie saved; request URI={}", getWebRequest().getUrl().toString());
+        	// Avoid logging user-controlled data
+            log.trace("Cookie saved - trace enabled");
         } else {
-            log.debug("Cookie saved; request URI={}", getWebRequest().getUrl().toString());
+            log.debug("Cookie saved");
         }
     }
 
@@ -366,20 +366,5 @@ public class CookieUtils
 			response = cycle.getOriginalResponse();
 		}
 		return (WebResponse)response;
-	}
-
-	/**
-	 * Gets debug info as a string for the given cookie.
-	 *
-	 * @param cookie
-	 *            the cookie to debug.
-	 * @return a string that represents the internals of the cookie.
-	 */
-	private String cookieToDebugString(final Cookie cookie)
-	{
-		final LocalDateTime localDateTime = Instant.ofEpochMilli(cookie.getMaxAge()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-		return "[Cookie " + " name = " + cookie.getName() + ", value = " + cookie.getValue() +
-			", domain = " + cookie.getDomain() + ", path = " + cookie.getPath() + ", maxAge = " +
-			localDateTime + "(" + cookie.getMaxAge() + ")" + "]";
 	}
 }

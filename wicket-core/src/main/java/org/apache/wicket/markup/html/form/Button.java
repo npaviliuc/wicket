@@ -199,7 +199,7 @@ public class Button extends FormComponent<String> implements IFormSubmittingComp
 		if ("input".equals(tag.getName()))
 		{
 			String value = getDefaultModelObjectAsString();
-			if (Strings.isEmpty(value) == false)
+			if (!Strings.isEmpty(value))
 			{
 				tag.put("value", value);
 			}
@@ -228,7 +228,7 @@ public class Button extends FormComponent<String> implements IFormSubmittingComp
 		if ("button".equals(openTag.getName()))
 		{
 			String modelObjectAsString = getDefaultModelObjectAsString();
-			if (Strings.isEmpty(modelObjectAsString) == false) {
+			if (!Strings.isEmpty(modelObjectAsString)) {
 				replaceComponentTagBody(markupStream, openTag, modelObjectAsString);
 				return;
 			}

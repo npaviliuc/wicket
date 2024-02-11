@@ -143,13 +143,8 @@ public class PartWriterCallback extends WriteCallback
 					endbyte = contentLength;
 				}
 
-				BoundedInputStream boundedInputStream = null;
-				try
-				{
-					// Stream is going to be read from the starting point next to the skipped bytes
-					// till the end byte computed by the range between startbyte / endbyte
-					boundedInputStream = new BoundedInputStream(inputStream,
-						(endbyte - startbyte) + 1);
+				try(BoundedInputStream boundedInputStream = new BoundedInputStream(inputStream,
+						(endbyte - startbyte) + 1))	{
 
 					// The original input stream is going to be closed by the end of the request
 					// so set propagate close to false
@@ -163,13 +158,9 @@ public class PartWriterCallback extends WriteCallback
 						outputStream.write(buffer, 0, readBytes);
 					}
 				}
-				finally
-				{
-					IOUtils.closeQuietly(boundedInputStream);
-				}
 
 				// Log or use the skippedBytes variable as needed
-	            log.info("Skipped Bytes: " + skippedBytes);
+	            log.info("Skipped Bytes: {}", skippedBytes);
 			}
 			else
 			{

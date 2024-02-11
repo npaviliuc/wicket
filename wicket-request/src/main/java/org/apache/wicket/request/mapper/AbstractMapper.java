@@ -111,15 +111,12 @@ public abstract class AbstractMapper implements IRequestMapper
 		{
 			String segment = segments[i];
 			String urlSegment = safeSegmentGetter(urlSegments, i, null);
-			if (urlSegment == null && getOptionalPlaceholder(segment) == null)
+			if ((urlSegment == null && getOptionalPlaceholder(segment) == null) ||
+				(!segment.equals(urlSegment) &&
+			    (getPlaceholder(segment) == null &&
+			     getOptionalPlaceholder(segment) == null)))
 			{
 				// if the 'segment' has static value or is mandatory placeholder
-				return false;
-			}
-			else if (!segment.equals(urlSegment) &&
-			    (getPlaceholder(segment) == null &&
-			     getOptionalPlaceholder(segment) == null))
-			{
 				return false;
 			}
 		}

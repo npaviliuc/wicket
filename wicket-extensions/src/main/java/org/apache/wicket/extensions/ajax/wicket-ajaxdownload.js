@@ -108,9 +108,9 @@
 						var filename = "";
 						var disposition = xhr.getResponseHeader("Content-Disposition");
 						if (disposition) {
-							var matches = /filename[^;=\n]*=(([""]).*?\2|[^;\n]*)/.exec(disposition);
+							var matches = /filename[^;=\n]*=("[^"]*"|[^;\n]*)/.exec(disposition);
 							if (matches !== null && matches[1]) {
-								filename = matches[1].replace(/[""]/g, "");
+								filename = matches[1].replace(/"/g, "");
 								filename = decodeURIComponent(filename);
 							}
 						}

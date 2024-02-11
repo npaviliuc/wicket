@@ -108,9 +108,8 @@ public class PageInstanceMapper extends AbstractComponentMapper
 			PageInfo i = new PageInfo(page.getPageId());
 			info = new PageComponentInfo(i, null);
 		}
-		else if (requestHandler instanceof ListenerRequestHandler)
+		else if (requestHandler instanceof ListenerRequestHandler handler)
 		{
-			ListenerRequestHandler handler = (ListenerRequestHandler)requestHandler;
 			IRequestablePage page = handler.getPage();
 			String componentPath = handler.getComponentPath();
 

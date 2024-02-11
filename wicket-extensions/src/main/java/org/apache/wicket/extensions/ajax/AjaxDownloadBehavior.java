@@ -441,6 +441,7 @@ public class AjaxDownloadBehavior extends AbstractDefaultAjaxBehavior
 	private static Cookie cookie(String name, CookieDefaults.SameSite sameSite)
 	{
 		Cookie cookie = new Cookie(name, "complete");
+		cookie.setHttpOnly(true);
 
 		// has to be on root, otherwise JavaScript will not be able to access the
 		// cookie when it is set from a different path - which is the case when a

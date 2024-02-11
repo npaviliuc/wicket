@@ -85,5 +85,9 @@ public class AjaxFallbackHeadersToolbar<S> extends HeadersToolbar<S>
 
 	protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
 	{
+		/**This method is intentionally left empty. The onAjaxAttributes behavior for this
+ 		* component may not require any specific logic at this level. If custom Ajax attributes behavior
+	 	* is needed, it can be implemented in a subclass by overriding this method.
+		* */
 	}
 }

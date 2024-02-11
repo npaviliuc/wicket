@@ -21,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -52,7 +52,7 @@ public class SunJceCrypt extends AbstractCrypt
 	
 	private final byte[] salt;
 
-	private static final Random random = new Random();
+	private static final SecureRandom random = new SecureRandom();
  
 	/**
 	 * Constructor.

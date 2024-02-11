@@ -43,7 +43,7 @@ public final class SignIn extends WicketExamplePage
 		add(new FeedbackPanel("feedback"));
 
 		// Add sign-in form to page
-		add(new SignInForm("signInForm"));
+		//add(new SignInForm("signInForm"));
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class RadioGroupPage2 extends WicketExamplePage
 				item.add(new Radio<>("radio", model, group));
 				item.add(new Radio<>("radio2", model, group2));
 				item.add(new Label("name", new PropertyModel<>(model, "name")));
-				item.add(new Label("lastName", new PropertyModel<String>(model, "lastName")));
+				item.add(new Label("lastName", new PropertyModel<>(model, "lastName")));
 			}
 		};
 

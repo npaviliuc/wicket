@@ -71,12 +71,9 @@ public interface IPageRequestHandler extends IPageClassRequestHandler
 			handler = (requestHandlerDelegateVar).getDelegateHandler();
 		}
 
-		if (handler instanceof IPageRequestHandler pageHandler)
+		if (handler instanceof IPageRequestHandler pageHandler && pageHandler.isPageInstanceCreated())
 		{
-			if (pageHandler.isPageInstanceCreated())
-			{
-				return (Page) pageHandler.getPage();
-			}
+			return (Page) pageHandler.getPage();
 		}
 		return null;
 	}

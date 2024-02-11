@@ -33,13 +33,6 @@ public final class ChangeListenerSet<T> extends ListenerCollection<IChangeListen
 	 */
 	public void notifyListeners(final T t)
 	{
-		notify(new INotifier<IChangeListener<T>>()
-		{
-			@Override
-			public void notify(final IChangeListener<T> listener)
-			{
-				listener.onChange(t);
-			}
-		});
+		notify(listener -> listener.onChange(t));
 	}
 }

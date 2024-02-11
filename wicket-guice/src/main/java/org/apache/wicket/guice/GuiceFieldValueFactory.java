@@ -106,8 +106,7 @@ public class GuiceFieldValueFactory implements IFieldValueFactory
 
 	private void cacheTargetIfSingleton(Field field, Object target, Annotation bindingAnnotation, boolean optional) {
 		if (target != null && isSingletonScope(bindingAnnotation)) {
-			Object tmpTarget = cache.putIfAbsent(new GuiceProxyTargetLocator(field, bindingAnnotation, optional), target);
-			target = (tmpTarget != null) ? tmpTarget : target;
+			cache.putIfAbsent(new GuiceProxyTargetLocator(field, bindingAnnotation, optional), target);
 		}
 	}
 

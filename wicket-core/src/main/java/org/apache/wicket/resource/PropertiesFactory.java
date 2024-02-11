@@ -253,30 +253,25 @@ public class PropertiesFactory implements IPropertiesFactory
 	protected void addToWatcher(final String path, final IResourceStream resourceStream,
 		final IModificationWatcher watcher)
 	{
-		watcher.add(resourceStream, new IChangeListener<IModifiable>()
-		{
-			@Override
-			public void onChange(IModifiable modifiable)
+		watcher.add(resourceStream, modifiable -> {
+			log.info("A properties files has changed. Removing all entries " +
+				"from the cache. Resource: " + resourceStream);
+
+			// Clear the whole cache as associated localized files may
+			// be affected and may need reloading as well.
+			clearCache();
+
+			// Inform all listeners
+			for (IPropertiesChangeListener listener : afterReloadListeners)
 			{
-				log.info("A properties files has changed. Removing all entries " +
-					"from the cache. Resource: " + resourceStream);
-
-				// Clear the whole cache as associated localized files may
-				// be affected and may need reloading as well.
-				clearCache();
-
-				// Inform all listeners
-				for (IPropertiesChangeListener listener : afterReloadListeners)
+				try
 				{
-					try
-					{
-						listener.propertiesChanged(path);
-					}
-					catch (Exception ex)
-					{
-						PropertiesFactory.log.error("PropertiesReloadListener has thrown an exception: " +
-							ex.getMessage());
-					}
+					listener.propertiesChanged(path);
+				}
+				catch (Exception ex)
+				{
+					PropertiesFactory.log.error("PropertiesReloadListener has thrown an exception: " +
+						ex.getMessage());
 				}
 			}
 		});

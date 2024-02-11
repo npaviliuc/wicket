@@ -506,8 +506,10 @@ public class AjaxEditableLabel<T> extends Panel implements IGenericComponent<T, 
 		if (editor.hasErrorMessage())
 		{
 			Serializable errorMessage = editor.getFeedbackMessages().first(FeedbackMessage.ERROR);
+			/*
 			target.appendJavaScript("window.status='" +
 				JavaScriptUtils.escapeQuotes(errorMessage.toString()) + "';");
+				*/
 		}
 		String selectAndFocusScript = String.format(
 			"(function(){var el=Wicket.$('%s'); if (el.select) el.select(); el.focus();})()",

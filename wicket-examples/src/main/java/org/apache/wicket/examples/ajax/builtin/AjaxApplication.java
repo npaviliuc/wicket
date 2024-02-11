@@ -16,10 +16,8 @@
  */
 package org.apache.wicket.examples.ajax.builtin;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxNewWindowNotifyingBehavior;
-import org.apache.wicket.application.IComponentInitializationListener;
 import org.apache.wicket.examples.WicketExampleApplication;
 import org.apache.wicket.examples.ajax.builtin.modal.ModalDialogPage;
 import org.apache.wicket.markup.html.WebPage;

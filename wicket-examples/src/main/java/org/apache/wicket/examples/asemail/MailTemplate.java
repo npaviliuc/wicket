@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -127,6 +130,8 @@ public class MailTemplate extends WicketExamplePage
 		{
 			private static final long serialVersionUID = 1L;
 
+			private static final Logger logger = LoggerFactory.getLogger(MailTemplate.class);
+
 			@Override
 			protected void onSubmit(AjaxRequestTarget target)
 			{
@@ -147,7 +152,7 @@ public class MailTemplate extends WicketExamplePage
 				}
 				catch (IOException e)
 				{
-					e.printStackTrace();
+					logger.error("Error during form submission.", e);
 				}
 			}
 

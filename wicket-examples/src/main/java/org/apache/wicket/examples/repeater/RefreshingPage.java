@@ -92,6 +92,12 @@ public class RefreshingPage extends BasePage
 			@Override
 			public void onClick()
 			{
+				/**
+				 * This onClick() method is intentionally left empty.
+				 * Explanation: The purpose of this link is to represent an anchor without any specific
+				 * click behavior. If any specific behavior needs to be added in the future, this method
+				 * can be overridden in a subclass.
+				 * */
 			}
 		});
 	}

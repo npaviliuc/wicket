@@ -85,7 +85,7 @@
 	 * @param $el The target element
 	 * @returns A promise that will be fulfilled when the Ajax call returns
 	 */
-	var ajaxEvent = function(event, $el) {
+	let ajaxEvent = function(event, $el) {
 		var deferred = $.Deferred();
 		var iframeWindow = _getIframe()[0].contentWindow;
 

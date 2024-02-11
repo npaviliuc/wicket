@@ -57,7 +57,7 @@ public class StatefulPage extends WicketExamplePage
 		};
 		add(actionLink);
 		actionLink
-			.add(new Label("linkClickCount", new PropertyModel<Integer>(this, "linkClickCount")));
+			.add(new Label("linkClickCount", new PropertyModel<>(this, "linkClickCount")));
 
 		final TextField<String> field = new TextField<>("textfield", new Model<String>());
 

@@ -154,10 +154,9 @@ public class MountedMapper extends AbstractBookmarkableMapper
 	{
 		Url url = super.mapHandler(requestHandler);
 
-		if (url == null && requestHandler instanceof ListenerRequestHandler &&
+		if (url == null && requestHandler instanceof ListenerRequestHandler handler &&
 			getRecreateMountedPagesAfterExpiry())
 		{
-			ListenerRequestHandler handler = (ListenerRequestHandler)requestHandler;
 			IRequestablePage page = handler.getPage();
 			if (checkPageInstance(page))
 			{

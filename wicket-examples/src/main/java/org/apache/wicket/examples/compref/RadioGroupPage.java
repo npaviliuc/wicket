@@ -64,7 +64,7 @@ public class RadioGroupPage extends WicketExamplePage
 				IModel<Person> personModel = item.getModel();
 				item.add(new Radio<>("radio", personModel));
 				item.add(new Label("name", new PropertyModel<>(personModel, "name")));
-				item.add(new Label("lastName", new PropertyModel<String>(personModel, "lastName")));
+				item.add(new Label("lastName", new PropertyModel<>(personModel, "lastName")));
 			}
 
 		};

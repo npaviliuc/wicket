@@ -33,10 +33,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.wicket.request.Url.QueryParameter;
 import org.apache.wicket.request.Url.StringMode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+
 
 @SuppressWarnings("javadoc")
 class UrlTest
@@ -148,57 +153,25 @@ class UrlTest
 		checkQueryParams(url);
 	}
 
-	@Test
-	void parse9()
-	{
-		String s = "/?a=b";
-		Url url = Url.parse(s);
-		assertTrue(url.isContextAbsolute());
-		checkSegments(url, "", "");
-		checkQueryParams(url, "a", "b");
+	private static Stream<Arguments> inputsAndResultsParseUrl() {
+		return Stream.of(
+				Arguments.of("/?a=b", "a", "b"),
+				Arguments.of("/?a", "a", ""),
+				Arguments.of("/?a=", "a", ""),
+				Arguments.of("/?=b", "", "b"),
+				Arguments.of("/?a=b&", "a", "b")
+		);
 	}
 
-	@Test
-	void parse10()
+	@ParameterizedTest
+	@MethodSource("inputsAndResultsParseUrl")
+	void parseUrl(String s, String nameParam, String valueParam)
 	{
-		String s = "/?a";
 		Url url = Url.parse(s);
 		assertTrue(url.isContextAbsolute());
 		checkSegments(url, "", "");
-		checkQueryParams(url, "a", "");
-	}
 
-	@Test
-	void parse11()
-	{
-		String s = "/?a=";
-		Url url = Url.parse(s);
-		assertTrue(url.isContextAbsolute());
-		checkSegments(url, "", "");
-		checkQueryParams(url, "a", "");
-	}
-
-	@Test
-	void parse12()
-	{
-		String s = "/?=b";
-		Url url = Url.parse(s);
-		assertTrue(url.isContextAbsolute());
-		checkSegments(url, "", "");
-		checkQueryParams(url, "", "b");
-	}
-
-	/**
-	 * https://issues.apache.org/jira/browse/WICKET-4398
-	 */
-	@Test
-	void parse13()
-	{
-		String s = "/?a=b&";
-		Url url = Url.parse(s);
-		assertTrue(url.isContextAbsolute());
-		checkSegments(url, "", "");
-		checkQueryParams(url, "a", "b");
+		checkQueryParams(url, nameParam, valueParam);
 	}
 
 	/**
@@ -477,109 +450,26 @@ class UrlTest
 		assertEquals(Url.parse("fff/"), url);
 	}
 
-	/**
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-3363">WICKET-3363</a>
-	 */
-	@Test
-	void resolveRelative1()
-	{
-		Url relative = Url.parse("./a/b?p1=v1");
-		Url baseUrl = Url.parse("c/d?p2=v2");
-		baseUrl.resolveRelative(relative);
+	@ParameterizedTest
+    @MethodSource("resolveRelativeTestData")
+    void resolveRelative(Url relative, Url baseUrl, String expectedUrl) {
+        baseUrl.resolveRelative(relative);
+        assertEquals(expectedUrl, baseUrl.toString());
+    }
 
-		assertEquals("c/a/b?p1=v1", baseUrl.toString());
-	}
-
-	/**
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-3363">WICKET-3363</a>
-	 */
-	@Test
-	void resolveRelative2()
-	{
-		Url relative = Url.parse("a/b?p1=v1");
-		Url baseUrl = Url.parse("c/d?p2=v2");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("c/a/b?p1=v1", baseUrl.toString());
-	}
-
-	/**
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-3363">WICKET-3363</a>
-	 */
-	@Test
-	void resolveRelative3()
-	{
-		Url relative = Url.parse("../a/b?p1=v1");
-		Url baseUrl = Url.parse("c/d");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("a/b?p1=v1", baseUrl.toString());
-	}
-
-	/**
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-4518">WICKET-4518</a>
-	 */
-	@Test
-	void resolveRelative4()
-	{
-		Url relative = Url.parse("../?p1=v1");
-		Url baseUrl = Url.parse("c/d");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("?p1=v1", baseUrl.toString());
-	}
-
-	/**
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-4789">WICKET-4789</a>
-	 */
-	@Test
-	void resolveRelative_EmptyTrailingSegmentInBase()
-	{
-		Url relative = Url.parse("./?0-1.ILinkListener-link");
-		Url baseUrl = Url.parse("Home/");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("Home/?0-1.ILinkListener-link", baseUrl.toString());
-	}
-
-	/**
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-4789">WICKET-4789</a>
-	 */
-	@Test
-	void resolveRelative_EmptyTrailingSegmentInBase2()
-	{
-		Url relative = Url.parse("./foo/?0-1.ILinkListener-link");
-		Url baseUrl = Url.parse("Home/");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("Home/foo/?0-1.ILinkListener-link", baseUrl.toString());
-	}
-
-	/**
-	 * Tries to resolve a relative url against a base that has no segments
-	 */
-	@Test
-	void resolveRelative_NoSegmentsInBase()
-	{
-		Url relative = Url.parse("?a=b");
-		Url baseUrl = Url.parse("?foo=bar");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("?a=b", baseUrl.toString());
-	}
-
-	/**
-	 * Tries to resolve a relative url against a base that has no segments
-	 */
-	@Test
-	void resolveRelative_NoSegmentsInBase2()
-	{
-		Url relative = Url.parse("bar/baz?a=b");
-		Url baseUrl = Url.parse("?foo=bar");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("bar/baz?a=b", baseUrl.toString());
-	}
+    private static List<Arguments> resolveRelativeTestData() {
+        return Arrays.asList(
+            Arguments.of(Url.parse("./a/b?p1=v1"), Url.parse("c/d?p2=v2"), "c/a/b?p1=v1"),
+            Arguments.of(Url.parse("a/b?p1=v1"), Url.parse("c/d?p2=v2"), "c/a/b?p1=v1"),
+            Arguments.of(Url.parse("../a/b?p1=v1"), Url.parse("c/d"), "a/b?p1=v1"),
+            Arguments.of(Url.parse("../?p1=v1"), Url.parse("c/d"), "?p1=v1"),
+            Arguments.of(Url.parse("./?0-1.ILinkListener-link"), Url.parse("Home/"), "Home/?0-1.ILinkListener-link"),
+            Arguments.of(Url.parse("./foo/?0-1.ILinkListener-link"), Url.parse("Home/"), "Home/foo/?0-1.ILinkListener-link"),
+            Arguments.of(Url.parse("?a=b"), Url.parse("?foo=bar"), "?a=b"),
+            Arguments.of(Url.parse("bar/baz?a=b"), Url.parse("?foo=bar"), "bar/baz?a=b"),
+            Arguments.of(Url.parse("./?a=b"), Url.parse("bar/baz"), "bar/?a=b")
+        );
+    }
 
 	/**
 	 * Tries to resolve a relative url that starts with dot followed by empty segment
@@ -597,20 +487,7 @@ class UrlTest
 		assertEquals(0, baseUrl.getSegments().size(), "no empty segment");
 	}
 
-	/**
-	 * Tries to resolve a relative url that starts with dot followed by empty segment
-	 * 
-	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-4518">WICKET-4518</a>
-	 */
-	@Test
-	void resolveRelative_DotFollowedByEmptySegment2()
-	{
-		Url relative = Url.parse("./?a=b");
-		Url baseUrl = Url.parse("bar/baz");
-		baseUrl.resolveRelative(relative);
-
-		assertEquals("bar/?a=b", baseUrl.toString());
-	}
+	
 
 	/**
 	 * Tests that the default charset is UTF-8

@@ -23,12 +23,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.wicket.util.string.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class JavaLicenseHeaderHandler extends AbstractLicenseHeaderHandler
 {
 	private final Pattern javaHeaderPattern = Pattern.compile("^(.*?)package.*$",
 		Pattern.MULTILINE | Pattern.DOTALL);
-
+	private static final Logger logger = LoggerFactory.getLogger(JavaLicenseHeaderHandler.class);
 	/**
 	 * Construct.
 	 * 
@@ -68,8 +70,7 @@ class JavaLicenseHeaderHandler extends AbstractLicenseHeaderHandler
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			throw new AssertionError(e.getMessage());
+			logger.error("Error during License Header Handler. ", e);
 		}
 
 		return added;

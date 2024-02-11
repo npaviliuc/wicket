@@ -19,6 +19,9 @@ package org.apache.wicket.extensions.wizard;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Base class for buttons that work with {@link IWizard the wizard component}. It uses resource
  * bundles to display the button label.
@@ -32,6 +35,8 @@ import org.apache.wicket.model.IModel;
 public abstract class WizardButton extends Button
 {
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = LoggerFactory.getLogger(WizardButton.class);
 
 	/**
 	 * The enclosing wizard.
@@ -91,7 +96,7 @@ public abstract class WizardButton extends Button
     	} 
 		catch (Exception e) {
 			// Handle the exception, log, and take appropriate actions
-			e.printStackTrace();
+			logger.error("Error on submit button", e);
 			// You can add more specific error handling here
 		}
 	}

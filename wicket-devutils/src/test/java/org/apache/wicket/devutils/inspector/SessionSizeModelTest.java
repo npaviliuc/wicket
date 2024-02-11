@@ -36,7 +36,7 @@ class SessionSizeModelTest
 	 * @see <a href="https://issues.apache.org/jira/browse/WICKET-3355">WICKET-3355</a>
 	 */
 	@Test
-	public void testToleranceOnProblematicSessions()
+	 void testToleranceOnProblematicSessions()
 	{
 		new WicketTester(new MockApplication()
 		{

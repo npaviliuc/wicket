@@ -95,7 +95,7 @@ public class LambdaColumn<T, S> extends AbstractColumn<T, S> implements IExporta
 	@Override
 	public IModel<?> getDataModel(IModel<T> rowModel)
 	{
-		IModel<Object> dataModel = new IModel<Object>()
+		return new IModel<Object>()
 		{
 			private static final long serialVersionUID = 1L;
 
@@ -117,6 +117,5 @@ public class LambdaColumn<T, S> extends AbstractColumn<T, S> implements IExporta
 				rowModel.detach();
 			}
 		};
-		return dataModel;
 	}
 }

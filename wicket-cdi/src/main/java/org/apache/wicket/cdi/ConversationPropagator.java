@@ -213,18 +213,11 @@ public class ConversationPropagator implements IRequestCycleListener
 		{
 			String handlerClassName = Classes.name(handler.getClass());
 
-			if (handler instanceof BufferedResponseRequestHandler)
+			if ((handler instanceof BufferedResponseRequestHandler) ||
+				"org.apache.wicket.protocol.ws.api.WebSocketMessageBroadcastHandler".equals(handlerClassName) ||
+				"org.apache.wicket.protocol.ws.api.WebSocketRequestHandler".equals(handlerClassName))
 			{
 				// we do not care about pages that are being rendered from a buffer
-				return false;
-			}
-				else if ("org.apache.wicket.protocol.ws.api.WebSocketMessageBroadcastHandler".equals(handlerClassName) ||
-			"org.apache.wicket.protocol.ws.api.WebSocketRequestHandler".equals(handlerClassName)) {
-			// We do not care about pages that are being rendered from a buffer
-			// or injection is not supported in web sockets communication
-			return false;
-			}
-		{
 				// injection is not supported in web sockets communication
 				return false;
 			}

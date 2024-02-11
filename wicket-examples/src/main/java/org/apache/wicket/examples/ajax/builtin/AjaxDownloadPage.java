@@ -65,11 +65,11 @@ public class AjaxDownloadPage extends BasePage
 
 		initDownload();
 
-		initDownloadInIFRAME_PATTERN();
+		initDownloadInIframePattern();
 
-		initDownloadInNEW_WINDOW();
+		initDownloadInNewWindow();
 
-		initDownloadInSAME_WINDOW();
+		initDownloadInSameWindow();
 
 		initDynamicDownload();
 
@@ -130,7 +130,7 @@ public class AjaxDownloadPage extends BasePage
 		});
 	}
 
-	private void initDownloadInIFRAME_PATTERN()
+	private void initDownloadInIframePattern()
 	{
 		IResource resource = new ExampleResource("downloaded via ajax in iframe")
 			.setContentDisposition(ContentDisposition.ATTACHMENT);
@@ -231,7 +231,7 @@ public class AjaxDownloadPage extends BasePage
 		});
 	}
 
-	private void initDownloadInNEW_WINDOW()
+	private void initDownloadInNewWindow()
 	{
 		IResource resource = new ExampleResource("downloaded via ajax in a new browser window")
 			.setContentDisposition(ContentDisposition.INLINE);
@@ -278,7 +278,7 @@ public class AjaxDownloadPage extends BasePage
 		});
 	}
 
-	private void initDownloadInSAME_WINDOW()
+	private void initDownloadInSameWindow()
 	{
 		IResource resource = new ExampleResource("downloaded via ajax in same browser window")
 			.setContentDisposition(ContentDisposition.ATTACHMENT);

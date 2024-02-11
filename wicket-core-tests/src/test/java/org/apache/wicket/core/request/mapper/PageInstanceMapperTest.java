@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import org.apache.wicket.MockPage;
 import org.apache.wicket.core.request.handler.IPageProvider;
@@ -37,6 +38,8 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestableComponent;
 import org.apache.wicket.request.component.IRequestablePage;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -89,18 +92,6 @@ class PageInstanceMapperTest extends AbstractMapperTest
 	 *
 	 */
 	@Test
-	void ignoreIfPageIdentifierHasSegmentsAfterIt()
-	{
-		Url url = Url.parse("wicket/page/ingore/me?4&a=3&b=3");
-		
-		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertNull(handler);
-	}
-
-	/**
-	 *
-	 */
-	@Test
 	void decode3()
 	{
 		Url url = Url.parse("wicket/page?4--a-b-c");
@@ -112,30 +103,6 @@ class PageInstanceMapperTest extends AbstractMapperTest
 		checkPage(h.getPage(), 4);
 		assertEquals(h.getComponent().getPageRelativePath(), "a:b:c");
 		assertNull(h.getBehaviorIndex());
-	}
-
-	/**
-	 *
-	 */
-	@Test
-	void decode4()
-	{
-		Url url = Url.parse("wickett/pagee?4--a:b-c");
-
-		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertNull(handler);
-	}
-
-	/**
-	 *
-	 */
-	@Test
-	void decode5()
-	{
-		Url url = Url.parse("wicket/page?abc");
-
-		IRequestHandler handler = encoder.mapRequest(getRequest(url));
-		assertNull(handler);
 	}
 
 	/**
@@ -311,4 +278,19 @@ class PageInstanceMapperTest extends AbstractMapperTest
 		assertEquals("wicket/page?15-5.-a-b-c", url.toString());
 	}
 
+	@ParameterizedTest
+    @MethodSource("provideUrlsForTesting")
+    void ignoreIfPageIdentifierHasSegmentsAfterIt(Url url)
+    {
+        IRequestHandler handler = encoder.mapRequest(getRequest(url));
+        assertNull(handler);
+    }
+
+    private static Stream<Url> provideUrlsForTesting() {
+        return Stream.of(
+                Url.parse("wicket/page/ingore/me?4&a=3&b=3"),
+                Url.parse("wickett/pagee?4--a:b-c"),
+                Url.parse("wicket/page?abc")
+        );
+    }
 }

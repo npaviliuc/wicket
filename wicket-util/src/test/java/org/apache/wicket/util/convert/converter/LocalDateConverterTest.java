@@ -30,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LocalDateConverterTest
 {
 	@Test
-	public void convertToString() {
+	 void convertToString() {
 		LocalDateConverter converter = new LocalDateConverter();
 		String date = converter.convertToString(LocalDate.of(2016, 7, 11), Locale.ENGLISH);
 		assertEquals("7/11/16", date);
 	}
 
 	@Test
-	public void convertToObject() {
+	 void convertToObject() {
 		LocalDateConverter converter = new LocalDateConverter();
 		LocalDate date = converter.convertToObject("7/11/16", Locale.ENGLISH);
 		assertEquals(date, LocalDate.of(2016, 7, 11));

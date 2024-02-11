@@ -517,21 +517,16 @@ public class MarkupCache implements IMarkupCache
 				.getResourceWatcher(true);
 			if (watcher != null)
 			{
-				watcher.add(markupResourceStream, new IChangeListener<IModifiable>()
-				{
-					@Override
-					public void onChange(IModifiable modifiable)
+				watcher.add(markupResourceStream, modifiable -> {
+					if (log.isDebugEnabled())
 					{
-						if (log.isDebugEnabled())
-						{
-							log.debug("Remove markup from watcher: " + markupResourceStream);
-						}
-
-						// Remove the markup from the cache. It will be reloaded
-						// next time when the markup is requested.
-						watcher.remove(markupResourceStream);
-						removeMarkup(cacheKey);
+						log.debug("Remove markup from watcher: " + markupResourceStream);
 					}
+
+					// Remove the markup from the cache. It will be reloaded
+					// next time when the markup is requested.
+					watcher.remove(markupResourceStream);
+					removeMarkup(cacheKey);
 				});
 			}
 		}

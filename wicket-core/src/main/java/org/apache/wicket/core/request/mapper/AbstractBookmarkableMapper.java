@@ -368,12 +368,12 @@ public abstract class AbstractBookmarkableMapper extends AbstractComponentMapper
 	public Url mapHandler(IRequestHandler requestHandler) {
 		requestHandler = unwrapRequestHandlerDelegate(requestHandler);
 
-		if (requestHandler instanceof BookmarkablePageRequestHandler) {
-			return handleBookmarkablePageRequestHandler((BookmarkablePageRequestHandler) requestHandler);
-		} else if (requestHandler instanceof RenderPageRequestHandler) {
-			return handleRenderPageRequestHandler((RenderPageRequestHandler) requestHandler);
-		} else if (requestHandler instanceof BookmarkableListenerRequestHandler) {
-			return handleBookmarkableListenerRequestHandler((BookmarkableListenerRequestHandler) requestHandler);
+		if (requestHandler instanceof BookmarkablePageRequestHandler requestHandlerCasted) {
+			return handleBookmarkablePageRequestHandler(requestHandlerCasted);
+		} else if (requestHandler instanceof RenderPageRequestHandler requestHandlerCasted) {
+			return handleRenderPageRequestHandler(requestHandlerCasted);
+		} else if (requestHandler instanceof BookmarkableListenerRequestHandler requestHandlerCasted) {
+			return handleBookmarkableListenerRequestHandler(requestHandlerCasted);
 		}
 
 		return null;

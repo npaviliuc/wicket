@@ -327,9 +327,6 @@ public class JavaSerializer implements ISerializer
 											boolean hasNonPublicInterface) {
 			if (hasNonPublicInterface) {
 				validateNonPublicInterfaceLoaders(cl, nonPublicLoader);
-			} else {
-				nonPublicLoader = cl.getClassLoader();
-				hasNonPublicInterface = true;
 			}
 		}
 
@@ -422,8 +419,7 @@ public class JavaSerializer implements ISerializer
 			}
 			catch (Exception e)
 			{
-				log.error("error writing object {} : {}", obj, e.getMessage(), e);
-				throw new WicketRuntimeException(e);
+				throw new WicketRuntimeException("Error writing object " + obj + ": " + e.getMessage(), e);
 			}
 		}
 

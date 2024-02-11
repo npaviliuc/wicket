@@ -179,8 +179,7 @@ public class DateValidator extends RangeValidator<Date>
 	protected IValidationError decorate(IValidationError error, IValidatable<Date> validatable) {
 		error = super.decorate(error, validatable);
 
-		if (error instanceof ValidationError) {
-			ValidationError ve = (ValidationError) error;
+		if (error instanceof ValidationError ve) {
 			setVariableInputDate(ve, validatable.getValue());
 			formatVariables(ve);
 		}

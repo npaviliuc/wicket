@@ -820,9 +820,8 @@ public class Form<T> extends WebMarkupContainer
 			{
 				submitter = findSubmitter();
 
-				if (submitter instanceof IFormSubmittingComponent)
+				if (submitter instanceof IFormSubmittingComponent submittingComponent)
 				{
-					IFormSubmittingComponent submittingComponent = (IFormSubmittingComponent)submitter;
 					Component component = (Component)submitter;
 
 					if (!component.isVisibleInHierarchy())
@@ -868,16 +867,9 @@ public class Form<T> extends WebMarkupContainer
 		}
 
 		// update auto labels if we are inside an ajax request
-		getRequestCycle().find(AjaxRequestTarget.class).ifPresent(target -> {
-			visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>()
-			{
-				@Override
-				public void component(FormComponent<?> component, IVisit<Void> visit)
-				{
-					component.updateAutoLabels(target);
-				}
-			});
-		});
+		getRequestCycle().find(AjaxRequestTarget.class).ifPresent(target -> 
+			visitChildren(FormComponent.class, (IVisitor<FormComponent<?>, Void>) (component, visit) -> component.updateAutoLabels(target))
+		);
 	}
 
 	/**

@@ -44,7 +44,7 @@ public abstract class AjaxLink<T> extends AbstractLink implements IAjaxLink, IGe
 	 * 
 	 * @param id
 	 */
-	public AjaxLink(final String id)
+	protected AjaxLink(final String id)
 	{
 		this(id, null);
 	}
@@ -55,7 +55,7 @@ public abstract class AjaxLink<T> extends AbstractLink implements IAjaxLink, IGe
 	 * @param id
 	 * @param model
 	 */
-	public AjaxLink(final String id, final IModel<T> model)
+	protected AjaxLink(final String id, final IModel<T> model)
 	{
 		super(id, model);
 	}

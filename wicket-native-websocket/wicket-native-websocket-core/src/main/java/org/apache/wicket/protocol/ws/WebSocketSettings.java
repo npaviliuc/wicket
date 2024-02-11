@@ -47,7 +47,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.IntFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -69,14 +68,14 @@ public class WebSocketSettings
 	 * use the WicketFilter's filterPath because JSR356 Upgrade connections
 	 * are never passed to the Servlet Filters.
 	 */
-	private static boolean USING_JAVAX_WEB_SOCKET = false;
+	private static boolean usingJavaxWebSocket = false;
 
 	static
 	{
 		try
 		{
 			Class.forName("org.apache.wicket.protocol.ws.javax.JavaxWebSocketFilter");
-			USING_JAVAX_WEB_SOCKET = true;
+			usingJavaxWebSocket = true;
 			LOG.debug("Using JSR356 Native WebSocket implementation!");
 		} catch (ClassNotFoundException e)
 		{
@@ -379,7 +378,7 @@ public class WebSocketSettings
 	{
 		if (filterPrefix.get() == null)
 		{
-			if (USING_JAVAX_WEB_SOCKET)
+			if (usingJavaxWebSocket)
 			{
 				filterPrefix.compareAndSet(null, "");
 			}
@@ -411,8 +410,8 @@ public class WebSocketSettings
 	{
 		if (baseUrl.get() == null)
 		{
-			Url _baseUrl = RequestCycle.get().getUrlRenderer().getBaseUrl();
-			return Strings.escapeMarkup(_baseUrl.toString());
+			Url baseUrlVar = RequestCycle.get().getUrlRenderer().getBaseUrl();
+			return Strings.escapeMarkup(baseUrlVar.toString());
 		}
 		return baseUrl.get();
 	}

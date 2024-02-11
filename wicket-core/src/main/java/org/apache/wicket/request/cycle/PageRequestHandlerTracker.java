@@ -102,13 +102,13 @@ public class PageRequestHandlerTracker implements IRequestCycleListener
 	 */
 	private IPageRequestHandler findPageRequestHandler(IRequestHandler handler)
 	{
-		if (handler instanceof IPageRequestHandler)
+		if (handler instanceof IPageRequestHandler pageHandler)
 		{
-			return (IPageRequestHandler)handler;
+			return pageHandler;
 		}
-	    if (handler instanceof IRequestHandlerDelegate)
+	    if (handler instanceof IRequestHandlerDelegate requestHandler)
 	    {
-	    	return findPageRequestHandler(((IRequestHandlerDelegate)handler).getDelegateHandler());
+	    	return findPageRequestHandler(requestHandler.getDelegateHandler());
 	    }
 	    return null;
 	}

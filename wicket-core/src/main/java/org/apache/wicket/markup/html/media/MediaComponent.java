@@ -340,10 +340,10 @@ public abstract class MediaComponent extends WebMarkupContainer
 			tag.put("crossorigin", cors.getRealName());
 		}
 
-		String type = getType();
-		if (type != null)
+		String customType = getType();
+		if (customType != null)
 		{
-			tag.put("type", type);
+			tag.put("type", customType);
 		}
 	}
 

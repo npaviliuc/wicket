@@ -263,7 +263,8 @@ public class InSessionPageStore implements IPageStore
 		private synchronized void writeObject(final ObjectOutputStream output) throws IOException
 		{
 			// handle non-serialized pages
-			for (int p = 0; p < pages.size(); p++)
+			int p = 0;
+			while(p < pages.size()) 
 			{
 				IManageablePage page = pages.get(p);
 
@@ -289,6 +290,8 @@ public class InSessionPageStore implements IPageStore
 						// in case the page holds a reference to the session)  
 						pages.add(p, serializedPage);
 					}
+				} else {
+					p++; // Increment only when the page is not an instance of SerializedPage
 				}
 			}
 

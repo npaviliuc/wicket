@@ -23,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for ClientProperties that failed on Mac OS X Java platform.
@@ -31,96 +33,29 @@ import org.junit.jupiter.api.Test;
  */
 class ClientPropertiesTest
 {
-	/**
-	 * Tests GMT-2:00
-	 */
-	@Test
-	void timezoneMinus2()
-	{
-		String utc = "-2.0";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
+	@ParameterizedTest
+    @ValueSource(strings = {"-2.0", "+2.0", "+11.0", "+2.5", "-2.5", "3", "-3"})
+    void testTimezone(String utc) {
+        ClientProperties props = new ClientProperties();
+        props.setUtcOffset(utc);
 
-		assertEquals(TimeZone.getTimeZone("GMT-2:00"), props.getTimeZone());
-	}
+        String expectedTimeZoneId = getExpectedTimeZoneId(utc);
+        assertEquals(TimeZone.getTimeZone(expectedTimeZoneId), props.getTimeZone());
+    }
 
-	/**
-	 * Tests GMT+2:00
-	 */
-	@Test
-	void timezonePlus2()
-	{
-		String utc = "+2.0";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
-
-		assertEquals(TimeZone.getTimeZone("GMT+2:00"), props.getTimeZone());
-	}
-
-	/**
-	 * Tests GMT+11:00
-	 */
-	@Test
-	void timezonePlus10()
-	{
-		String utc = "+11.0";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
-
-		assertEquals(TimeZone.getTimeZone("GMT+11:00"), props.getTimeZone());
-	}
-
-	/**
-	 * Tests GMT+2:30
-	 */
-	@Test
-	void timezonePlus2andAHalf()
-	{
-		String utc = "+2.5";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
-
-		assertEquals(TimeZone.getTimeZone("GMT+2:30"), props.getTimeZone());
-	}
-
-	/**
-	 * Tests GMT-2:30
-	 */
-	@Test
-	void timezoneMinus2andAHalf()
-	{
-		String utc = "-2.5";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
-
-		assertEquals(TimeZone.getTimeZone("GMT-2:30"), props.getTimeZone());
-	}
-
-	/**
-	 * Tests GMT+3:00
-	 */
-	@Test
-	void timezonePlus3()
-	{
-		String utc = "3";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
-
-		assertEquals(TimeZone.getTimeZone("GMT+3:00"), props.getTimeZone());
-	}
-
-	/**
-	 * Tests GMT-3:00
-	 */
-	@Test
-	void timezoneMinus3()
-	{
-		String utc = "-3";
-		ClientProperties props = new ClientProperties();
-		props.setUtcOffset(utc);
-
-		assertEquals(TimeZone.getTimeZone("GMT-3:00"), props.getTimeZone());
-	}
+    private String getExpectedTimeZoneId(String utc) {
+        // Mapping UTC offsets to expected TimeZone IDs
+        switch (utc) {
+            case "-2.0": return "GMT-2:00";
+            case "+2.0": return "GMT+2:00";
+            case "+11.0": return "GMT+11:00";
+            case "+2.5": return "GMT+2:30";
+            case "-2.5": return "GMT-2:30";
+            case "3": return "GMT+3:00";
+            case "-3": return "GMT-3:00";
+            default: throw new IllegalArgumentException("Unexpected UTC offset: " + utc);
+        }
+    }
 
 	/**
 	 * WICKET-5396.

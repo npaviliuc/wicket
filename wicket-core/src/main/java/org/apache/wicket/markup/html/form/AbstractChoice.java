@@ -298,13 +298,13 @@ public abstract class AbstractChoice<T, E> extends FormComponent<T>
 	public final List<? extends E> getChoices()
 	{
 		IModel<? extends List<? extends E>> choicesModel = getChoicesModel();
-		List<? extends E> choices = (choicesModel != null) ? choicesModel.getObject() : null;
-		if (choices == null)
+		List<? extends E> customChoices = (choicesModel != null) ? choicesModel.getObject() : null;
+		if (customChoices == null)
 		{
 			throw new NullPointerException(
 				"List of choices is null - Was the supplied 'Choices' model empty?");
 		}
-		return choices;
+		return customChoices;
 	}
 
 	/**

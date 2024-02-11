@@ -17,7 +17,6 @@
 package org.apache.wicket.extensions.markup.html.repeater.tree;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
@@ -184,22 +183,17 @@ public abstract class TableTree<T, S> extends AbstractTree<T>
 	public void updateNode(T t, IPartialPageRequestHandler target)
 	{
 		final IModel<T> model = getProvider().model(t);
-		table.getBody().visitChildren(Item.class, new IVisitor<Item<T>, Void>()
-		{
-			@Override
-			public void component(Item<T> item, IVisit<Void> visit)
-			{
-				NodeModel<T> nodeModel = (NodeModel<T>)item.getModel();
+		table.getBody().visitChildren(Item.class, (IVisitor<Item<T>, Void>) (item, visit) -> {
+			NodeModel<T> nodeModel = (NodeModel<T>)item.getModel();
 
-				if (model.equals(nodeModel.getWrappedModel()))
-				{
-					// row items are configured to output their markupId
-					target.add(item);
-					visit.stop();
-					return;
-				}
-				visit.dontGoDeeper();
+			if (model.equals(nodeModel.getWrappedModel()))
+			{
+				// row items are configured to output their markupId
+				target.add(item);
+				visit.stop();
+				return;
 			}
+			visit.dontGoDeeper();
 		});
 		model.detach();
 	}

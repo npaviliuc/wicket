@@ -236,7 +236,7 @@ public class ComponentInfo
 			Integer behaviorIndex = null;
 			Integer renderCount = null;
 
-			String listenerParts[] = Strings.split(listener, BEHAVIOR_INDEX_SEPARATOR);
+			String[] listenerParts = Strings.split(listener, BEHAVIOR_INDEX_SEPARATOR);
 			if (listenerParts.length == 0)
 			{
 				return new ComponentInfo(renderCount, componentPath, behaviorIndex);

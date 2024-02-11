@@ -30,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LocalTimeConverterTest
 {
 	@Test
-	public void convertToString() {
+	 void convertToString() {
 		LocalTimeConverter converter = new LocalTimeConverter();
 		String time = converter.convertToString(LocalTime.of(1, 2, 3), Locale.ENGLISH);
 		assertEquals("01:02:03", time);
 	}
 
 	@Test
-	public void convertToObject() {
+	 void convertToObject() {
 		LocalTimeConverter converter = new LocalTimeConverter();
 		LocalTime time = converter.convertToObject("01:02:03", Locale.ENGLISH);
 		assertEquals(time, LocalTime.of(1, 2, 3));

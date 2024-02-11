@@ -37,12 +37,6 @@ h2 {
 	font-size: 1.2em;
 }
 
-pre, table, td {
-	font-family: 'MS Trebuchet', 'Verdana', Arial, Helvetica, serif;
-	font-size: 10pt;
-	line-height: 1.2em;
-}
-
 pre {
 	border: 1px solid #ddd;
 	margin-left: 2em;

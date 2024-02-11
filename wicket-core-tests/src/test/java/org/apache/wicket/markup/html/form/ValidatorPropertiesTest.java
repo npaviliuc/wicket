@@ -59,35 +59,7 @@ class ValidatorPropertiesTest extends WicketTestCase
 		Form<?> form = (Form<?>)page.get("form1");
 		assertNotNull(form);
 
-		page.getText1().setInput("");
-		page.getText1().validateRequired();
-		page.getText2().setInput("");
-		page.getText2().validateRequired();
-		page.getText3().setInput("");
-		page.getText3().validateRequired();
-		page.getText4().setInput("");
-		page.getText4().validateRequired();
-		page.getText5().setInput("");
-		page.getText5().validateRequired();
-		page.getText6().setInput("");
-		page.getText6().validateRequired();
-		page.getText7().setInput("");
-		page.getText7().validateRequired();
-		page.getText8().setInput("");
-		page.getText8().validateRequired();
-		page.getText9().setInput("");
-		page.getText9().validateRequired();
-		page.getText10().setInput("");
-		page.getText10().validateRequired();
-		page.getText11().setInput("");
-		page.getText11().validateRequired();
-		page.getText12().setInput("");
-		page.getText12().validateRequired();
-		page.getText13().setInput("");
-		page.getText13().validateRequired();
-		page.getText14().setInput("");
-		page.getText14().validateRequired();
-
+		pageTest(page);
 		
 		supportTest1First(page);
 
@@ -124,6 +96,37 @@ class ValidatorPropertiesTest extends WicketTestCase
 		page.getText12().validateRequired();
 
 		supportTest1Second(page);
+	}
+
+	private void pageTest(TestPage page) {
+		page.getText1().setInput("");
+		page.getText1().validateRequired();
+		page.getText2().setInput("");
+		page.getText2().validateRequired();
+		page.getText3().setInput("");
+		page.getText3().validateRequired();
+		page.getText4().setInput("");
+		page.getText4().validateRequired();
+		page.getText5().setInput("");
+		page.getText5().validateRequired();
+		page.getText6().setInput("");
+		page.getText6().validateRequired();
+		page.getText7().setInput("");
+		page.getText7().validateRequired();
+		page.getText8().setInput("");
+		page.getText8().validateRequired();
+		page.getText9().setInput("");
+		page.getText9().validateRequired();
+		page.getText10().setInput("");
+		page.getText10().validateRequired();
+		page.getText11().setInput("");
+		page.getText11().validateRequired();
+		page.getText12().setInput("");
+		page.getText12().validateRequired();
+		page.getText13().setInput("");
+		page.getText13().validateRequired();
+		page.getText14().setInput("");
+		page.getText14().validateRequired();
 	}
 
 	private void supportTest1First(TestPage page) {

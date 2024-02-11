@@ -166,8 +166,8 @@ public class WizardStep extends Panel implements IWizardStep
 		{
 			super(id);
 			setDefaultModel(new CompoundPropertyModel<>(wizard));
-			add(new Label("title", WizardStep.this::getTitle));
-			add(new Label("summary", WizardStep.this::getSummary));
+			super.add(new Label("title", WizardStep.this::getTitle));
+			super.add(new Label("summary", WizardStep.this::getSummary));
 		}
 	}
 

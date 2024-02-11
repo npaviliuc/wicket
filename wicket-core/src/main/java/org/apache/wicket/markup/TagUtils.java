@@ -260,10 +260,8 @@ public class TagUtils
 					{
 						openTagUsability.push(canFind);
 
-						if (tag instanceof WicketTag)
+						if (tag instanceof WicketTag wtag)
 						{
-							WicketTag wtag = (WicketTag)tag;
-
 							if (wtag.isExtendTag())
 							{
 								canFind = true;

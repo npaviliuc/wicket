@@ -10,22 +10,23 @@
 	<form wicket:id="form">
 		<!-- table designed for testing Unicode characters and translation functionalities -->
 		<table>
+			<caption> table designed for testing Unicode characters and translation functionalities </caption>
 		 <tr>
-		  <th colspan="3">
+		  <th scope="col" colspan="3">
 		   Paste in some unicode to test. For instance,
 		   <a href="http://babelfish.altavista.com/tr" target="new">translate something to chinese</a>
 		  </th>
 		 </tr>
 		 <tr>
-		  <th> 
+		  <th scope="col"> 
 		    <textarea wicket:id="source" rows="10" cols="40">input</textarea>
 		  </th>
-		  <th align="middle">
+		  <th scope="col" >
 		    <select wicket:id="translationType"></select>
 		    <br />
 		    <input type="submit" value="translate" />
 		  </th>
-		  <th valign="top">
+		  <th scope="col">
 			<textarea wicket:id="target" rows="10" cols="40">input</textarea>
 		  </th>
 		 </tr>

@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -385,7 +386,7 @@ public class TagTester
 	public static TagTester createTagByName(String markup, String tagName)
 	{
 		List<TagTester> tester = createTags(markup, xmlTag -> xmlTag.getName().equalsIgnoreCase(tagName), true);
-		if ((tester == null) || (tester.size() == 0))
+		if (tester.isEmpty())
 		{
 			return null;
 		}
@@ -427,9 +428,9 @@ public class TagTester
 	 *            array of unclosed openTags
 	 * @return corresponding openTag or {@code null}
 	 */
-	private static XmlTag findOpenTag(XmlTag closeTag, Stack<XmlTag> stack)
+	private static XmlTag findOpenTag(XmlTag closeTag, Deque<XmlTag> stack)
 	{
-		while (stack.size() > 0)
+		while (!stack.isEmpty())
 		{
 			XmlTag popped = stack.pop();
 			if (popped.getName().equals(closeTag.getName()))
@@ -468,7 +469,7 @@ public class TagTester
 	{
 		List<TagTester> testers = new ArrayList<>();
 
-		if ((Strings.isEmpty(markup) == false))
+		if ((!Strings.isEmpty(markup)))
 		{
 			try
 			{
@@ -484,7 +485,7 @@ public class TagTester
 				XmlTag closeTag = null;
 
 				// temporary Tag-Hierarchy after openTag
-				Stack<XmlTag> stack = new Stack<>();
+				Deque<XmlTag> stack = new ArrayDeque<>();
 
 				while (true)
 				{
@@ -496,7 +497,7 @@ public class TagTester
 					
 					if (openTag == null)
 					{
-						if (accept.apply(xmlTag))
+						if (Boolean.TRUE.equals(accept.apply(xmlTag)))
 						{
 							if (xmlTag.isOpen())
 							{
@@ -525,7 +526,7 @@ public class TagTester
 									closeTag = xmlTag;
 									closeTag.setOpenTag(openTag);
 								}
-								else if (requiresCloseTag(openTag.getName()) == false)
+								else if (!requiresCloseTag(openTag.getName()))
 								{
 									// no closeTag for current openTag (allowed)
 									closeTag = openTag;

@@ -30,8 +30,6 @@ import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.handler.resource.ResourceReferenceRequestHandler;
 import org.apache.wicket.util.lang.Comparators;
-import org.apache.wicket.util.visit.IVisit;
-import org.apache.wicket.util.visit.IVisitor;
 
 /**
  * A panel which load lazily a single content component. This can be used if you have a
@@ -183,6 +181,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	 * 
 	 * @return update interval, must not be {@code null}
 	 */
+	@Override
 	public Duration getUpdateInterval() {
 		return Duration.ofSeconds(1);
 	}
@@ -197,6 +196,7 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 	 * 
 	 * @see #isContentReady()
 	 */
+	@Override
 	public final boolean isLoaded() {
 		if (!loaded && isContentReady())
 		{
@@ -251,17 +251,16 @@ public abstract class AjaxLazyLoadPanel<T extends Component> extends Panel
 			getComponent().getPage().visitChildren(AjaxLazyLoadPanel.class, (panel, visit) -> {
 				if (panel.isVisibleInHierarchy() && !panel.isLoaded()) {
 					Duration updateInterval = panel.getUpdateInterval();
-					if (getUpdateInterval() == null) {
+					if (super.getUpdateInterval() == null) {
 						throw new IllegalArgumentException("update interval must not be null");
 					}
 			
-					setUpdateInterval(Comparators.min(getUpdateInterval(), updateInterval));
+					setUpdateInterval(Comparators.min(super.getUpdateInterval(), updateInterval));
 				}
 			});
 
 			// all panels have completed their replacements, we can stop the timer
-			if (Duration.ofMillis(Long.MAX_VALUE).equals(getUpdateInterval()))
-			{
+			if (Duration.ofMillis(Long.MAX_VALUE).equals(super.getUpdateInterval())) {
 				stop(target);
 				
 				getComponent().remove(this);

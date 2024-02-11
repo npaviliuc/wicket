@@ -28,7 +28,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.apache.wicket.Component;
@@ -75,7 +75,7 @@ public class KittenCaptchaPanel extends Panel
 	private static final List<Animal> nonKittens = new ArrayList<>();
 
 	// Random number generator
-	private static Random random = new Random(-1);
+	private static SecureRandom random = new SecureRandom();
 
 	// Load animals
 	static
@@ -203,6 +203,9 @@ public class KittenCaptchaPanel extends Panel
 				// Find any animal at the clicked location
 				final PlacedAnimal animal = animals.atLocation(new Point(x, y));
 
+				//Using another SecureRandom instead of Math.Random
+				SecureRandom secureNumber = new SecureRandom();
+
 				// If the user clicked on an animal
 				if (animal != null)
 				{
@@ -219,7 +222,7 @@ public class KittenCaptchaPanel extends Panel
 					javascript.append(url);
 					javascript.append(url.toString().indexOf('?') > -1 ? "&amp;" : "?")
 						.append("rand=")
-						.append(Math.random());
+						.append(secureNumber.nextDouble());
 					javascript.append("'");
 					target.appendJavaScript(javascript.toString());
 				}

@@ -149,7 +149,7 @@ public class PaletteTest extends WicketTestCase
 	 * WICKET-6244
 	 */
 	@Test
-	public void unselectedChoices()
+	 void unselectedChoices()
 	{
 		IModel<List<String>> selected = new ListModel<>(new ArrayList<String>());
 

@@ -89,7 +89,7 @@ public class XmlPartialPageUpdate extends PartialPageUpdate
 
 	private void writeHeaderContribution(Response response, String elementName, CharSequence contents)
 	{
-		if (Strings.isEmpty(contents) == false)
+		if (!Strings.isEmpty(contents))
 		{
 			response.write("<" + elementName + ">");
 

@@ -28,8 +28,6 @@ import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer.HeaderStreamState;
 import org.apache.wicket.markup.html.internal.InlineEnclosure;
 import org.apache.wicket.util.lang.Args;
-import org.apache.wicket.util.visit.IVisit;
-import org.apache.wicket.util.visit.IVisitor;
 
 /**
  * An abstract implementation of a header render strategy which is only missing the code to traverse

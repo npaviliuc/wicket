@@ -17,7 +17,6 @@
 package org.apache.wicket.devutils.stateless;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 
 /**
@@ -33,7 +32,7 @@ public class StatelessCheckFailureException  extends WicketRuntimeException
 {
 	private static final long serialVersionUID = 1L;
 
-	private Component component;
+	private final Component component;
 
 	/**
 	 * Construct.

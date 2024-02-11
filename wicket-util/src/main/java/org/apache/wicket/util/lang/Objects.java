@@ -86,7 +86,7 @@ public final class Objects
 		primitiveDefaults.put(Float.TYPE, 0.0f);
 		primitiveDefaults.put(Double.TYPE, 0.0);
 		primitiveDefaults.put(BigInteger.class, new BigInteger("0"));
-		primitiveDefaults.put(BigDecimal.class, new BigDecimal(0.0));
+		primitiveDefaults.put(BigDecimal.class, BigDecimal.valueOf(0.0));
 	}
 
 	/**
@@ -246,8 +246,8 @@ public final class Objects
 
 				case NONNUMERIC:
 					if ((t1 == NONNUMERIC) && (t2 == NONNUMERIC)) {
-						if (v1 != null && v1 instanceof Comparable && v1.getClass().isAssignableFrom(v2.getClass())) {
-							result = ((Comparable) v1).compareTo(v2);
+						if (v1 instanceof Comparable v1Comparable && v1.getClass().isAssignableFrom(v2.getClass())) {
+							result = v1Comparable.compareTo(v2);
 							break;
 						} else {
 							throw new IllegalArgumentException("invalid comparison: " +

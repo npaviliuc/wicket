@@ -667,9 +667,7 @@ public abstract class Border extends WebMarkupContainer implements IComponentRes
 
 	private boolean canDequeueBody(ComponentTag tag)
 	{
-		boolean isBodyTag = (tag instanceof WicketTag) && ((WicketTag)tag).isBodyTag();
-		
-		return isBodyTag;
+		return (tag instanceof WicketTag) && ((WicketTag)tag).isBodyTag();
 	}
 
 	@Override

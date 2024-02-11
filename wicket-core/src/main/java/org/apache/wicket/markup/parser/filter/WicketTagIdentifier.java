@@ -131,7 +131,7 @@ public final class WicketTagIdentifier extends AbstractMarkupFilter
 				{
 					tag.setFlag(ComponentTag.RENDER_RAW, true);
 				}
-				else if (tag.isClose() == false)
+				else if (!tag.isClose())
 				{
 					tag.setAutoComponentTag(true);
 				}				

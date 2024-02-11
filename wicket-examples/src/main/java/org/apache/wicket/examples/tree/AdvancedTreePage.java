@@ -124,6 +124,12 @@ public abstract class AdvancedTreePage extends AbstractTreePage
 			@Override
 			public void onSubmit()
 			{
+				/**
+    			 * This onSubmit() method is intentionally left empty. 
+     			 * Explanation: The purpose of this form is to represent a basic form without any specific
+    			 * submission behavior. If any specific behavior needs to be added in the future,
+    			 * this method can be overridden in a subclass or implemented as needed.
+    			 * */
 			}
 		});
 	}

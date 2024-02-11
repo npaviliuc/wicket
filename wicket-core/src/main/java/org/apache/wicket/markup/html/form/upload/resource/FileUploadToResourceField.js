@@ -24,13 +24,15 @@
 
     function buildResourceUrl(settings) {
         var resourceUrl = settings.resourceUrl + "?uploadId=" + settings.inputName + "&maxSize=" + settings.maxSize;
-        if (settings.fileMaxSize != null) {
-            resourceUrl += "&fileMaxSize=" + settings.fileMaxSize;
-        }
-        if (settings.fileCountMax != null) {
-            resourceUrl += "&fileCountMax=" + settings.fileCountMax;
-        }
+        appendQueryParamIfNotNull(resourceUrl, "fileMaxSize", settings.fileMaxSize);
+        appendQueryParamIfNotNull(resourceUrl, "fileCountMax", settings.fileCountMax);
         return resourceUrl;
+    }
+
+    function appendQueryParamIfNotNull(resourceUrl, paramName, paramValue) {
+        if (paramValue != null) {
+            resourceUrl += "&" + paramName + "=" + paramValue;
+        }
     }
 
     function createFormData(input) {
@@ -55,15 +57,14 @@
         var ep;
         if (textStatus === "abort") {
             ep = {'error': true, 'errorMessage': 'upload.canceled'};
-            Wicket.Ajax.get({"u": self.ajaxCallBackUrl, "ep": ep});
-        } else if (textStatus === "error"){
+        } else if (textStatus === "error") {
             ep = {'error': true, "errorMessage": errorThrown};
             self.uploadErrorCallBack(ep);
-            Wicket.Ajax.get({"u": self.ajaxCallBackUrl, "ep": ep});
-        } else if (textStatus === "parsererror"){
+        } else if (textStatus === "parsererror") {
             var data = jqXHR.responseText;
             Wicket.Log.log(data);
         }
+        Wicket.Ajax.get({"u": self.ajaxCallBackUrl, "ep": ep});
     }
 
     Wicket.FileUploadToResourceField = function (settings, clientBeforeSendCallBack, clientSideSuccessCallBack, clientSideCancelCallBack, uploadErrorCallBack) {
@@ -78,7 +79,7 @@
         this.uploadErrorCallBack = uploadErrorCallBack;
     };
 
-    Wicket.FileUploadToResourceField.prototype.upload = function() {
+    Wicket.FileUploadToResourceField.prototype.upload = function () {
         this.input = document.getElementById(this.inputName);
         var formData = createFormData(this.input);
         var self = this;
@@ -108,7 +109,7 @@
             Wicket.Log.log("The upload associated with field '" + this.inputName + "' has been canceled!");
             delete this.xhr;
         } else {
-            Wicket.Log.log("Too late to cancel upload for field '"  + this.inputName +  "': the upload has already finished.");
+            Wicket.Log.log("Too late to cancel upload for field '" + this.inputName + "': the upload has already finished.");
         }
     };
 })();

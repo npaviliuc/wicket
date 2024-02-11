@@ -337,7 +337,7 @@ public final class XmlPullParser implements IXmlPullParser
 		} else if (tagText.equals("![endif]--")) {
 			handleConditionalCommentEndIfTag(closeBracketIndex);
 		} else if (tagText.startsWith("![CDATA[")) {
-			handleCDataTag(tagText, openBracketIndex, closeBracketIndex);
+			handleCDataTag(tagText, openBracketIndex);
 		} else if (tagText.charAt(0) == '?') {
 			handleProcessingInstructionTag(closeBracketIndex);
 		} else if (tagText.startsWith("!DOCTYPE")) {
@@ -352,13 +352,13 @@ public final class XmlPullParser implements IXmlPullParser
 			lastType = HttpTagType.CONDITIONAL_COMMENT_ENDIF;
 			input.setPosition(closeBracketIndex + 1);
 		} else if (tagText.startsWith("!--[if ") && tagText.endsWith("]")) {
-			handleConditionalCommentTag(tagText, openBracketIndex, closeBracketIndex);
+			handleConditionalCommentTag(openBracketIndex, closeBracketIndex);
 		} else {
-			handleNormalCommentTag(tagText, openBracketIndex, closeBracketIndex);
+			handleNormalCommentTag(openBracketIndex);
 		}
 	}
 
-	private void handleConditionalCommentTag(String tagText, int openBracketIndex, int closeBracketIndex) throws ParseException {
+	private void handleConditionalCommentTag(int openBracketIndex, int closeBracketIndex) throws ParseException {
 		int pos = input.find("]-->", openBracketIndex + 1);
 		if (pos == -1) {
 			throw new ParseException("Unclosed conditional comment beginning at" + getLineAndColumnText(), openBracketIndex);
@@ -370,7 +370,7 @@ public final class XmlPullParser implements IXmlPullParser
 		lastType = HttpTagType.CONDITIONAL_COMMENT;
 	}
 
-	private void handleNormalCommentTag(String tagText, final int openBracketIndex, int closeBracketIndex) throws ParseException {
+	private void handleNormalCommentTag(final int openBracketIndex) throws ParseException {
 		int pos = input.find("-->", openBracketIndex + 1);
 		if (pos == -1) {
 			throw new ParseException("Unclosed comment beginning at" + getLineAndColumnText(), openBracketIndex);
@@ -387,8 +387,9 @@ public final class XmlPullParser implements IXmlPullParser
 		input.setPosition(closeBracketIndex + 1);
 	}
 
-	private void handleCDataTag(String tagText, final int openBracketIndex, int closeBracketIndex)throws ParseException {
+	private void handleCDataTag(String tagText, final int openBracketIndex)throws ParseException {
 		int pos1 = openBracketIndex;
+		int closeBracketIndex;
 		do {
 			closeBracketIndex = findChar('>', pos1);
 

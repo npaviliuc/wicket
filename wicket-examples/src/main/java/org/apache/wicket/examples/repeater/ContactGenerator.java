@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.security.SecureRandom;
 
 /**
  * generates random contacts
@@ -108,7 +109,8 @@ public class ContactGenerator
 
 	private int rint(int min, int max)
 	{
-		return (int)(Math.random() * (max - min) + min);
+		SecureRandom secureRandom = new SecureRandom();
+		return (int)(secureRandom.nextDouble() * (max - min) + min);
 	}
 
 	private String randomString(String[] choices)

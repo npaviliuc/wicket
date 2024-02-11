@@ -19,7 +19,7 @@ package org.apache.wicket.examples.images;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.apache.wicket.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.image.Image;
@@ -155,11 +155,11 @@ public final class Home extends WicketExamplePage
 	 * @param graphics
 	 *            The graphics to draw on
 	 */
+
+	private final SecureRandom random = new SecureRandom();
+
 	void drawCircle(Graphics2D graphics)
 	{
-		// Compute random size for circle
-		final Random random = new Random();
-
 		// Use the random instance
 		int dx = Math.abs(10 + random.nextInt(80));
 		int dy = Math.abs(10 + random.nextInt(80));

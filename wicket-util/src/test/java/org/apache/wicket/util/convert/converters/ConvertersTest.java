@@ -21,6 +21,8 @@ import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 import java.text.ChoiceFormat;
@@ -104,7 +106,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidBooleanConversion()
+	 void invalidBooleanConversion()
 	{
 		assertThrows(ConversionException.class, () -> returnInvalidBooleanConversion());
 	}
@@ -123,32 +125,12 @@ final class ConvertersTest
 		assertEquals("10", converter.convertToString((byte)10, Locale.US));
 	}
 
-	@Test
-	public void invalidByteConversion1()
-	{
-		ByteConverter converter = new ByteConverter();
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("whatever", Locale.US);
-		});
-	}
-
-	@Test
-	public void invalidByteConversion2()
-	{
-		ByteConverter converter = new ByteConverter();
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("10whatever", Locale.US);
-		});
-	}
-
-	@Test
-	public void invalidByteConversion3()
-	{
-		ByteConverter converter = new ByteConverter();
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("256", Locale.US);
-		});
-	}
+	@ParameterizedTest
+    @CsvSource({ "whatever", "10whatever", "256" })
+     void invalidByteConversion(String value) {
+        ByteConverter converter = new ByteConverter();
+        assertThrows(ConversionException.class, () -> converter.convertToObject(value, Locale.US));
+    }
 
 	@Test
 	void validDoubleConversions()
@@ -162,7 +144,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidDoubleConversion1()
+	 void invalidDoubleConversion1()
 	{
 		DoubleConverter converter = new DoubleConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -171,7 +153,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidDoubleConversion2()
+	 void invalidDoubleConversion2()
 	{
 		DoubleConverter converter = new DoubleConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -180,7 +162,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidDoubleConversion3()
+	 void invalidDoubleConversion3()
 	{
 		DoubleConverter converter = new DoubleConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -198,7 +180,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidFloatConversion1()
+	 void invalidFloatConversion1()
 	{
 		FloatConverter converter = new FloatConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -207,7 +189,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidFloatConversion2()
+	 void invalidFloatConversion2()
 	{
 		FloatConverter converter = new FloatConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -216,7 +198,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidFloatConversion3()
+	 void invalidFloatConversion3()
 	{
 		FloatConverter converter = new FloatConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -234,35 +216,15 @@ final class ConvertersTest
 		assertEquals("10", converter.convertToString(10, Locale.US));
 	}
 
-	@Test
-	public void invalidIntegerConversion1()
-	{
-		IntegerConverter converter = new IntegerConverter();
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("whatever", Locale.US);
-		});
-	}
+	@ParameterizedTest
+    @CsvSource({ "whatever", "10whatever", "1.0" })
+     void invalidIntegerConversion(String value) {
+        IntegerConverter converter = new IntegerConverter();
+        assertThrows(ConversionException.class, () -> converter.convertToObject(value, Locale.US));
+    }
 
 	@Test
-	public void invalidIntegerConversion2()
-	{
-		IntegerConverter converter = new IntegerConverter();
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("10whatever", Locale.US);
-		});
-	}
-
-	@Test
-	public void invalidIntegerConversion3()
-	{
-		IntegerConverter converter = new IntegerConverter();
-		assertThrows(ConversionException.class, () -> {
-			converter.convertToObject("1.0", Locale.US);
-		});
-	}
-
-	@Test
-	public void invalidIntegerConversion4()
+	 void invalidIntegerConversion4()
 	{
 		IntegerConverter converter = new IntegerConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -280,7 +242,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidLongConversion1()
+	 void invalidLongConversion1()
 	{
 		LongConverter converter = new LongConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -289,7 +251,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidLongConversion2()
+	 void invalidLongConversion2()
 	{
 		LongConverter converter = new LongConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -298,7 +260,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidLongConversion3()
+	 void invalidLongConversion3()
 	{
 		LongConverter converter = new LongConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -307,7 +269,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidLongConversion4()
+	 void invalidLongConversion4()
 	{
 		LongConverter converter = new LongConverter();
 
@@ -321,7 +283,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidLongConversion5()
+	 void invalidLongConversion5()
 	{
 		LongConverter converter = new LongConverter();
 
@@ -344,7 +306,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidShortConversion1()
+	 void invalidShortConversion1()
 	{
 		ShortConverter converter = new ShortConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -353,7 +315,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidShortConversion2()
+	 void invalidShortConversion2()
 	{
 		ShortConverter converter = new ShortConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -362,7 +324,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidShortConversion3()
+	 void invalidShortConversion3()
 	{
 		ShortConverter converter = new ShortConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -381,7 +343,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidCharacterConversion1()
+	 void invalidCharacterConversion1()
 	{
 		CharacterConverter converter = new CharacterConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -430,7 +392,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidDateConversion1()
+	 void invalidDateConversion1()
 	{
 		DateConverter converter = new DateConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -439,7 +401,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidDateConversion2()
+	 void invalidDateConversion2()
 	{
 		DateConverter converter = new DateConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -488,7 +450,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidCalendarConversion1()
+	 void invalidCalendarConversion1()
 	{
 		CalendarConverter converter = new CalendarConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -497,7 +459,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidCalendarConversion2()
+	 void invalidCalendarConversion2()
 	{
 		CalendarConverter converter = new CalendarConverter();
 		assertThrows(ConversionException.class, () -> {
@@ -541,7 +503,7 @@ final class ConvertersTest
 	}
 
 	@Test
-	public void invalidCustomConversion1()
+	 void invalidCustomConversion1()
 	{
 		@SuppressWarnings("serial")
 		IntegerConverter converter = new IntegerConverter()

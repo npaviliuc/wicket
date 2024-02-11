@@ -95,12 +95,9 @@ public class FeedbackDelay implements Serializable, AutoCloseable
 		
 		for (IFeedback feedback : feedbacks)
 		{
-			if (feedback instanceof Component component) {
+			if (feedback instanceof Component component && (component.findParent(Page.class) == null)) {
 				// render only if it is still in the page hierarchy (WICKET-4895)
-				if (component.findParent(Page.class) == null)
-				{
-					continue;
-				}			
+				continue;		
 			}
 		
 			feedback.beforeRender();

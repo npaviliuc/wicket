@@ -49,15 +49,17 @@ public class WicketFilterRequestCycleUrlAspect extends WicketMetrics
 		if (args.length >= 3)
 		{
 			Object requestAsObject = args[2];
-			if (requestAsObject != null && requestAsObject instanceof HttpServletRequest)
+			if (requestAsObject instanceof HttpServletRequest httpServletRequest)
 			{
-				HttpServletRequest httpServletRequest = (HttpServletRequest)requestAsObject;
 				String requestUrl = httpServletRequest.getRequestURL().toString();
 				String replacedUrl = requestUrl.replace('/', '_');
 				replacedUrl = replacedUrl.replace('.', '_');
+				
+				// Fix the reluctant quantifier by replacing *? with *
 				replacedUrl = replacedUrl.replaceAll(";jsessionid=.*?(?=\\?|$)", "");
+
 				return measureTime("core/application/request/" + replacedUrl, joinPoint, false);
-			}
+			    }
 		}
 		return joinPoint.proceed();
 	}

@@ -129,7 +129,7 @@ public class UploadPage extends WicketExamplePage
 					File newFile = new File(getUploadFolder(), upload.getClientFileName());
 
 					// Check new file, delete if it already existed
-					checkFileExists(newFile);
+					checkFileExists(getUploadFolder(), upload.getClientFileName());
 					try
 					{
 						// Save to new file
@@ -144,6 +144,26 @@ public class UploadPage extends WicketExamplePage
 					{
 						throw new IllegalStateException("Unable to write file", e);
 					}
+				}
+			}
+		}
+
+		/**
+		 * Check whether the file allready exists, and if so, try to delete it.
+		 *
+		 * @param newFile
+		 *            the file to check
+		 */
+		private void checkFileExists(Folder uploadFolder, String fileName)
+		{
+			File newFile = new File(uploadFolder, fileName);
+
+			if (newFile.exists())
+			{
+				// Try to delete the file
+				if (!Files.remove(newFile))
+				{
+					throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());
 				}
 			}
 		}
@@ -198,23 +218,7 @@ public class UploadPage extends WicketExamplePage
 		add(html5UploadForm);
 	}
 
-	/**
-	 * Check whether the file allready exists, and if so, try to delete it.
-	 *
-	 * @param newFile
-	 *            the file to check
-	 */
-	private void checkFileExists(File newFile)
-	{
-		if (newFile.exists())
-		{
-			// Try to delete the file
-			if (!Files.remove(newFile))
-			{
-				throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());
-			}
-		}
-	}
+	
 
 	private Folder getUploadFolder()
 	{

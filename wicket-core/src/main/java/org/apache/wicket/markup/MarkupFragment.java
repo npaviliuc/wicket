@@ -87,7 +87,7 @@ public class MarkupFragment extends AbstractMarkupFragment
 		if (startTag.isOpenClose()) {
 			endIndex = startIndex;
 		} else if (startTag.hasNoCloseTag()) {
-			if (HtmlHandler.requiresCloseTag(startTag.getName()) == false) {
+			if (!HtmlHandler.requiresCloseTag(startTag.getName())) {
 				// set endIndex to a "good" value
 				endIndex = startIndex;
 			} else {
@@ -97,8 +97,7 @@ public class MarkupFragment extends AbstractMarkupFragment
 		} else {
 			for (endIndex = startIndex + 1; endIndex < markupSize; endIndex++) {
 				MarkupElement elem = markup.get(endIndex);
-				if (elem instanceof ComponentTag) {
-					ComponentTag tag = (ComponentTag) elem;
+				if (elem instanceof ComponentTag tag) {
 					if (tag.closes(startTag)) {
 						break;
 					}
@@ -176,7 +175,7 @@ public class MarkupFragment extends AbstractMarkupFragment
 	public String toString(boolean markupOnly)
 	{
 		final AppendingStringBuffer buf = new AppendingStringBuffer(400);
-		if (markupOnly == false)
+		if (getRootMarkup() != null && !markupOnly)
 		{
 			buf.append(getRootMarkup().getMarkupResourceStream().toString());
 			buf.append('\n');

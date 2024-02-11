@@ -59,7 +59,7 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	/**
 	 * Key for storing request data in the request cycle's meta data.
 	 */
-	private static MetaDataKey<RequestData> requestData = new MetaDataKey<>()
+	private static MetaDataKey<RequestData> newRequestData = new MetaDataKey<>()
 	{
 		private static final long serialVersionUID = 1L;
 	};
@@ -213,38 +213,38 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 
 	@Override
 	public void requestTime(long timeTaken) {
-		RequestData requestData = getRequestData();
+		RequestData newRequestData = getRequestData();
 		
-		if (requestData != null) {
-			updateActiveRequests(requestData);
-			updateRequestData(requestData, timeTaken);
-			updateSessionData(requestData);
+		if (newRequestData != null) {
+			updateActiveRequests(newRequestData);
+			updateRequestData(newRequestData, timeTaken);
+			updateSessionData(newRequestData);
 		}
 	}
 
 	private RequestData getRequestData() {
-		return RequestCycle.get().getMetaData(requestData);
+		return RequestCycle.get().getMetaData(newRequestData);
 	}
 
-	private void updateActiveRequests(RequestData requestData) {
+	private void updateActiveRequests(RequestData newRequestData) {
 		if (activeRequests.get() > 0) {
-			requestData.setActiveRequest(activeRequests.decrementAndGet());
+			newRequestData.setActiveRequest(activeRequests.decrementAndGet());
 		}
 	}
 
-	private void updateRequestData(RequestData requestData, long timeTaken) {
+	private void updateRequestData(RequestData newRequestData, long timeTaken) {
 		Session session = Session.exists() ? Session.get() : null;
 		String sessionId = session != null ? session.getId() : "N/A";
-		requestData.setSessionId(sessionId);
+		newRequestData.setSessionId(sessionId);
 
 		Object sessionInfo = getSessionInfo(session);
-		requestData.setSessionInfo(sessionInfo);
+		newRequestData.setSessionInfo(sessionInfo);
 
 		long sizeInBytes = getSessionSize(session);
-		requestData.setSessionSize(sizeInBytes);
-		requestData.setTimeTaken(timeTaken);
+		newRequestData.setSessionSize(sizeInBytes);
+		newRequestData.setTimeTaken(timeTaken);
 
-		addRequest(requestData);
+		addRequest(newRequestData);
 	}
 
 	private long getSessionSize(Session session) {
@@ -260,24 +260,24 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 		return sizeInBytes;
 	}
 
-	private void updateSessionData(RequestData requestData) {
-		String sessionId = requestData.getSessionId();
+	private void updateSessionData(RequestData newRequestData) {
+		String sessionId = newRequestData.getSessionId();
 		if (sessionId != null) {
-			SessionData sessionData = updateSessionData(requestData, sessionId);
+			SessionData sessionData = updateSessionData(newRequestData, sessionId);
 			RequestCycle.get().setMetaData(sessionData2, sessionData);
 		}
 	}
 
-	private SessionData updateSessionData(RequestData requestData, String sessionId) {
+	private SessionData updateSessionData(RequestData newRequestData, String sessionId) {
 		SessionData sessionData = liveSessions.get(sessionId);
 		if (sessionData == null) {
 			sessionCreated(sessionId);
 			sessionData = liveSessions.get(sessionId);
 		}
 		if (sessionData != null) {
-			sessionData.setSessionInfo(requestData.getSessionInfo());
-			sessionData.setSessionSize(requestData.getSessionSize());
-			sessionData.addTimeTaken(requestData.getTimeTaken());
+			sessionData.setSessionInfo(newRequestData.getSessionInfo());
+			sessionData.setSessionSize(newRequestData.getSessionSize());
+			sessionData.addTimeTaken(newRequestData.getTimeTaken());
 		}
 		return sessionData;
 	}
@@ -306,11 +306,11 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	public RequestData getCurrentRequest()
 	{
 		RequestCycle requestCycle = RequestCycle.get();
-		RequestData rd = requestCycle.getMetaData(requestData);
+		RequestData rd = requestCycle.getMetaData(newRequestData);
 		if (rd == null)
 		{
 			rd = new RequestData();
-			requestCycle.setMetaData(requestData, rd);
+			requestCycle.setMetaData(newRequestData, rd);
 			int activeCount = activeRequests.incrementAndGet();
 
 			if (activeCount > peakActiveRequests.get())
@@ -324,7 +324,7 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	@Override
 	public void performLogging()
 	{
-		RequestData requestdata = RequestCycle.get().getMetaData(requestData);
+		RequestData requestdata = RequestCycle.get().getMetaData(newRequestData);
 		if (requestdata != null)
 		{
 			// log the request- and sessiondata (the latter can be null)
@@ -416,10 +416,10 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	@Override
 	public void logEventTarget(IRequestHandler requestHandler)
 	{
-		RequestData requestData = getCurrentRequest();
-		if (requestData != null)
+		RequestData newRequestData = getCurrentRequest();
+		if (newRequestData != null)
 		{
-			requestData.setEventTarget(requestHandler);
+			newRequestData.setEventTarget(requestHandler);
 		}
 	}
 
@@ -432,9 +432,9 @@ public abstract class AbstractRequestLogger implements IRequestLogger
 	@Override
 	public void logResponseTarget(IRequestHandler requestHandler)
 	{
-		RequestData requestData = getCurrentRequest();
-		if (requestData != null)
-			requestData.setResponseTarget(requestHandler);
+		RequestData newRequestData = getCurrentRequest();
+		if (newRequestData != null)
+			newRequestData.setResponseTarget(requestHandler);
 	}
 
 	/**

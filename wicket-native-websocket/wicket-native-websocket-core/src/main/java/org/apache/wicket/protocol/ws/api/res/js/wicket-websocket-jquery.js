@@ -37,7 +37,15 @@
 		  .replace('https:', 'wss:')
 		  .replace('http:', 'ws:');
   
-		_port = protocol === 'wss:' ? (securePort ? ':' + securePort : '') : (port ? ':' + port : '');
+		  let portPart;
+
+		  if (protocol === 'wss:') {
+			  portPart = securePort ? ':' + securePort : '';
+		  } else {
+			  portPart = port ? ':' + port : '';
+		  }
+		  
+		  _port = portPart;
   
 		url = protocol + '//' + document.location.hostname + _port + WWS.contextPath + WWS.filterPrefix + '/wicket/websocket';
   

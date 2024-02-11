@@ -49,7 +49,7 @@ public class AjaxPreventSubmitBehavior extends AjaxEventBehavior {
 		super.updateAjaxAttributes(attributes);
 
 		Component component = getComponent();
-		if (component instanceof TextField<?> == false)
+		if (!(component instanceof TextField<?>))
 		{
 			attributes.setChildSelector("input");
 		}

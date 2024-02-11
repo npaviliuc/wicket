@@ -117,14 +117,14 @@ public class DefaultPageLockManager implements IPageLockManager {
 			}
 		}
 
-		handleLockResult(locked, pageId, lock, start, pageTimeout, previous);
+		handleLockResult(locked, pageId, start, pageTimeout, previous);
 	}
 
 	private PageAccessSynchronizer.PageLock tryLock(int pageId, PageAccessSynchronizer.PageLock lock) {
 		return locks.get().putIfAbsent(pageId, lock);
 	}
 
-	private void handleLockResult(boolean locked, int pageId, PageAccessSynchronizer.PageLock lock, Instant start, Duration pageTimeout, PageAccessSynchronizer.PageLock previous) throws CouldNotLockPageException {
+	private void handleLockResult(boolean locked, int pageId, Instant start, Duration pageTimeout, PageAccessSynchronizer.PageLock previous) throws CouldNotLockPageException {
 		if (locked) {
 			handleSuccessfulLock(pageId);
 		} else {

@@ -52,7 +52,7 @@ public abstract class AjaxFallbackLink<T> extends Link<T>
 	 * 
 	 * @param id
 	 */
-	public AjaxFallbackLink(final String id)
+	protected AjaxFallbackLink(final String id)
 	{
 		this(id, null);
 	}
@@ -63,7 +63,7 @@ public abstract class AjaxFallbackLink<T> extends Link<T>
 	 * @param id
 	 * @param model
 	 */
-	public AjaxFallbackLink(final String id, final IModel<T> model)
+	protected AjaxFallbackLink(final String id, final IModel<T> model)
 	{
 		super(id, model);
 

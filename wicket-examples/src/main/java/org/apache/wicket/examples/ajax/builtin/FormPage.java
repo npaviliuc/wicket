@@ -113,7 +113,6 @@ public class FormPage extends BasePage
 
 		// add AjaxPreventSubmitBehavior to the text field if it mustn't submit
 		// the form when ENTER is pressed
-//		fc.add(new AjaxPreventSubmitBehavior());
 
 		form.add(fc);
 		form.add(new SimpleFormComponentLabel("name-label", fc));

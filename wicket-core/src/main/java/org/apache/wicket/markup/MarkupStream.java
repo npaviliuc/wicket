@@ -163,14 +163,7 @@ public class MarkupStream
 		}
 
 		// If we've run out of markup elements in b
-		if (!that.isCurrentIndexInsideTheStream())
-		{
-			// then the two streams match perfectly
-			return true;
-		}
-
-		// Stream b had extra elements
-		return false;
+		return !that.isCurrentIndexInsideTheStream();
 	}
 
 	/**

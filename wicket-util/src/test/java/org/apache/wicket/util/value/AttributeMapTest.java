@@ -56,7 +56,7 @@ class AttributeMapTest
 	}
 
 	@Test
-	public void putBoolean()
+	 void putBoolean()
 	{
 		AttributeMap map = new AttributeMap();
 

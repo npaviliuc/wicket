@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import jakarta.servlet.http.Cookie;
 import org.apache.wicket.Application;
@@ -150,10 +151,15 @@ public class BufferedWebResponse extends WebResponse implements IMetaDataBufferi
 		@Override
 		public boolean equals(Object o)
 		{
-			if(o != null && o instanceof Action)
-				return getType().ordinal() == ((Action) o).getType().ordinal();
+			if(o instanceof Action action)
+				return getType().ordinal() == action.getType().ordinal();
 			else
 				return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(type, responseConsumer);
 		}
 	}
 

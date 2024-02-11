@@ -46,7 +46,7 @@ public abstract class AjaxFallbackOrderByBorder<S> extends OrderByBorder<S>
 	 * @param sortProperty
 	 * @param stateLocator
 	 */
-	public AjaxFallbackOrderByBorder(final String id, final S sortProperty,
+	protected AjaxFallbackOrderByBorder(final String id, final S sortProperty,
 		final ISortStateLocator<S> stateLocator)
 	{
 		super(id, sortProperty, stateLocator);

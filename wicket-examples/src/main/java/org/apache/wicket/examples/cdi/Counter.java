@@ -21,15 +21,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Counter implements Serializable
 {
-	private final AtomicInteger counter = new AtomicInteger();
+	private final AtomicInteger totalCount = new AtomicInteger();
 
 	public int getCount()
 	{
-		return counter.get();
+		return totalCount.get();
 	}
 
 	public void increment()
 	{
-		counter.incrementAndGet();
+		totalCount.incrementAndGet();
 	}
 }

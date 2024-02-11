@@ -1600,9 +1600,9 @@ public abstract class FormComponent<T> extends LabeledWebMarkupContainer impleme
 		Collection<S> collection = formComponent.getModelObject();
 		if (collection == null)
 		{
-			Class<?> hint = null;
+						Class hint = null;
 			if (formComponent.getModel() instanceof IObjectClassAwareModel objectClassAwareModelVar) {
-				hint = (objectClassAwareModelVar).getObjectClass();
+				hint = objectClassAwareModelVar.getObjectClass();
 			}
 			if (hint == null) {
 				hint = List.class;

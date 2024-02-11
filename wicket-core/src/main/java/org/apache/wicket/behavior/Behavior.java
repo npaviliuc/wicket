@@ -152,12 +152,7 @@ public abstract class Behavior
 	 */
 	public boolean getStatelessHint(Component component)
 	{
-		if (this instanceof IRequestListener)
-		{
-			// this behavior implements a callback interface, so it cannot be stateless
-			return false;
-		}
-		return true;
+		return !(this instanceof IRequestListener);
 	}
 
 	/**

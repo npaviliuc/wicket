@@ -138,26 +138,42 @@ public class MultiUploadPage extends WicketExamplePage
 		{
 			for (FileUpload upload : uploads)
 			{
-				// Create a new file
-				File newFile = new File(getUploadFolder(), upload.getClientFileName());
+				// Generate a unique file name on the server
+				String uniqueFileName = generateUniqueFileName(upload.getClientFileName());
+				File newFile = new File(getUploadFolder(), uniqueFileName);
 
 				// Check new file, delete if it already existed
 				checkFileExists(newFile);
 				try
 				{
 					// Save to new file
-					if (newFile.createNewFile()) {
+					if (newFile.createNewFile())
+					{
 						MultiUploadPage.this.info("New file created.");
 					}
 					upload.writeTo(newFile);
 
-					MultiUploadPage.this.info("saved file: " + upload.getClientFileName());
+					MultiUploadPage.this.info("saved file: " + uniqueFileName);
 				}
 				catch (Exception e)
 				{
-					throw new IllegalStateException("Unable to write file");
+					throw new IllegalStateException("Unable to write file", e);
 				}
 			}
+		}
+
+		/**
+		 * Generates a unique file name on the server to avoid security risks.
+		 *
+		 * @param clientFileName The original client-provided file name.
+		 * @return A unique file name.
+		*/
+		private String generateUniqueFileName(String clientFileName)
+		{
+			// You can use various methods to generate a unique file name,
+			// for example, appending a timestamp or using a UUID.
+			String timestamp = String.valueOf(System.currentTimeMillis());
+			return timestamp + "_" + clientFileName;
 		}
 	}
 
@@ -198,6 +214,8 @@ public class MultiUploadPage extends WicketExamplePage
 		add(fileListView);
 
 	}
+
+	
 
 	/**
 	 * Check whether the file allready exists, and if so, try to delete it.

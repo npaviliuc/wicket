@@ -191,11 +191,13 @@ public class PackageResourceReference extends ResourceReference
 	{
 		Locale currentLocale = getCurrentLocale();
 
-		return currentLocale != null
-				? currentLocale
-				: attributes != null
-					? attributes.getLocale()
-					: null;
+		if(currentLocale != null) {
+			return currentLocale;
+		} else if(attributes != null) {
+			return attributes.getLocale();
+		} else {
+			return null;
+		}
 	}
 
 	private Locale getCurrentLocale()
@@ -219,11 +221,13 @@ public class PackageResourceReference extends ResourceReference
 	{
 		String currentStyle = getCurrentStyle();
 
-		return currentStyle != null
-				? currentStyle
-				: attributes != null
-					? attributes.getStyle()
-					: null;
+		if(currentStyle != null) {
+			return currentStyle;
+		} else if(attributes != null) {
+			return attributes.getStyle();
+		} else {
+			return null;
+		}
 	}
 	
 	private String getCurrentStyle()
@@ -247,11 +251,13 @@ public class PackageResourceReference extends ResourceReference
 	{
 		final String variation = getVariation();
 
-		return variation != null
-				? variation
-				: attributes != null
-					? attributes.getVariation()
-					: null;
+		if(variation != null) {
+			return variation;
+		} else if(attributes != null) {
+			return attributes.getVariation();
+		} else {
+			return null;
+		}
 	}
 
 	/**

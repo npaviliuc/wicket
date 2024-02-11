@@ -22,7 +22,7 @@ div.wicket-aa-container {
 }
 
 div.wicket-aa {
-        font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
+        font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana, sans-serif;
         font-size: 12px;
         background-color: white;
         padding: 2px;

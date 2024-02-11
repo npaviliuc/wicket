@@ -28,5 +28,12 @@ public class Home extends AuthenticatedWebPage
 	 */
 	public Home()
 	{
+		/**
+ 		* Default constructor for the Home class.
+		* Explanation: This constructor is intentionally left empty. The Home class may be designed
+		* to have its initialization logic performed elsewhere or through parameterized constructors.
+		* If specific behavior is needed in the constructor, it can be added in a subclass or later
+		* modifications.
+		**/
 	}
 }

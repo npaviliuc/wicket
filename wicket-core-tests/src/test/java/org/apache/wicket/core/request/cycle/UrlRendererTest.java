@@ -22,11 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import org.apache.wicket.mock.MockWebRequest;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.UrlRenderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Matej Knopp
@@ -519,53 +522,29 @@ class UrlRendererTest
 	/**
 	 * https://issues.apache.org/jira/browse/WICKET-5065
 	 */
-	@Test
-	void renderAbsoluteWithoutHost()
-	{
-		Url baseUrl = Url.parse("a/b");
+	@ParameterizedTest
+    @MethodSource("urlProvider")
+    void renderAbsoluteUrlWithoutHost(Url baseUrl, Url absoluteUrl, String expectedEncodedUrl) {
+        MockWebRequest request = new MockWebRequest(baseUrl);
+        UrlRenderer renderer = new UrlRenderer(request);
 
-		MockWebRequest request = new MockWebRequest(baseUrl);
-		UrlRenderer renderer = new UrlRenderer(request);
+        String encodedRelativeUrl = renderer.renderUrl(absoluteUrl);
 
-		Url absoluteUrl = Url.parse("/c/d");
-		String encodedRelativeUrl = renderer.renderUrl(absoluteUrl);
+        assertEquals(expectedEncodedUrl, encodedRelativeUrl);
+    }
 
-		assertEquals("/c/d", encodedRelativeUrl);
-	}
+    private static Stream<Object[]> urlProvider() {
+        return Stream.of(
+                // Test 1
+                new Object[]{Url.parse("a/b"), Url.parse("/c/d"), "/c/d"},
 
-	/**
-	 * https://issues.apache.org/jira/browse/WICKET-5065
-	 */
-	@Test
-	void renderAbsoluteWithoutScheme()
-	{
-		Url baseUrl = Url.parse("a/b");
+                // Test 2
+                new Object[]{Url.parse("a/b"), Url.parse("//host/c/d"), "//host/c/d"},
 
-		MockWebRequest request = new MockWebRequest(baseUrl);
-		UrlRenderer renderer = new UrlRenderer(request);
-
-		Url absoluteUrl = Url.parse("//host/c/d");
-		String encodedRelativeUrl = renderer.renderUrl(absoluteUrl);
-
-		assertEquals("//host/c/d", encodedRelativeUrl);
-	}
-
-	/**
-	 * https://issues.apache.org/jira/browse/WICKET-5065
-	 */
-	@Test
-	void renderAbsoluteWithoutSchemeWithPort()
-	{
-		Url baseUrl = Url.parse("a/b");
-
-		MockWebRequest request = new MockWebRequest(baseUrl);
-		UrlRenderer renderer = new UrlRenderer(request);
-
-		Url absoluteUrl = Url.parse("//host:1234/c/d");
-		String encodedRelativeUrl = renderer.renderUrl(absoluteUrl);
-
-		assertEquals("//host:1234/c/d", encodedRelativeUrl);
-	}
+                // Test 3
+                new Object[]{Url.parse("a/b"), Url.parse("//host:1234/c/d"), "//host:1234/c/d"}
+        );
+    }
 
 	/**
 	 * https://issues.apache.org/jira/browse/WICKET-5073

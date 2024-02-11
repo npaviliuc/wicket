@@ -16,7 +16,7 @@
  */
 package org.apache.wicket.examples.niceurl;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.apache.wicket.examples.WicketExamplePage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -31,7 +31,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  */
 public class Page2 extends WicketExamplePage
 {
-	private final Random random = new Random();
+	private final SecureRandom random = new SecureRandom();
 
 	/**
 	 * Constructor

@@ -51,7 +51,7 @@ public abstract class PageableListView<T> extends ListView<T> implements IPageab
 	 * @param itemsPerPage
 	 *            Number of rows to show on a page
 	 */
-	public PageableListView(final String id, final IModel<? extends List<T>> model,
+	protected PageableListView(final String id, final IModel<? extends List<T>> model,
 		long itemsPerPage)
 	{
 		super(id, model);
@@ -70,7 +70,7 @@ public abstract class PageableListView<T> extends ListView<T> implements IPageab
 	 *            Number of rows to show on a page
 	 * @see ListView#ListView(String, List)
 	 */
-	public PageableListView(final String id, final List<T> list, final long itemsPerPage)
+	protected PageableListView(final String id, final List<T> list, final long itemsPerPage)
 	{
 		super(id, list);
 		this.itemsPerPage = itemsPerPage;

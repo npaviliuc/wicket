@@ -207,16 +207,18 @@ public class ExternalImage extends WebComponent
 		{
 			return;
 		}
-		String sizes = "";
+		StringBuilder bld = new StringBuilder();
 		for (String size : this.sizes)
 		{
-			sizes += size + ",";
+			bld.append(size).append(",");
 		}
-		int lastIndexOf = sizes.lastIndexOf(",");
+		int lastIndexOf = bld.lastIndexOf(",");
 		if (lastIndexOf != -1)
 		{
-			sizes = sizes.substring(0, lastIndexOf);
+			bld.deleteCharAt(lastIndexOf);
 		}
+		String sizes = bld.toString();
+		
 		if (!sizes.isEmpty())
 		{
 			tag.put("sizes", sizes);

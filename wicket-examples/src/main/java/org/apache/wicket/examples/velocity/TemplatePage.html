@@ -7,13 +7,14 @@
   <wicket:extend>
     <!-- This table is designed to facilitate the input and output of Apache Velocity templates -->
     <table cellpadding="5px">
+      <caption> This table is designed to facilitate the input and output of Apache Velocity templates </caption>
       <tr>
         <th valign="top" height="100%">
       
           <div id="templateInputBox">
             <form wicket:id="templateForm">
               <fieldset>
-                <legend><a target="_blank" href="http://velocity.apache.org/">Apache Velocity</a> template input</legend>
+                <legend><a target="_blank" rel="noopener" href="http://velocity.apache.org/">Apache Velocity</a> template input</legend>
 
                 <textarea wicket:id="templateInput" rows="16" cols="36">Template input comes here</textarea>
               
@@ -24,7 +25,7 @@
             </form>   
           </div>
         </th>
-        <th valign="top" height="100%">
+        <th scope="col">
 
           <div id="templateOutputBox">
             <fieldset>

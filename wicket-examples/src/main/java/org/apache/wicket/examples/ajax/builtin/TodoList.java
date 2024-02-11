@@ -153,7 +153,7 @@ public class TodoList extends BasePage
 						}
 					});
 					// display the text of the todo item
-					item.add(new Label("text", new PropertyModel<String>(item.getModel(), "text")));
+					item.add(new Label("text", new PropertyModel<>(item.getModel(), "text")));
 				}
 			});
 		}
@@ -268,6 +268,12 @@ public class TodoList extends BasePage
 					@Override
 					protected void onError(AjaxRequestTarget target)
 					{
+						/**
+						 * This onError() method is intentionally left empty.
+						 * Explanation: The purpose of this Ajax behavior is to provide a basic implementation
+						 * without any specific logic for handling errors. If error-handling behavior is needed,
+						 * this method can be overridden in a subclass to provide custom error-handling logic.
+						 **/
 					}
 				});
 
@@ -282,6 +288,12 @@ public class TodoList extends BasePage
 					@Override
 					protected void onError(AjaxRequestTarget target)
 					{
+						/**
+						 * This onError() method is intentionally left empty.
+						 * Explanation: The purpose of this Ajax behavior is to provide a basic implementation
+						 * without any specific logic for handling errors. If error-handling behavior is needed,
+						 * this method can be overridden in a subclass to provide custom error-handling logic.
+						 **/
 					}
 				});
 			}

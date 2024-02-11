@@ -17,7 +17,7 @@
 package org.apache.wicket.examples.ajax.builtin;
 
 import java.time.Duration;
-import java.util.Random;
+import java.security.SecureRandom;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
@@ -29,7 +29,7 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 @SuppressWarnings({ "javadoc", "serial" })
 public class LazyLoadingPage extends BasePage
 {
-	private Random r = new Random();
+	private SecureRandom r = new SecureRandom();
 	private WebMarkupContainer nonblocking;
 	private WebMarkupContainer blocking;
 	private RepeatingView blockingRepeater;
@@ -142,6 +142,8 @@ public class LazyLoadingPage extends BasePage
 					}
 					catch (InterruptedException e)
 					{
+						Thread.currentThread().interrupt();
+						throw new LazyLoadInterruptedException("Lazy loading interrupted", e);
 					}
 					return new Label(markupId,
 						"Lazy loaded after blocking the Wicket thread for " + seconds + " seconds");
@@ -149,5 +151,11 @@ public class LazyLoadingPage extends BasePage
 			});
 		
 		getRequestCycle().find(AjaxRequestTarget.class).ifPresent(t -> t.add(blocking));
+	}
+
+	public class LazyLoadInterruptedException extends RuntimeException {
+		public LazyLoadInterruptedException(String message, Throwable cause) {
+        	super(message, cause);
+		}
 	}
 }

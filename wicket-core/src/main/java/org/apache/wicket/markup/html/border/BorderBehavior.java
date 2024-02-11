@@ -208,7 +208,7 @@ public class BorderBehavior extends Behavior {
 			try {
 				markupResourceStream.close();
 			} catch (IOException e) {
-				log.error(String.format("Cannot close markup resource stream:%d. IOException:%s", markupResourceStream, e.getMessage()));
+				log.error(String.format("Cannot close markup resource stream. IOException: %s", e.getMessage()));
 			}
 		}
 	}

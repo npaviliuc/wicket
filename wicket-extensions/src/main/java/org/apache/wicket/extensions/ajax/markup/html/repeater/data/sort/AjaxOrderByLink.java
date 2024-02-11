@@ -45,7 +45,7 @@ public abstract class AjaxOrderByLink<S> extends OrderByLink<S> implements IAjax
 	 * @param sortProperty
 	 * @param stateLocator
 	 */
-	public AjaxOrderByLink(final String id, final S sortProperty,
+	protected AjaxOrderByLink(final String id, final S sortProperty,
 	                       final ISortStateLocator<S> stateLocator)
 	{
 		super(id, sortProperty, stateLocator);
@@ -91,15 +91,5 @@ public abstract class AjaxOrderByLink<S> extends OrderByLink<S> implements IAjax
 	protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
 	{
 	}
-
-	/**
-	 * Callback method when an ajax click occurs. All the behavior of changing the sort, etc is
-	 * already performed before this is called so this method should primarily be used to configure
-	 * the target.
-	 * 
-	 * @param target
-	 */
-	@Override
-	public abstract void onClick(AjaxRequestTarget target);
 
 }

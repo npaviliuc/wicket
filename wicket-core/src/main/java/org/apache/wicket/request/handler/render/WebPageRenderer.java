@@ -18,7 +18,6 @@ package org.apache.wicket.request.handler.render;
 
 import java.util.List;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Session;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler.RedirectPolicy;

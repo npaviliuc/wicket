@@ -219,7 +219,7 @@ public class WicketFilter implements Filter
 				// send redirect - this will discard POST parameters if the request is POST
 				// - still better than getting an error because of lacking trailing slash
 
-				List<String> allowedHosts = new ArrayList<String>();
+				List<String> allowedHosts = new ArrayList<>();
   				allowedHosts.add("https://example.com/");
 
   				if (allowedHosts.contains(redirectURL)) {

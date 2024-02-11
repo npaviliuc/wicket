@@ -72,7 +72,7 @@ public class CheckGroupPage2 extends WicketExamplePage
 				item.add(new Check<>("checkbox2", personModel, group2));
 				item.add(new Label("name",
 					new PropertyModel<>(item.getDefaultModel(), "name")));
-				item.add(new Label("lastName", new PropertyModel<String>(personModel,
+				item.add(new Label("lastName", new PropertyModel<>(personModel,
 					"lastName")));
 			}
 

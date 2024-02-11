@@ -1597,10 +1597,8 @@ public abstract class Component
 			catch (Exception ex)
 			{
 				// wrap the exception so that it brings info about the component
-				WicketRuntimeException rex = new WicketRuntimeException(
-					"An error occurred while getting the model object for Component: " +
-						this.toString(true), ex);
-				throw rex;
+				throw new WicketRuntimeException(
+    "An error occurred while getting the model object for Component: " + this.toString(true), ex);
 			}
 		}
 		return null;
@@ -2039,7 +2037,7 @@ public abstract class Component
 	 */
 	public final boolean isStateless()
 	{
-		if ((isVisibleInHierarchy() && isEnabledInHierarchy()) == false && canCallListener() == false)
+		if (!(isVisibleInHierarchy() && isEnabledInHierarchy()) && !canCallListener())
 		{
 			// the component is either invisible or disabled and it can't call listeners
 			// then pretend the component is stateless
@@ -2517,14 +2515,11 @@ public abstract class Component
 				{
 					renderClosingComponentTag(markupStream, tag, renderBodyOnly);
 				}
-				else if (renderBodyOnly == false)
+				else if (!renderBodyOnly && needToRenderTag(openTag))
 				{
-					if (needToRenderTag(openTag))
-					{
-						// Close the manually opened tag. And since the user might have changed the
-						// tag name ...
-						tag.writeSyntheticCloseTag(getResponse());
-					}
+					// Close the manually opened tag. And since the user might have changed the
+					// tag name ...
+					tag.writeSyntheticCloseTag(getResponse());
 				}
 			}
 		}
@@ -2548,7 +2543,7 @@ public abstract class Component
 		// If a open-close tag has been modified to be open-body-close then a
 		// synthetic close tag must be rendered.
 		boolean renderTag = (openTag != null && !(openTag instanceof WicketTag));
-		if (renderTag == false)
+		if (!renderTag)
 		{
 			renderTag = !getApplication().getMarkupSettings().getStripWicketTags();
 		}
@@ -4287,10 +4282,6 @@ public abstract class Component
 	 */
 	public final void setParent(final MarkupContainer parent)
 	{
-		if (this.parent != null && log.isDebugEnabled())
-		{
-			log.debug("Replacing parent " + this.parent + " with " + parent);
-		}
 		this.parent = parent;
 	}
 

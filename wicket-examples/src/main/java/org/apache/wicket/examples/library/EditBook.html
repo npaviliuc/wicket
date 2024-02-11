@@ -3,28 +3,29 @@
   <p>
   <form wicket:id = "editBookForm">
 	<!-- table that corresponds to a form for capturing information about a book -->     
-    <table cellpadding="3">  
+    <table cellpadding="3">
+		<caption> table that corresponds to a form for capturing information about a book </caption>  
 		<tr>
-		  <th align="right">Title:</th>
-		  <th wicket:id="titleFeedback">
+		  <th scope="col">Title:</th>
+		  <th scope="col" wicket:id="titleFeedback">
 			<input wicket:id="title" type="text" value="Huckleberry Finn" size="30"/>
 		  </th>
 		</tr>
 		<tr>
-		  <th align="right">Author:</th>
-		  <th wicket:id="authorFeedback">
+		  <th scope="col">Author:</th>
+		  <th scope="col" wicket:id="authorFeedback">
 			<input wicket:id="author" type="text" value="Mark Twain" hidden="1" size="30"/>
 		  </th>
 		</tr>
 		<tr>
-		  <th align="right">Fiction:</th>
-		  <th>
+		  <th scope="col">Fiction:</th>
+		  <th scope="col">
 			<input wicket:id="fiction" type="checkbox"/>
 		  </th>
 		</tr>
 		<tr>
-		  <th align="right">Favorite Companion Book:</th>
-		  <th>
+		  <th scope="col">Favorite Companion Book:</th>
+		  <th scope="col">
 			<select wicket:id="companionBook">
 			  <option>Volvo</option>
 			  <option>Saab</option>
@@ -34,8 +35,8 @@
 		  </th>
 		</tr>
 		<tr>
-		  <th align="right" valign="top">Styles:</th>
-		  <th>
+		  <th scope="col">Styles:</th>
+		  <th scope="col">
 			<select multiple="multiple" wicket:id="writingStyles">
 			  <option>Foo</option>
 			  <option>Bar</option>
@@ -43,8 +44,8 @@
 		  </th>
 		</tr>
 		<tr>
-		  <th align="right" valign="top">Related book:</th>
-		  <th valign="top">
+		  <th scope="col" valign="top">Related book:</th>
+		  <th scope="col">
 			<span valign="top" wicket:id="relatedBook">
 			  <input type="radio" value="A" />A
 			  <input type="radio" value="B" />B
@@ -53,8 +54,8 @@
 		  </th>
 		</tr>
 		<tr>
-		  <th></th>
-		  <th>
+		  <th scope="col">Header</th>
+		  <th scope="col">
 			<p><br />
 			  <input type="submit" value="Save Changes"/>
 			</p>

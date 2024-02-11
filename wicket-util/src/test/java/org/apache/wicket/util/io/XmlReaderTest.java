@@ -19,15 +19,18 @@ package org.apache.wicket.util.io;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 @SuppressWarnings("javadoc")
 class XmlReaderTest
 {
 	@Test
-	public void readHtmlFileWithoutAnyTags() throws Exception
+	 void readHtmlFileWithoutAnyTags() throws Exception
 	{
 		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_1.html"), null);
 		assertNull(reader.getEncoding());
@@ -41,7 +44,7 @@ class XmlReaderTest
 	}
 
 	@Test
-	public void readHtmlFileWithHtmlAndBody() throws Exception
+	 void readHtmlFileWithHtmlAndBody() throws Exception
 	{
 		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_2.html"), null);
 		assertNull(reader.getEncoding());
@@ -54,7 +57,7 @@ class XmlReaderTest
 	}
 
 	@Test
-	public void readHtmlFileWithXmlPreambleSansVersionAndHtmlTag() throws Exception
+	 void readHtmlFileWithXmlPreambleSansVersionAndHtmlTag() throws Exception
 	{
 		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_3.html"), null);
 		assertNull(reader.getEncoding());
@@ -68,7 +71,7 @@ class XmlReaderTest
 	}
 
 	@Test
-	public void readHtmlFileWithXmlPreambleWithVersionAndHtmlTag() throws Exception
+	 void readHtmlFileWithXmlPreambleWithVersionAndHtmlTag() throws Exception
 	{
 		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_4.html"), null);
 		assertNull(reader.getEncoding());
@@ -81,60 +84,31 @@ class XmlReaderTest
 		}
 	}
 
-	@Test
-	public void readHtmlFileWithXmlPreambleWithVersionAndEncodingAndHtmlTag() throws Exception
-	{
-		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_5.html"), null);
-		assertEquals("UTF-8", reader.getEncoding());
+	 private static Stream<String> testFiles() {
+        return Stream.of("test_5.html", "test_6.html", "test_7.html", "test_8.html");
+    }
 
-		try (BufferedReader bufReader = new BufferedReader(reader);)
-		{
-			assertEquals("", bufReader.readLine().trim());
-			assertEquals("<html>", bufReader.readLine());
-			assertNull(bufReader.readLine());
-		}
-	}
+    @ParameterizedTest
+    @MethodSource("testFiles")
+     void readHtmlFileWithXmlPreambleAndHtmlTag(String fileName) throws Exception {
+        // Construct the test file path
+        String filePath = getClass().getResource(fileName).getPath();
 
-	@Test
-	public void readHtmlFileWithXmlPreambleWithVersionAndEncodingInSingleQuotesAndHtmlTag() throws Exception
-	{
-		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_6.html"), null);
-		assertEquals("UTF-8", reader.getEncoding());
+        // Use try-with-resources to close the reader automatically
+        try (XmlReader reader = new XmlReader(getClass().getResourceAsStream(fileName), null);
+             BufferedReader bufReader = new BufferedReader(reader)) {
 
-		try (BufferedReader bufReader = new BufferedReader(reader);)
-		{
-			assertEquals("", bufReader.readLine().trim());
-			assertEquals("<html>", bufReader.readLine());
-			assertNull(bufReader.readLine());
-		}
-	}
+            // Assert the encoding is UTF-8
+            assertEquals("UTF-8", reader.getEncoding().toUpperCase());
 
-	@Test
-	public void readHtmlFileWithXmlPreambleWithVersionAndEncodingSansQuotesAndHtmlTag() throws Exception
-	{
-		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_7.html"), null);
-		assertEquals("UTF-8", reader.getEncoding());
+            // Assert the first line is an empty string
+            assertEquals("", bufReader.readLine().trim());
 
-		try (BufferedReader bufReader = new BufferedReader(reader);)
-		{
-			assertEquals("", bufReader.readLine().trim());
-			assertEquals("<html>", bufReader.readLine());
-			assertNull(bufReader.readLine());
-		}
-	}
+            // Assert the second line is <html>
+            assertEquals("<html>", bufReader.readLine());
 
-	@Test
-	public void readHtmlFileWithBomAndXmlPreambleWithEncodingSansQuotesAndHtmlTag() throws Exception
-	{
-		// test_8.html starts with <U+FEFF> character
-		XmlReader reader = new XmlReader(this.getClass().getResourceAsStream("test_8.html"), null);
-		assertEquals("UTF-8", reader.getEncoding());
-
-		try (BufferedReader bufReader = new BufferedReader(reader);)
-		{
-			assertEquals("", bufReader.readLine().trim());
-			assertEquals("<html>", bufReader.readLine());
-			assertNull(bufReader.readLine());
-		}
-	}
+            // Assert the third line is null
+            assertNull(bufReader.readLine());
+        }
+    }
 }

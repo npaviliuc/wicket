@@ -148,7 +148,7 @@ public abstract class Session implements IClusterable, IEventSink, IMetadataCont
 	private final AtomicInteger pageId = new AtomicInteger(0);
 
 	/** synchronize page's access by session */
-	private final Supplier<PageAccessSynchronizer> pageAccessSynchronizer;
+	private final transient Supplier<PageAccessSynchronizer> pageAccessSynchronizer;
 
 	/**
 	 * Checks existence of a <code>Session</code> associated with the current thread.

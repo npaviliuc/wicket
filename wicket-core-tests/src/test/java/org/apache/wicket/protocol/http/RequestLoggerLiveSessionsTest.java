@@ -87,9 +87,11 @@ class RequestLoggerLiveSessionsTest
 				
 				try
 				{
-					Thread.sleep(random.nextInt(20));
-				}
-					catch (InterruptedException e) {
+					synchronized (sessionIds) {
+						sessionIds.wait(random.nextInt(20));
+					}
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
 				}
 			}
 		}
@@ -114,9 +116,11 @@ class RequestLoggerLiveSessionsTest
 				
 				try
 				{
-					Thread.sleep(random.nextInt(20));
-				}
-					catch (InterruptedException e) {
+					synchronized (sessionIds) {
+						sessionIds.wait(random.nextInt(20));
+					}
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
 				}
 			}
 		}

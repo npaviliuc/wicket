@@ -26,23 +26,23 @@ $q(document).ready(function() {
 	asyncTest('ajax form validation', function () {
 		expect(6);
 
-		var $nameInput, $emailInput;
+		let $nameInput, $emailInput;
 
 		gym.load('/ajax/form').then(function($) {
-			var $form = $('form.validation');
+			let $form = $('form.validation');
 			$nameInput = $('input[name="p::name"]', $form);
 			$emailInput = $('input[name=email]', $form);
 
 			// enter just the name field
 			$nameInput.focus();
-			var name = 'Aj';
+			let name = 'Aj';
 			$nameInput.val(name);
 
 			return gym.ajaxEvent('keydown', $emailInput);
 		}).then(function($) {
 
 			// an error feedback message that email is mandatory is expected
-			var $feedback = $('li.feedbackPanelERROR > span');
+			let $feedback = $('li.feedbackPanelERROR > span');
 			equal($feedback.length, 2, 'The error feedback message that name is too short and the email is missing');
 			equal($feedback.eq(0).text(), 'Name must be at least 4 characters', 'The error feedback matches');
 			equal($feedback.eq(1).text(), 'Email is required', 'The error feedback matches');
@@ -75,22 +75,22 @@ $q(document).ready(function() {
 	asyncTest('Prevent ajax form submit on ENTER key', function () {
 		expect(2);
 
-		var $nameInput, $emailInput;
+		let $nameInput, $emailInput;
 
 		gym.load('/ajax/form').then(function($) {
 
-			var $form = $('form.preventEnter');
+			let $form = $('form.preventEnter');
 			$nameInput = $('input[name="p::name"]', $form);
 			$emailInput = $('input[name=email]', $form);
 
 			// enter just the name field
 			$nameInput.focus();
-			var name = 'abcdef';
+			let name = 'abcdef';
 			$nameInput.val(name);
 
-			var evt = $q.Event("keydown");
+			let evt = $q.Event("keydown");
 			evt.keyCode = evt.which = 13; // ENTER key
-			var prevented = false;
+			let prevented = false;
 			evt.preventDefault = function() {prevented = true;};
 			equal(prevented, false, "The JS event default behavior is not yet prevented!");
 

@@ -73,7 +73,7 @@ public class Home extends WicketExamplePage
 			}
 		};
 		actionLink
-			.add(new Label("linkClickCount", new PropertyModel<Integer>(this, "linkClickCount")));
+			.add(new Label("linkClickCount", new PropertyModel<>(this, "linkClickCount")));
 		add(actionLink);
 
 		// Action link counts link clicks on works with onclick handler
@@ -86,7 +86,7 @@ public class Home extends WicketExamplePage
 		};
 		add(actionOnClickLink);
 		add(new Label("onClickLinkClickCount",
-			new PropertyModel<Integer>(this, "onClickLinkClickCount")));
+			new PropertyModel<>(this, "onClickLinkClickCount")));
 
 		// Link to Page1 is a simple external page link
 		add(new BookmarkablePageLink<>("page1Link", Page1.class));
@@ -182,6 +182,12 @@ public class Home extends WicketExamplePage
 			@Override
 			public void onClick()
 			{
+				/**
+				 * This onClick() method is intentionally left empty.
+				 * Explanation: The purpose of this link is to represent an anchor without any specific
+				 * click behavior. If any specific behavior needs to be added in the future, this method
+				 * can be overridden in a subclass.
+				 * */
 			}
 		};
 		add(linkToAnchor);
@@ -190,7 +196,13 @@ public class Home extends WicketExamplePage
 			@Override
 			public void onClick()
 			{
-			};
+				/**
+				 * This onClick() method is intentionally left empty.
+				 * Explanation: The purpose of this link is to represent an anchor without any specific
+				 * click behavior. If any specific behavior needs to be added in the future, this method
+				 * can be overridden in a subclass.
+				 * */
+			}
 		};
 		add(anotherlinkToAnchor);
 		Component anchorLabel = new Label("anchorLabel",
@@ -203,6 +215,12 @@ public class Home extends WicketExamplePage
 			@Override
 			public void onClick()
 			{
+				/**
+				 * This onClick() method is intentionally left empty.
+				 * Explanation: The purpose of this link is to represent an anchor without any specific
+				 * click behavior. If any specific behavior needs to be added in the future, this method
+				 * can be overridden in a subclass.
+				 * */
 			}
 		};
 		linkWithLabel
